@@ -1,0 +1,74 @@
+.sidenav-content {
+  display: flex;
+  height: calc(100vh - 128px);
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 2em;
+  padding-left: 2em;
+  padding-bottom: 2em;
+}
+
+.zindex2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-white {
+  color: white;
+}
+
+.sidenav {
+  background-color: #303f9f;
+  color: white;
+}
+
+.active {
+  background: #051390;
+}
+.mat-list-item.active{
+  background: #051390;
+}
+
+.sidenav-item {
+  color: white;
+  font-size: 20px;
+}
+
+md-icon {
+  color: white;
+}
+
+.mat-drawer {
+  min-width: 1vw;
+}
+
+.button-pointer {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.text-pointer {
+  cursor: pointer;
+}
+
+.menu-item {
+  font-size: 0.8em;
+}
+
+.mat-badge-content {
+  background: white;
+  color: #303f9f;
+}
+.mat-badge-medium.mat-badge-after .mat-badge-content {
+  top: 0;
+  right: -35px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  font-size: 14px;
+}
+.img {
+  height: 40%;
+  width: 40%;
+}
+
