@@ -1,0 +1,43 @@
+import { Injectable } from '@angular/core';
+import {catchError, from, map} from "rxjs";
+import {HttpClient} from "@angular/common/http";
+import {Router} from "@angular/router";
+import {RestErrorsHandlerService} from "./rest-errors-handler.service";
+import {TownCrierService} from "./town-crier.service";
+import {environment} from "../../environments/environment";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DocumentService {
+
+  constructor(private http: HttpClient,
+              private router: Router,
+              private restErrorsHandlerService: RestErrorsHandlerService,
+              private townCrier: TownCrierService) {
+  }
+  getAllDocuments() {
+    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_All_DOCUMENTS}`))
+      .pipe(
+        map((res: any) => {
+          return res;
+        }),
+        catchError(errorRes => {
+          this.townCrier.error(errorRes.error)
+          return this.restErrorsHandlerService.handleRequestError(errorRes);
+        }));
+  }
+
+  uploadDocument(data: FormData) {
+    return from(this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_FILE}`, data))
+      .pipe(
+        map((res: any) => {
+          this.townCrier.info("Wait till new document processed..")
+          return res;
+        }),
+        catchError(errorRes => {
+          this.townCrier.error(errorRes.error)
+          return this.restErrorsHandlerService.handleRequestError(errorRes);
+        }));
+  }
+}

@@ -1,82 +1,82 @@
-<!--<div class="title-element" fxLayoutAlign="space-between center">-->
-<!--  <mat-card-title>Videos Dashboard</mat-card-title>-->
+<div class="title-element" fxLayoutAlign="space-between center">
+  <mat-card-title>Document Dashboard</mat-card-title>
 
-<!--  <form [formGroup]="formGroup" class="form">-->
-<!--    <input  formControlName="uploadFile"  class="form-element"-->
-<!--            #uploadFile-->
-<!--            type="file"-->
-<!--            id="uploadFile"-->
-<!--            hidden-->
-<!--            accept="*/*"-->
-<!--            (change)="uploadFileService($event)"-->
-<!--    />-->
+  <form [formGroup]="formGroup" class="form">
+    <input  formControlName="uploadFile"  class="form-element"
+            #uploadFile
+            type="file"
+            id="uploadFile"
+            hidden
+            accept="*/*"
+            (change)="uploadFileService($event)"
+    />
 
-<!--    <mat-button-toggle class="fileUpload" (click)="uploadFile.click()">-->
-<!--      Upload New Video </mat-button-toggle>-->
-<!--  </form>-->
-<!--</div>-->
+    <mat-button-toggle class="fileUpload" (click)="uploadFile.click()">
+      Upload New Document </mat-button-toggle>
+  </form>
+</div>
 
-<!--&lt;!&ndash;<div *ngIf="dataSource; else emptyTable" class="mat-elevation-z8">&ndash;&gt;-->
-<!--&lt;!&ndash;  <table mat-table [dataSource]="dataSource" matSort matTableResponsive (matSortChange)="announceSortChange($event)">&ndash;&gt;-->
-<!--&lt;!&ndash;    <ng-container matColumnDef="Video_Key">&ndash;&gt;-->
-<!--&lt;!&ndash;      <th *matHeaderCellDef mat-header-cell>Title</th>&ndash;&gt;-->
-<!--&lt;!&ndash;      <td *matCellDef="let element" mat-cell> {{element.video_key}} </td>&ndash;&gt;-->
-<!--&lt;!&ndash;    </ng-container>&ndash;&gt;-->
-<!--&lt;!&ndash;    <ng-container matColumnDef="Status">&ndash;&gt;-->
-<!--&lt;!&ndash;      <th  mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Status">Status</th>&ndash;&gt;-->
-<!--&lt;!&ndash;      <td *matCellDef="let element" mat-cell> {{textService.toTitleCase(element.status)}} </td>&ndash;&gt;-->
-<!--&lt;!&ndash;    </ng-container>&ndash;&gt;-->
-<!--&lt;!&ndash;    <ng-container [matColumnDef]="time">&ndash;&gt;-->
-<!--&lt;!&ndash;      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time">Created Time</th>&ndash;&gt;-->
-<!--&lt;!&ndash;      <td *matCellDef="let element" mat-cell> {{dateService.toFormattedDate(element.createdTime)}} </td>&ndash;&gt;-->
-<!--&lt;!&ndash;    </ng-container>&ndash;&gt;-->
-<!--&lt;!&ndash;    <ng-container matColumnDef="Step">&ndash;&gt;-->
-<!--&lt;!&ndash;      <th *matHeaderCellDef mat-header-cell>Step</th>&ndash;&gt;-->
-<!--&lt;!&ndash;      <td *matCellDef="let element" mat-cell> {{element.step}} </td>&ndash;&gt;-->
-<!--&lt;!&ndash;    </ng-container>&ndash;&gt;-->
-<!--&lt;!&ndash;    <ng-container matColumnDef="Step_Progress">&ndash;&gt;-->
-<!--&lt;!&ndash;      <th *matHeaderCellDef mat-header-cell>Step Progress</th>&ndash;&gt;-->
-<!--&lt;!&ndash;      <td *matCellDef="let element" mat-cell>&ndash;&gt;-->
+<div *ngIf="dataSource; else emptyTable" class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort matTableResponsive (matSortChange)="announceSortChange($event)">
+    <ng-container matColumnDef="Video_Key">
+      <th *matHeaderCellDef mat-header-cell>Title</th>
+      <td *matCellDef="let element" mat-cell> {{element.video_key}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Status">
+      <th  mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Status">Status</th>
+      <td *matCellDef="let element" mat-cell> {{textService.toTitleCase(element.status)}} </td>
+    </ng-container>
+    <ng-container [matColumnDef]="time">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time">Created Time</th>
+      <td *matCellDef="let element" mat-cell> {{dateService.toFormattedDate(element.createdTime)}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Step">
+      <th *matHeaderCellDef mat-header-cell>Step</th>
+      <td *matCellDef="let element" mat-cell> {{element.step}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Step_Progress">
+      <th *matHeaderCellDef mat-header-cell>Step Progress</th>
+      <td *matCellDef="let element" mat-cell>
 
-<!--&lt;!&ndash;        <mat-progress-bar mode="determinate" value= "{{element.step_progress}}"></mat-progress-bar>&ndash;&gt;-->
+        <mat-progress-bar mode="determinate" value= "{{element.step_progress}}"></mat-progress-bar>
 
-<!--&lt;!&ndash;      </td>&ndash;&gt;-->
-<!--&lt;!&ndash;    </ng-container>&ndash;&gt;-->
-<!--&lt;!&ndash;    <ng-container matColumnDef="Description">&ndash;&gt;-->
-<!--&lt;!&ndash;      <th *matHeaderCellDef mat-header-cell>Description</th>&ndash;&gt;-->
-<!--&lt;!&ndash;      <td *matCellDef="let element" mat-cell> {{element.description}} </td>&ndash;&gt;-->
-<!--&lt;!&ndash;    </ng-container>&ndash;&gt;-->
-<!--&lt;!&ndash;    <ng-container matColumnDef="Progress">&ndash;&gt;-->
-<!--&lt;!&ndash;      <th *matHeaderCellDef mat-header-cell>Progress</th>&ndash;&gt;-->
-<!--&lt;!&ndash;      <td *matCellDef="let element" mat-cell> {{element.progress}} </td>&ndash;&gt;-->
-<!--&lt;!&ndash;    </ng-container>&ndash;&gt;-->
-<!--&lt;!&ndash;    <ng-container matColumnDef="Actions">&ndash;&gt;-->
-<!--&lt;!&ndash;      <th *matHeaderCellDef mat-header-cell> Actions</th>&ndash;&gt;-->
-<!--&lt;!&ndash;      <td *matCellDef="let element" class="action-link" mat-cell>&ndash;&gt;-->
-<!--&lt;!&ndash;        <button (click)="clickedRow(element)" [disabled]="element.status !== 'ready' && element.status !== 'finished'"&ndash;&gt;-->
-<!--&lt;!&ndash;                color="primary" mat-raised-button>Open&ndash;&gt;-->
-<!--&lt;!&ndash;        </button>&ndash;&gt;-->
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="Description">
+      <th *matHeaderCellDef mat-header-cell>Description</th>
+      <td *matCellDef="let element" mat-cell> {{element.description}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Progress">
+      <th *matHeaderCellDef mat-header-cell>Progress</th>
+      <td *matCellDef="let element" mat-cell> {{element.progress}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Actions">
+      <th *matHeaderCellDef mat-header-cell> Actions</th>
+      <td *matCellDef="let element" class="action-link" mat-cell>
+        <button (click)="clickedRow(element)" [disabled]="element.status !== 'ready' && element.status !== 'finished'"
+                color="primary" mat-raised-button>Open
+        </button>
 
-<!--&lt;!&ndash;        <button mat-icon-button [matMenuTriggerFor]="menu"&ndash;&gt;-->
-<!--&lt;!&ndash;                aria-label="Example icon-button with a menu">&ndash;&gt;-->
-<!--&lt;!&ndash;          <mat-icon>more_vert</mat-icon>&ndash;&gt;-->
-<!--&lt;!&ndash;        </button>&ndash;&gt;-->
-<!--&lt;!&ndash;        <mat-menu #menu="matMenu">&ndash;&gt;-->
+        <button mat-icon-button [matMenuTriggerFor]="menu"
+                aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
 
-<!--&lt;!&ndash;        </mat-menu>&ndash;&gt;-->
-<!--&lt;!&ndash;      </td>&ndash;&gt;-->
-<!--&lt;!&ndash;    </ng-container>&ndash;&gt;-->
-<!--&lt;!&ndash;    <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>&ndash;&gt;-->
-<!--&lt;!&ndash;    <tr *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight':  row.status === 'ENABLED' }"&ndash;&gt;-->
-<!--&lt;!&ndash;        mat-row&ndash;&gt;-->
-<!--&lt;!&ndash;    ></tr>&ndash;&gt;-->
-<!--&lt;!&ndash;  </table>&ndash;&gt;-->
+        </mat-menu>
+      </td>
+    </ng-container>
+    <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight':  row.status === 'ENABLED' }"
+        mat-row
+    ></tr>
+  </table>
 
-<!--&lt;!&ndash;  <mat-paginator  #paginator [pageSizeOptions]="[10, 20, 50]"&ndash;&gt;-->
-<!--&lt;!&ndash;                  showFirstLastButtons></mat-paginator>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <mat-paginator  #paginator [pageSizeOptions]="[10, 20, 50]"
+                  showFirstLastButtons></mat-paginator>
+</div>
 
-<!--<ng-template #emptyTable>-->
-<!--  No Videos found-->
-<!--</ng-template>-->
+<ng-template #emptyTable>
+  No Documents found
+</ng-template>
 
