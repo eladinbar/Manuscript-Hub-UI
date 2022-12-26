@@ -3,7 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  baseUrl: 'http://localhost:8080',
+  RESOURCE_UPLOAD_FILE: "/api/document/uploadInputDocument",
+  RESOURCE_GET_VIDEO_INFO_STATISTIC: "/api/video/getVideoInfo/",
+  RESOURCE_GET_VIDEO_BY_ID: "/api/video/getVideoById/",
+  RESOURCE_GET_All_DOCUMENTS: "/api/document/getAllDocuments/",
+  SOCKET:"/ads-socket",
 };
 
 /*
