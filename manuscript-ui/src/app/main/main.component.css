@@ -1,11 +1,11 @@
 .sidenav-content {
-  display: flex;
-  height: calc(100vh - 128px);
   align-items: flex-start;
   justify-content: flex-start;
-  padding-top: 2em;
-  padding-left: 2em;
-  padding-bottom: 2em;
+  padding: 2em;
+}
+
+.mat-drawer-container{
+  height: 100% !important;
 }
 
 .zindex2 {
@@ -71,4 +71,6 @@ md-icon {
   height: 40%;
   width: 40%;
 }
-
+mat-sidenav-content{
+  background-color: #E5E5E5;
+}

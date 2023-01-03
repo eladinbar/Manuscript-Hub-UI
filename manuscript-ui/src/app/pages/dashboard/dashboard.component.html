@@ -18,42 +18,23 @@
 
 <div *ngIf="dataSource; else emptyTable" class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" matSort matTableResponsive (matSortChange)="announceSortChange($event)">
-    <ng-container matColumnDef="Video_Key">
-      <th *matHeaderCellDef mat-header-cell>Title</th>
-      <td *matCellDef="let element" mat-cell> {{element.video_key}} </td>
-    </ng-container>
-    <ng-container matColumnDef="Status">
+    <ng-container matColumnDef="status">
       <th  mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Status">Status</th>
       <td *matCellDef="let element" mat-cell> {{textService.toTitleCase(element.status)}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fileName">
+      <th *matHeaderCellDef mat-header-cell>FileName</th>
+      <td *matCellDef="let element" mat-cell> {{element.fileName}} </td>
     </ng-container>
     <ng-container [matColumnDef]="time">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time">Created Time</th>
       <td *matCellDef="let element" mat-cell> {{dateService.toFormattedDate(element.createdTime)}} </td>
     </ng-container>
-    <ng-container matColumnDef="Step">
-      <th *matHeaderCellDef mat-header-cell>Step</th>
-      <td *matCellDef="let element" mat-cell> {{element.step}} </td>
-    </ng-container>
-    <ng-container matColumnDef="Step_Progress">
-      <th *matHeaderCellDef mat-header-cell>Step Progress</th>
-      <td *matCellDef="let element" mat-cell>
-
-        <mat-progress-bar mode="determinate" value= "{{element.step_progress}}"></mat-progress-bar>
-
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="Description">
-      <th *matHeaderCellDef mat-header-cell>Description</th>
-      <td *matCellDef="let element" mat-cell> {{element.description}} </td>
-    </ng-container>
-    <ng-container matColumnDef="Progress">
-      <th *matHeaderCellDef mat-header-cell>Progress</th>
-      <td *matCellDef="let element" mat-cell> {{element.progress}} </td>
-    </ng-container>
     <ng-container matColumnDef="Actions">
       <th *matHeaderCellDef mat-header-cell> Actions</th>
       <td *matCellDef="let element" class="action-link" mat-cell>
-        <button (click)="clickedRow(element)" [disabled]="element.status !== 'ready' && element.status !== 'finished'"
+        <button (click)="clickedRow(element)"
                 color="primary" mat-raised-button>Open
         </button>
 

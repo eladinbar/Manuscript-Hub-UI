@@ -32,12 +32,14 @@ import {MaterialModule} from "./shared/material/material.module";
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatSortModule} from "@angular/material/sort";
+import { DocumentDetailsComponent } from './pages/document-details/document-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
     DashboardComponent,
+    DocumentDetailsComponent,
   ],
   imports: [
     BrowserModule,

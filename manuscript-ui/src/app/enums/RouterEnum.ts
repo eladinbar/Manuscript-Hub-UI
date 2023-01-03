@@ -1,6 +1,6 @@
 export enum RouterEnum {
     Dashboard = 'Dashboard',
-    VideoDetail = 'VideoDetail',
+    DocumentDetail = 'DocumentDetail',
     PageNotFound = 'PageNotFound',
-    VideoId = 'VideoId',
+    DocumentId = 'documentId',
 }

@@ -5,9 +5,8 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatSort, Sort} from "@angular/material/sort";
 import {Subscription} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
-import {VideoTableEnum} from "../../enums/VideoTableEnum";
-import {VideoInfoTableModel} from "../../models/VideoInfoTableModel";
-import {InfoVideoModel} from "../../models/VideoInfoModel";
+import {DocumentTableEnum} from "../../enums/DocumentTableEnum";
+import {DocumentInfoTableModel} from "../../models/DocumentInfoTableModel";
 import {StatusEnum} from "../../enums/StatusEnum";
 import {VideoUploadEnum} from "../../enums/VideoUploadEnum";
 import {DocumentService} from "../../services/document.service";
@@ -24,11 +23,9 @@ import {RouterEnum} from "../../enums/RouterEnum";
 })
 export class DashboardComponent implements OnInit {
 
-  VideoInfoTableModels: Array<VideoInfoTableModel> = [];
-  videoInfoVideos: Array<InfoVideoModel> = [];
-  displayedColumns: string[] = [VideoTableEnum.Video_Key, VideoTableEnum.Status,
-    VideoTableEnum.CreatedTime, VideoTableEnum.Step, VideoTableEnum.Step_Progress, VideoTableEnum.Description, VideoTableEnum.Progress, VideoTableEnum.Actions];
-  dataSource: MatTableDataSource<VideoInfoTableModel> = new MatTableDataSource<VideoInfoTableModel>([]);
+  VideoInfoTableModels: Array<DocumentInfoTableModel> = [];
+  displayedColumns: string[] = [DocumentTableEnum.Status, DocumentTableEnum.CreatedTime, DocumentTableEnum.FileName, DocumentTableEnum.Actions];
+  dataSource: MatTableDataSource<DocumentInfoTableModel> = new MatTableDataSource<DocumentInfoTableModel>([]);
   isStatusFinished = false;
   status = StatusEnum;
   private subscribe?: Subscription;
@@ -114,9 +111,10 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  clickedRow(row: VideoInfoTableModel) {
-    if (row == null || row.id == undefined) return;
-    this.router.navigate(['/' + RouterEnum.VideoDetail, row.video_id]);
+  clickedRow(row: DocumentInfoTableModel) {
+    console.log(row)
+    if (row == null || row.documentId == undefined) return;
+    this.router.navigate(['/' + RouterEnum.DocumentDetail, row.documentId]);
   }
 
 
