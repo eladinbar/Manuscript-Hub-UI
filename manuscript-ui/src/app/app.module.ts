@@ -29,13 +29,17 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {MatDialogModule} from "@angular/material/dialog";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MaterialModule} from "./shared/material/material.module";
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatSortModule} from "@angular/material/sort";
+import { DocumentDetailsComponent } from './pages/document-details/document-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
     DashboardComponent,
+    DocumentDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,6 +70,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     MatButtonToggleModule,
     MatGridListModule,
     MatDialogModule,
+    MatProgressBarModule,
+    MatSortModule,
 
 
   ],
