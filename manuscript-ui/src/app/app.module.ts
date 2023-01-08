@@ -33,6 +33,13 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatSortModule} from "@angular/material/sort";
 import { DocumentDetailsComponent } from './pages/document-details/document-details.component';
+import { LoginComponent } from './account/login/login.component';
+import {AngularFireModule} from "@angular/fire/compat";
+import {environment} from "../environments/environment";
+import {AngularFireAuthModule} from "@angular/fire/compat/auth";
+import {AngularFireStorageModule} from "@angular/fire/compat/storage";
+import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
+import {AngularFireDatabaseModule} from "@angular/fire/compat/database";
 
 @NgModule({
   declarations: [
@@ -40,6 +47,7 @@ import { DocumentDetailsComponent } from './pages/document-details/document-deta
     MainComponent,
     DashboardComponent,
     DocumentDetailsComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,7 +80,11 @@ import { DocumentDetailsComponent } from './pages/document-details/document-deta
     MatDialogModule,
     MatProgressBarModule,
     MatSortModule,
-
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+    AngularFireDatabaseModule,
 
   ],
   providers: [],
