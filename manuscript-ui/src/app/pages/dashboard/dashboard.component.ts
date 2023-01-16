@@ -104,11 +104,11 @@ export class DashboardComponent implements OnInit {
 
 
   connectToSocket() {
-    this.stompClient = this.socketService.initSocket()
-    if (this.stompClient != null) {
-      // @ts-ignore
-      this.socketService.subscription(this.stompClient, "/topic/videoList", this.onNotify)
-    }
+    // this.stompClient = this.socketService.initSocket()
+    // if (this.stompClient != null) {
+    //   // @ts-ignore
+    //   this.socketService.subscription(this.stompClient, "/topic/videoList", this.onNotify)
+    // }
   }
 
   clickedRow(row: DocumentInfoTableModel) {
@@ -159,9 +159,9 @@ export class DashboardComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscribe?.unsubscribe();
-    if (this.stompClient != null) {
-      this.stompClient.disconnect();
-    }
+    // if (this.stompClient != null) {
+    //   this.stompClient.disconnect();
+    // }
   }
 
   onNotify = (msg: any) => {

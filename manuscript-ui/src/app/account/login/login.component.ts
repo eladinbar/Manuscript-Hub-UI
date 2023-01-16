@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
               .subscribe({
                 next: result => {
                   if (result.status) {
-                    result.jwtToken = token;
+                    result.token = token;
                     this.updateLocalStorage(result, user);
                   } else {
                     Swal.fire('Credentials Error'
