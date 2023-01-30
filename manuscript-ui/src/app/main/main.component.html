@@ -12,7 +12,7 @@
                class="sidenav"
                mode="side">
     <mat-nav-list>
-      <mat-list-item  [routerLink]="'Dashboard'" routerLinkActive="active">
+      <mat-list-item  [routerLink]="'/Dashboard'" routerLinkActive="active">
         <mat-icon  class="text-white"mat-list-icon>dashboard</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
@@ -21,6 +21,25 @@
       </mat-list-item>
     </mat-nav-list>
 
+    <mat-nav-list>
+      <mat-list-item  [routerLink]="'/Dashboard'" routerLinkActive="active">
+        <mat-icon  class="text-white"mat-list-icon>Models</mat-icon>
+        <div fxFlex="10"></div>
+        <div *ngIf="sidenavWidth > 6" class="sidenav-item">
+          <div class="menu-item">Models</div>
+        </div>
+      </mat-list-item>
+    </mat-nav-list>
+
+    <mat-nav-list>
+      <mat-list-item  (click)="signout()" routerLinkActive="active">
+        <mat-icon  class="material-icons text-white" mat-list-icon>logout</mat-icon>
+        <div fxFlex="10"></div>
+        <div *ngIf="sidenavWidth > 6" class="sidenav-item">
+          <div class="menu-item">Logout</div>
+        </div>
+      </mat-list-item>
+    </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content  class="sidenav-content">
 
@@ -28,3 +47,4 @@
 
   </mat-sidenav-content>
 </mat-sidenav-container>
+

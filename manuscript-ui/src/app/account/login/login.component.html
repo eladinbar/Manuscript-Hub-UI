@@ -1,18 +1,61 @@
-<div class="card text-center w-50 el-center-m mt-5 mb-5">
-  <div class="card-header bg-light">
-    <h2>Sign in to Manuscript</h2>
-    <h4 class="color-light">Sign in using social networking credentials</h4>
-  </div>
-  <div class="card-body">
-    <span class="btn primary-button" (click)="loginAction()">
-    <img
-      style="color: white"
-      src="assets/google-icon.png"
-      alt="sign in with google account"
-      [width]="30"
-      [height]="30"
-    />
-         Sign in With Google
-    </span>
+<div class="base-div-container">
+  <div class="container">
+    <div class="first-title center">
+      <div class="center bottom-padding-2">
+        <img src="/assets/manuscript-logo.jpg" height="500" width="1920" alt="logo-manuscript" id="manuscript">
+      </div>
+      <div class="bold">
+        כניסה למערכת
+      </div>
+    </div>
+    <div class="bottom-padding center">
+      ברוכים הבאים
+      <br>
+      נא להזין את כתובת הדואר האלקטרוני שלכם ואת הסיסמא.
+    </div>
+
+    <div class="form-container">
+
+      <form class="center" [formGroup]="formGroup">
+        <div>
+          <div class="center bottom-padding">
+            <input class="inputs" type="text" placeholder='שם משתמש/דוא"ל' formControlName="username">
+          </div>
+          <div class="center bottom-padding  input-icons">
+            <div class="input-icons">
+                           <span class="p-viewer">
+                             <i class="fa fa-eye icon" (click)="showPassword()"></i></span>
+              <input class="input-field inputs" type="{{inputType}}" placeholder='סיסמא' formControlName="password">
+            </div>
+          </div>
+
+          <!--          </div>-->
+          <div class="center bottom-padding ">
+            <input class="input-button" type="button" value="כניסה" (click)="login(formGroup.value)">
+          </div>
+
+          <div class="center  divider">
+
+            <mat-divider></mat-divider>
+          </div>
+
+
+
+          <div class="center bottom-padding ">
+            <button type="button" class="input-button-provider login-with-google-btn"  (click)="googleLoginAction()">
+              כניסה עם חשבון גוגל
+            </button>
+          </div>
+          <div class="center bottom-padding ">
+            <button type="button" class="input-button-provider">
+              הרשמה
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
+
+
+

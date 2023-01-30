@@ -13,12 +13,16 @@ export class AccountService {
   constructor(private http: HttpClient) { }
 
   registerNewUser(email: string, name: string, uid: string, token: string): Observable<any> {
+
     const data = {
       email,
       name,
       uid,
       newUser: true
     };
+    console.log("email :" , email);
+    console.log("name :" , name);
+    console.log("uid :" , uid);
     return this.http.post(`${environment.baseUrl}/${this.controller}/register`, data, {
       headers: {
         Authorization: 'Bearer ' + token,
@@ -26,9 +30,11 @@ export class AccountService {
       }
     });
   }
-  authenticateUser(uid: string, token: string): Observable<any> {
+  authenticateUser(uid: string, email:string ,name:string, token: string): Observable<any> {
     const data = {
-      uid
+      uid,
+      email,
+      name
     };
     return this.http.post(`${environment.baseUrl}/${this.controller}/register`, data, {
       headers: {

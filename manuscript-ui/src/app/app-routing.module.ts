@@ -4,16 +4,24 @@ import {DashboardComponent} from "./pages/dashboard/dashboard.component";
 import {RouterEnum} from "./enums/RouterEnum";
 import {DocumentDetailsComponent} from "./pages/document-details/document-details.component";
 import {LoginComponent} from "./account/login/login.component";
+import {MainComponent} from "./main/main.component";
+import {AuthGuard} from "./shared/guards/auth.guard";
 
 const routes: Routes = [
-  {path:'login', component:LoginComponent},
+  {
+    path: '', component: MainComponent,canActivate: [AuthGuard],
+    children: [
+      {path: RouterEnum.Dashboard, component: DashboardComponent}
+    ]
+  },
+  {path: 'login', component: LoginComponent},
 
-  {path: RouterEnum.Dashboard, component: DashboardComponent},
+  {path: RouterEnum.Home, component: MainComponent},
   {
     path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId,
     component: DocumentDetailsComponent,
   },
-  {path: '', redirectTo: '/' + RouterEnum.Dashboard, pathMatch: 'full'}
+  {path: '**', component: MainComponent},
 
 ];
 
