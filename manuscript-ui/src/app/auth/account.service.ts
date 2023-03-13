@@ -36,6 +36,7 @@ export class AccountService {
       email,
       name
     };
+    console.log("data " , data);
     return this.http.post(`${environment.baseUrl}/${this.controller}/register`, data, {
       headers: {
         Authorization: 'Bearer ' + token,

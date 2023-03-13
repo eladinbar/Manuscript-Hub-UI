@@ -80,6 +80,7 @@ export class LoginComponent{
             .authenticateUser(user.uid, user.email, user.displayName, token)
             .subscribe({
               next: value => {
+                console.log(value)
                 if (value.status) {
                   value.token = token;
                   this.authService.updateLocalStorage(value, user);
