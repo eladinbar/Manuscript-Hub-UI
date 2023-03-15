@@ -68,6 +68,7 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
+        console.log(result)
         this.SetUserData(result.user).then();
         this.updateLocalStorage(result, result.user);
         return result;

@@ -55,7 +55,7 @@ export class LoginComponent{
         console.log(token);
         if (res.additionalUserInfo.isNewUser) {
           this.accountService
-            .registerNewUser(res.user.email, res.user.displayName, res.user.uid, token)
+            .authenticateUser( res.user.uid,res.user.email,   res.user.displayName ,token)
             .subscribe({
               next: result => {
                 if (result.status) {

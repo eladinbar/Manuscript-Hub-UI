@@ -39,6 +39,7 @@ import {environment} from "../environments/environment";
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import {HttpErrorInterceptorService} from "./interceptors/http-error-interceptor.interceptor";
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import {AngularFireAuthModule} from "@angular/fire/compat/auth";
     DashboardComponent,
     DocumentDetailsComponent,
     LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

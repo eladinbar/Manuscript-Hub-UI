@@ -31,6 +31,9 @@ export class AccountService {
     });
   }
   authenticateUser(uid: string, email:string ,name:string, token: string): Observable<any> {
+    if(!name){
+      name = email;
+    }
     const data = {
       uid,
       email,
