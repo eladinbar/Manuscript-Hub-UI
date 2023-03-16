@@ -17,8 +17,8 @@ export class DocumentService {
               private restErrorsHandlerService: RestErrorsHandlerService,
               private townCrier: TownCrierService) {
   }
-  getAllDocuments() {
-    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_All_DOCUMENTS}`))
+  getAllDocumentsByUid(uid: string) {
+    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_All_DOCUMENTS_BY_UID}${uid}`))
       .pipe(
         map((res: any) => {
           console.log(res)
@@ -47,12 +47,12 @@ export class DocumentService {
   }
 
 
-  uploadDocument(data: FormData) {
+  uploadDocument(data: FormData, uid: string) {
 
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
 
-    return from( this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_FILE}`,data,{ headers: headers } ))
+    return from( this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_FILE}${uid}`,data,{ headers: headers } ))
       .pipe(
         map((res: any) => {
           this.townCrier.info("Wait till new document processed..")

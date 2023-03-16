@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit {
   isRetry = false;
   private stompClient: Client | null = null;
   sort: MatSort | null = null
-
+  uid?: string;
   isCancelled = false;
   @ViewChild('paginator') paginator?: MatPaginator;
 
@@ -57,7 +57,9 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.documentService.getAllDocuments().subscribe(res => {
+    this.uid = localStorage.getItem("uid")!;
+    console.log("this.uid : " , this.uid)
+    this.documentService.getAllDocumentsByUid(this.uid!).subscribe(res => {
       this.connectToSocket();
       this.setDataToTable(res);
       this.announceSortChange({active: this.time, direction: 'asc'})
@@ -134,7 +136,7 @@ export class DashboardComponent implements OnInit {
       formData.append('data', file);
       if (this.fileToUpload) {
         formData.append('file', this.fileToUpload);
-        this.subscribe = this.documentService.uploadDocument(formData)
+        this.subscribe = this.documentService.uploadDocument(formData, this.uid!)
           .subscribe(res => {
             this.setDataToTable(res);
             this.formGroup.reset();

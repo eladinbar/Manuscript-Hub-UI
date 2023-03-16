@@ -6,15 +6,19 @@ import {DocumentDetailsComponent} from "./pages/document-details/document-detail
 import {LoginComponent} from "./account/login/login.component";
 import {MainComponent} from "./main/main.component";
 import {AuthGuard} from "./shared/guards/auth.guard";
+import {RegisterComponent} from "./register/register.component";
 
 const routes: Routes = [
   {
-    path: '', component: MainComponent,canActivate: [AuthGuard],
+    path: '', component: MainComponent, canActivate: [AuthGuard],
+
     children: [
       {path: RouterEnum.Dashboard, component: DashboardComponent}
     ]
   },
   {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegisterComponent},
+
 
   {path: RouterEnum.Home, component: MainComponent},
   {

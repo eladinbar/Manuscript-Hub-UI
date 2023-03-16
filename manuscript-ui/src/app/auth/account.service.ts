@@ -12,23 +12,18 @@ export class AccountService {
   private roleReuslt$: Observable<any> | undefined;
   constructor(private http: HttpClient) { }
 
-  registerNewUser(email: string, name: string, uid: string, token: string): Observable<any> {
+  registerNewUser(email: string, uid: string, name: string, phoneNumber: string, role: string): Observable<any> {
 
     const data = {
       email,
-      name,
       uid,
-      newUser: true
+      name,
+      phoneNumber,
+      role
     };
-    console.log("email :" , email);
-    console.log("name :" , name);
-    console.log("uid :" , uid);
-    return this.http.post(`${environment.baseUrl}/${this.controller}/register`, data, {
-      headers: {
-        Authorization: 'Bearer ' + token,
-        skip: 'true'
-      }
-    });
+
+    return this.http.post(`${environment.baseUrl}/${this.controller}/registerNew`, data);
+
   }
   authenticateUser(uid: string, email:string ,name:string, token: string): Observable<any> {
     if(!name){
@@ -40,7 +35,7 @@ export class AccountService {
       name
     };
     console.log("data " , data);
-    return this.http.post(`${environment.baseUrl}/${this.controller}/register`, data, {
+    return this.http.post(`${environment.baseUrl}/${this.controller}/login`, data, {
       headers: {
         Authorization: 'Bearer ' + token,
         skip: 'true'

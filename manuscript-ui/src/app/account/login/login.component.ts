@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthService} from '../../auth/auth.service';
 import {AccountService} from '../../auth/account.service';
 import Swal from 'sweetalert2';
@@ -10,11 +10,10 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent{
+export class LoginComponent {
   public formGroup: FormGroup;
   public inputType: string = "password";
   hide = true;
-
 
 
   constructor(private authService: AuthService, private accountService: AccountService, public router: Router,
@@ -30,8 +29,8 @@ export class LoginComponent{
   }
 
   login(value: any) {
-    this.authService.signIn(value.username, value.password).then(res =>{
-      if(res){
+    this.authService.signIn(value.username, value.password).then(res => {
+      if (res) {
         this.authUser(res);
       }
     })
@@ -42,24 +41,25 @@ export class LoginComponent{
   }
 
 
-  error=(err : any) => {
+  error = (err: any) => {
     Swal.fire('Canceled', 'Operation was Canceled', 'error');
     this.router.navigate(['/login']);
   }
 
-  authUser=(res : any) => {
+  authUser = (res: any) => {
     const user = res.user;
     res.user.getIdToken(false)
       .then((token: string) => {
-        console.log("Email : "  ,res.user.email);
+        console.log("Email : ", res.user.email);
         console.log(token);
         if (res.additionalUserInfo.isNewUser) {
           this.accountService
-            .authenticateUser( res.user.uid,res.user.email,   res.user.displayName ,token)
+            .authenticateUser(res.user.uid, res.user.email, res.user.displayName, token)
             .subscribe({
               next: result => {
                 if (result.status) {
                   result.token = token;
+
                   this.authService.updateLocalStorage(result, user);
                   this.reload();
 
@@ -103,14 +103,12 @@ export class LoginComponent{
   }
 
 
-
   showPassword() {
-    if(this.inputType==='password'){
-      this.inputType='text';
+    if (this.inputType === 'password') {
+      this.inputType = 'text';
       this.hide = true;
-    }
-    else{
-      this.inputType='password'
+    } else {
+      this.inputType = 'password'
       this.hide = false;
 
     }
@@ -118,4 +116,8 @@ export class LoginComponent{
   }
 
 
+  redirectToRegister() {
+    this.router.navigate(['/register']);
+
+  }
 }
