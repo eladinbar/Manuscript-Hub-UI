@@ -52,7 +52,7 @@ export class DocumentService {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
 
-    return from( this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_FILE}${uid}`,data,{ headers: headers } ))
+    return from( this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_FILE}/${uid}`,data,{ headers: headers } ))
       .pipe(
         map((res: any) => {
           this.townCrier.info("Wait till new document processed..")
