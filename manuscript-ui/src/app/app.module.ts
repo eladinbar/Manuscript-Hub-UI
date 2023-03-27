@@ -40,6 +40,7 @@ import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import {HttpErrorInterceptorService} from "./interceptors/http-error-interceptor.interceptor";
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import { RegisterComponent } from './register/register.component';
+import { DialogComponent } from './dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { RegisterComponent } from './register/register.component';
     DocumentDetailsComponent,
     LoginComponent,
     RegisterComponent,
+    DialogComponent,
   ],
     imports: [
         BrowserModule,

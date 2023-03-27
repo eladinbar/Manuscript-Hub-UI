@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Enter Text</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <input matInput placeholder="Text" [(ngModel)]="text">
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="text" (click)="onOkClick()">OK</button>
+  <button mat-button (click)="onCancelClick()">Cancel</button>
+</mat-dialog-actions>
