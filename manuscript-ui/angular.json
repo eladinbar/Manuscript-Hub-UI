@@ -6,10 +6,6 @@
     "manuscript-ui": {
       "i18n": {
         "sourceLocale": "en-US",
-        "locales": {
-          "he": "src/locale/messages.he.xlf",
-          "ar": "src/locale/messages.ar.xlf"
-        }
       },
       "projectType": "application",
       "schematics": {},
@@ -20,7 +16,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "localize": ["he"],
             "outputPath": "dist/manuscript-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
