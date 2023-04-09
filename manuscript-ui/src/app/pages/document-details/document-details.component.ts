@@ -2,32 +2,34 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {DocumentService} from "../../services/document.service";
 import {ActivatedRoute} from "@angular/router";
 import {DomSanitizer} from "@angular/platform-browser";
-import {ImageAnnotationsModel} from "../../models/ImageAnnotationsModel";
+import {AnnotationModel} from "../../models/AnnotationModel";
 import {RouterEnum} from "../../enums/RouterEnum";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogComponent} from "../../dialog/dialog.component";
-import {AnnotationsModel} from "../../models/AnnotationsModel";
+import {AnnotationCoordinatesModel} from "../../models/AnnotationCoordinatesModel";
+import {AnnotationService} from "../../services/annotation.service";
 
 @Component({
   selector: 'app-document-details',
   templateUrl: './document-details.component.html',
   styleUrls: ['./document-details.component.css']
 })
+
 export class DocumentDetailsComponent implements OnInit {
 
-  documentId?: string;
+  documentId!: string;
   image?: any;
-  imageAnnotationsList: ImageAnnotationsModel[] = [];
+  imageAnnotationsList: AnnotationModel[] = [];
   sanitizedUrl?: any;
-  uid?: string;
-  value?: string;
+  uid!: string;
+  value!: string;
   @ViewChild('canvas', {static: true}) canvas?: ElementRef;
   img = new Image();
-  annotations: AnnotationsModel[] = [];
+  annotations: AnnotationCoordinatesModel[] = [];
   ctx?: CanvasRenderingContext2D;
 
-  constructor(private documentService: DocumentService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private dialog: MatDialog) {
-  }
+  constructor(private documentService: DocumentService, private annotationService: AnnotationService,
+              private route: ActivatedRoute, private sanitizer: DomSanitizer, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     const routeParams = this.route.snapshot.paramMap;
@@ -45,15 +47,12 @@ export class DocumentDetailsComponent implements OnInit {
   }
 
   loadImage() {
-
     this.img.onload = () => {
       this.ctx = this.canvas?.nativeElement.getContext('2d');
       this.ctx?.drawImage(this.img, 0, 0);
       this.addEventListener();
-
     };
     this.img.src = this.image;
-
   }
 
   addEventListener() {
@@ -61,9 +60,10 @@ export class DocumentDetailsComponent implements OnInit {
     const ctx = canvas.getContext('2d');
     let startX: number;
     let startY: number;
-    let currentX: number
-    let currentY: number
-    let isDown = false;
+    let currentX: number;
+    let currentY: number;
+    let isDown: boolean = false;
+
     canvas.addEventListener('mousedown', (e: any) => {
       startX = e.offsetX;
       startY = e.offsetY;
@@ -84,63 +84,41 @@ export class DocumentDetailsComponent implements OnInit {
       ctx.strokeStyle = 'red';
       ctx.strokeRect(startX, startY, width, height);
     });
+
     canvas.addEventListener('mouseup', () => {
       isDown = false;
-      const annotation = {
+      const annotationCoordinates: AnnotationCoordinatesModel = {
         startX: startX,
         startY: startY,
         endX: currentX,
         endY: currentY,
       }
-      this.openDialog(annotation);
-      // // Display text as a hint
-      // const { width, height } = canvas.getBoundingClientRect();
-      // const tooltipX = (startX + currentX) / 2;
-      // const tooltipY = (startY + currentY) / 2;
-      // const tooltipWidth = 200;
-      // const tooltipHeight = 50;
-      // const tooltipText = this.value;
-      // const tooltipPadding = 10;
-      // const tooltipXOffset = tooltipX + tooltipWidth + tooltipPadding > width ? -tooltipWidth - tooltipPadding : tooltipPadding;
-      // const tooltipYOffset = tooltipY + tooltipHeight + tooltipPadding > height ? -tooltipHeight - tooltipPadding : tooltipPadding;
-      // const tooltipBoxX = tooltipX + tooltipXOffset;
-      // const tooltipBoxY = tooltipY + tooltipYOffset;
-      // const tooltipBoxWidth = tooltipWidth;
-      // const tooltipBoxHeight = tooltipHeight;
-      //
-      // ctx.fillStyle = 'black';
-      // ctx.fillRect(tooltipBoxX, tooltipBoxY, tooltipBoxWidth, tooltipBoxHeight);
-      //
-      // ctx.font = '14px Arial';
-      // ctx.fillStyle = 'white';
-      // ctx.textAlign = 'center';
-      // ctx.fillText(tooltipText, tooltipX + tooltipXOffset + tooltipWidth / 2, tooltipY + tooltipYOffset + tooltipHeight / 2);
-      //
-
+      this.openDialog(annotationCoordinates);
     });
   }
 
-  pushDataToList(annotation: AnnotationsModel) {
-    if (!this.annotations.includes(annotation)) {
-      this.annotations.push(annotation);
-      this.imageAnnotationsList.push(
-        {
-          annotation: annotation,
-          uid: this.uid,
-          documentId: this.documentId,
-          value: this.value
-        }
-      )
-      this.drawAnnotations(this.imageAnnotationsList);
+  pushDataToList(annotationCoordinates: AnnotationCoordinatesModel) {
+    if (!this.annotations.includes(annotationCoordinates)) {
+      const annotation: AnnotationModel = {
+        annotationCoordinates: annotationCoordinates,
+        uid: this.uid,
+        documentId: this.documentId,
+        value: this.value
+      }
+
+      this.annotationService.addAnnotation(annotation);
+
+      this.annotations.push(annotationCoordinates);
+      this.imageAnnotationsList.push(annotation);
+      this.drawAnnotations();
     }
 
   }
 
-
-  drawAnnotations(annotations: any[]) {
-    for (let i = 0; i < annotations.length; i++) {
-      const value = annotations[i].value;
-      const annotation = annotations[i].annotation;
+  drawAnnotations() {
+    for (let i = 0; i < this.imageAnnotationsList.length; i++) {
+      const value = this.imageAnnotationsList[i].value;
+      const annotation: AnnotationCoordinatesModel = this.imageAnnotationsList[i].annotationCoordinates;
       const {startX, startY, endX, endY} = annotation;
       const width = endX - startX;
       const height = endY - startY;
@@ -155,7 +133,6 @@ export class DocumentDetailsComponent implements OnInit {
         this.ctx.textAlign = 'center';
         this.ctx.fillText(text, textX, textY);
       }
-
     }
   }
 
@@ -163,7 +140,7 @@ export class DocumentDetailsComponent implements OnInit {
     console.log(this.imageAnnotationsList);
   }
 
-  openDialog(annotation: AnnotationsModel) {
+  openDialog(annotation: AnnotationCoordinatesModel) {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '250px',
       data: {}
@@ -175,12 +152,10 @@ export class DocumentDetailsComponent implements OnInit {
       this.value = result;
       if (result) {
         this.pushDataToList(annotation);
-      }else{
-        this.drawAnnotations(this.annotations);
+      } else {
+        this.drawAnnotations();
       }
 
     });
   }
-
-
 }
