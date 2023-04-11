@@ -4,6 +4,9 @@
   "newProjectRoot": "projects",
   "projects": {
     "manuscript-ui": {
+      "i18n": {
+        "sourceLocale": "en-US",
+      },
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -99,5 +102,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

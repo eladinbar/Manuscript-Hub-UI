@@ -2,14 +2,12 @@
   <div class="container">
     <div class="first-title center">
 
-      <div class="bold">
-        יצירת חשבון למערכת מאנוסריפט
+      <div class="bold" i18n>
+        Create an account for the Manuscript system
       </div>
     </div>
-    <div class="bottom-padding center">
-      ברוכים הבאים
-      <br>
-      נא ליצור חשבון.
+    <div class="bottom-padding center" i18n>
+      Start using Manuscripts to catalog your work and collaborate on it with your colleagues
     </div>
 
     <div class="form-container">
@@ -17,20 +15,20 @@
       <form class="center" [formGroup]="formGroup">
         <div>
           <div class="center bottom-padding">
-            <input class="inputs" type="text" placeholder='שם' formControlName="name">
+            <input class="inputs" type="text" i18n placeholder='Full Name' formControlName="name">
           </div>
           <div class="center bottom-padding">
-            <input class="inputs" type="text" placeholder='דוא"ל' formControlName="email">
+            <input class="inputs" type="text" i18n placeholder='E-mail Address' formControlName="email">
           </div>
           <div class="center bottom-padding  input-icons">
             <div class="input-icons">
                            <span class="p-viewer">
                              <i class="fa fa-eye icon" (click)="showPassword()"></i></span>
-              <input class="input-field inputs" type="{{inputType}}" placeholder='סיסמא' formControlName="password">
+              <input class="input-field inputs" type="{{inputType}}" i18n placeholder='Password' formControlName="password">
             </div>
           </div>
           <div class="center bottom-padding">
-            <input class="inputs" type="text" placeholder='טלפון' formControlName="phoneNumber">
+            <input class="inputs" type="text" i18n placeholder='Phone Number' formControlName="phoneNumber">
           </div>
           <div class="center bottom-padding">
             <select class="inputs" name="role" formControlName="role">
@@ -38,7 +36,7 @@
             </select></div>
 
           <div class="center bottom-padding ">
-            <input class="input-button" type="button" value="יצר" (click)="register(formGroup.value)">
+            <input class="input-button" type="button" i18n value="Create Account" (click)="register(formGroup.value)">
           </div>
         </div>
       </form>
