@@ -159,10 +159,6 @@ export class DocumentDetailsComponent implements OnInit {
     }
   }
 
-  showAnnotations() {
-    console.log(this.imageAnnotationsList);
-  }
-
   openDialog(annotation: AnnotationCoordinatesModel, algorithmId: string) {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '250px',
