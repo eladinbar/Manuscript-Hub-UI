@@ -16,43 +16,62 @@ import {AnnotationService} from "../../services/annotation.service";
 })
 
 export class DocumentDetailsComponent implements OnInit {
+  NIL: string = "00000000-0000-0000-0000-000000000000";
 
-  documentId!: string;
-  image?: any;
-  imageAnnotationsList: AnnotationModel[] = [];
-  sanitizedUrl?: any;
   uid!: string;
-  value!: string;
-  @ViewChild('canvas', {static: true}) canvas?: ElementRef;
-  img = new Image();
+  imageId!: string;
+
   annotations: AnnotationCoordinatesModel[] = [];
+  value!: string;
+  imageAnnotationsList: AnnotationModel[] = [];
+
+  image?: any;
+  img= new Image();
+
+  sanitizedUrl?: any;
+  @ViewChild('canvas', {static: true}) canvas?: ElementRef;
   ctx?: CanvasRenderingContext2D;
 
   constructor(private documentService: DocumentService, private annotationService: AnnotationService,
               private route: ActivatedRoute, private sanitizer: DomSanitizer, private dialog: MatDialog) {}
 
+  // ngOnInit(): void {
+  //   const routeParams = this.route.snapshot.paramMap;
+  //   this.imageId = routeParams.get(RouterEnum.DocumentId) as string;
+  //
+  //   // this.documentService.getDocumentById(this.imageId).subscribe(res => {
+  //   //
+  //   //   this.sanitizedUrl = URL.createObjectURL(res)
+  //   //   this.image = this.sanitizer.bypassSecurityTrustUrl(this.sanitizedUrl);
+  //   this.uid = localStorage.getItem("uid")!;
+  //   this.image = "assets/hebrew-alphabet.jpg";
+  //   this.loadImage();
+  //
+  //   // });
+  // }
+
   ngOnInit(): void {
     const routeParams = this.route.snapshot.paramMap;
-    this.documentId = routeParams.get(RouterEnum.DocumentId) as string;
-    //
-    // this.documentService.getDocumentById(this.documentId).subscribe(res => {
-    //
-    //   this.sanitizedUrl = URL.createObjectURL(res)
-    //   this.image = this.sanitizer.bypassSecurityTrustUrl(this.sanitizedUrl);
-    this.uid = localStorage.getItem("uid")!;
-    this.image = "assets/hebrew-alphabet.jpg";
-    this.loadImage();
+    this.imageId = routeParams.get(RouterEnum.DocumentId) as string;
 
-    // });
+    this.documentService.getDocumentById(this.imageId).subscribe(res => {
+      const url = URL.createObjectURL(res);
+      this.loadImage();
+      this.img.src = url;
+      this.uid = localStorage.getItem("uid")!;
+    });
   }
 
   loadImage() {
-    this.img.onload = () => {
-      this.ctx = this.canvas?.nativeElement.getContext('2d');
-      this.ctx?.drawImage(this.img, 0, 0);
-      this.addEventListener();
-    };
-    this.img.src = this.image;
+      this.img.onload = () => {
+        const canvas = this.canvas?.nativeElement;
+        this.ctx = canvas.getContext('2d');
+        canvas!.width = this.img.width;
+        canvas!.height = this.img.height;
+        // this.ctx?.drawImage(this.img, 0, 0, this.img.width, this.img.height, 0, 0, this.img.width, this.img.height);
+        this.ctx?.drawImage(this.img, 0, 0, this.img.width, this.img.height, 0, 0, canvas!.width, canvas!.height);
+        this.addEventListener();
+      };
   }
 
   addEventListener() {
@@ -80,7 +99,8 @@ export class DocumentDetailsComponent implements OnInit {
       const width = currentX - startX;
       const height = currentY - startY;
       // ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(this.img, 0, 0);
+      // this.ctx?.drawImage(this.img, 0, 0, this.img.width, this.img.height, 0, 0, this.img.width, this.img.height);
+      this.ctx?.drawImage(this.img, 0, 0, this.img.width, this.img.height, 0, 0, canvas!.width, canvas!.height);
       ctx.strokeStyle = 'red';
       ctx.strokeRect(startX, startY, width, height);
     });
@@ -93,17 +113,21 @@ export class DocumentDetailsComponent implements OnInit {
         endX: currentX,
         endY: currentY,
       }
-      this.openDialog(annotationCoordinates);
+      this.openDialog(annotationCoordinates, this.NIL);
     });
   }
 
-  pushDataToList(annotationCoordinates: AnnotationCoordinatesModel) {
+  pushDataToList(annotationCoordinates: AnnotationCoordinatesModel, algorithmId: string) {
     if (!this.annotations.includes(annotationCoordinates)) {
       const annotation: AnnotationModel = {
-        annotationCoordinates: annotationCoordinates,
-        uid: this.uid,
-        documentId: this.documentId,
-        value: this.value
+        userId: this.uid,
+        imageId: this.imageId,
+        algorithmId: algorithmId,
+        content: this.value,
+        startX: annotationCoordinates.startX,
+        startY: annotationCoordinates.startY,
+        endX: annotationCoordinates.endX,
+        endY: annotationCoordinates.endY
       }
 
       this.annotationService.addAnnotation(annotation);
@@ -117,8 +141,8 @@ export class DocumentDetailsComponent implements OnInit {
 
   drawAnnotations() {
     for (let i = 0; i < this.imageAnnotationsList.length; i++) {
-      const value = this.imageAnnotationsList[i].value;
-      const annotation: AnnotationCoordinatesModel = this.imageAnnotationsList[i].annotationCoordinates;
+      const value = this.imageAnnotationsList[i].content;
+      const annotation: AnnotationCoordinatesModel = { startX: this.imageAnnotationsList[i].startX,  startY: this.imageAnnotationsList[i].startY, endX: this.imageAnnotationsList[i].endX, endY: this.imageAnnotationsList[i].endY };
       const {startX, startY, endX, endY} = annotation;
       const width = endX - startX;
       const height = endY - startY;
@@ -126,8 +150,8 @@ export class DocumentDetailsComponent implements OnInit {
         this.ctx?.strokeRect(startX, startY, width, height);
         // Add text
         const text = value;
-        const textX = startX / 1.5 + width / 2;
-        const textY = startY / 1.5 + height / 2;
+        const textX = startX + width;
+        const textY = startY + height;
         this.ctx.font = '14px Arial';
         this.ctx.fillStyle = 'red';
         this.ctx.textAlign = 'center';
@@ -140,7 +164,7 @@ export class DocumentDetailsComponent implements OnInit {
     console.log(this.imageAnnotationsList);
   }
 
-  openDialog(annotation: AnnotationCoordinatesModel) {
+  openDialog(annotation: AnnotationCoordinatesModel, algorithmId: string) {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '250px',
       data: {}
@@ -151,7 +175,7 @@ export class DocumentDetailsComponent implements OnInit {
 
       this.value = result;
       if (result) {
-        this.pushDataToList(annotation);
+        this.pushDataToList(annotation, algorithmId);
       } else {
         this.drawAnnotations();
       }

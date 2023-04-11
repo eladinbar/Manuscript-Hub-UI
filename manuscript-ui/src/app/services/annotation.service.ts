@@ -21,31 +21,21 @@ export class AnnotationService {
   }
 
   addAnnotation(annotation: AnnotationModel) {
-    console.log("Pushing data to list: " + annotation.value);
     return this.http.post(`${this.apiUrl}/addAnnotation`, annotation).subscribe({
       next: (res: any) => {
-        console.log('HTTP POST request successful:', res);
+        console.log('HTTP POST request successful: ', res);
       },
       error: (err: any) => {
-        console.error('HTTP POST request error:', err);
+        console.error('HTTP POST request error: ', err);
       },
     });
-  //     .pipe(
-  //       map((res: any) => {
-  //         this.townCrier.info("Wait until annotation is processed...");
-  //         return res;
-  //       }),
-  //       catchError(errorRes => {
-  //         this.townCrier.error(errorRes.error)
-  //         return this.restErrorsHandlerService.handleRequestError(errorRes);
-  //       })));
   }
 
   updateAnnotation() {
 
   }
 
-  getAllAnnotationByDocumentId() {
+  getAnnotationsByDocumentId(documentId: string, uid: string) {
 
   }
 
