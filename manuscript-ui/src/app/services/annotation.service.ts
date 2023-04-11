@@ -21,9 +21,9 @@ export class AnnotationService {
   }
 
   addAnnotation(annotation: AnnotationModel) {
-    return this.http.post(`${this.apiUrl}/addAnnotation`, annotation).subscribe({
-      next: (res: any) => {
-        console.log('HTTP POST request successful: ', res);
+    return this.http.post<AnnotationModel>(`${this.apiUrl}/addAnnotation`, annotation).subscribe({
+      next: (annotationModel: AnnotationModel) => {
+        console.log('HTTP POST request successful: ', annotationModel);
       },
       error: (err: any) => {
         console.error('HTTP POST request error: ', err);
@@ -35,8 +35,8 @@ export class AnnotationService {
 
   }
 
-  getAnnotationsByDocumentId(documentId: string, uid: string) {
-
+  getAnnotationsByDocumentId(documentId: string, uid: string): Observable<AnnotationModel[]> {
+    return this.http.get<AnnotationModel[]>(`${this.apiUrl}/getAnnotationsByDocumentId/${documentId}/${uid}`);
   }
 
   deleteAnnotation() {

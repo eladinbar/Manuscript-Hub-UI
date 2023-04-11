@@ -19,64 +19,64 @@ export class DocumentDetailsComponent implements OnInit {
   NIL: string = "00000000-0000-0000-0000-000000000000";
 
   uid!: string;
-  imageId!: string;
+  documentId!: string;
 
   annotations: AnnotationCoordinatesModel[] = [];
   value!: string;
   imageAnnotationsList: AnnotationModel[] = [];
 
-  image?: any;
-  img= new Image();
+  image= new Image();
 
-  sanitizedUrl?: any;
   @ViewChild('canvas', {static: true}) canvas?: ElementRef;
   ctx?: CanvasRenderingContext2D;
 
   constructor(private documentService: DocumentService, private annotationService: AnnotationService,
               private route: ActivatedRoute, private sanitizer: DomSanitizer, private dialog: MatDialog) {}
 
-  // ngOnInit(): void {
-  //   const routeParams = this.route.snapshot.paramMap;
-  //   this.imageId = routeParams.get(RouterEnum.DocumentId) as string;
-  //
-  //   // this.documentService.getDocumentById(this.imageId).subscribe(res => {
-  //   //
-  //   //   this.sanitizedUrl = URL.createObjectURL(res)
-  //   //   this.image = this.sanitizer.bypassSecurityTrustUrl(this.sanitizedUrl);
-  //   this.uid = localStorage.getItem("uid")!;
-  //   this.image = "assets/hebrew-alphabet.jpg";
-  //   this.loadImage();
-  //
-  //   // });
-  // }
-
   ngOnInit(): void {
     const routeParams = this.route.snapshot.paramMap;
-    this.imageId = routeParams.get(RouterEnum.DocumentId) as string;
+    this.uid = localStorage.getItem("uid")!;
+    this.documentId = routeParams.get(RouterEnum.DocumentId) as string;
 
-    this.documentService.getDocumentById(this.imageId).subscribe(res => {
+    this.getAllAnnotations();
+
+    this.getDocumentById();
+  }
+
+  getAllAnnotations() {
+    this.annotationService.getAnnotationsByDocumentId(this.documentId, this.uid).subscribe({
+      next: (annotationModels: AnnotationModel[]) => {
+        console.log('HTTP GET Annotation retrieval request successful: ', annotationModels);
+        this.imageAnnotationsList = annotationModels;
+        this.drawAnnotations();
+      },
+      error: (err: any) => {
+        console.error('HTTP GET Annotation retrieval request error: ', err);
+      },
+    });
+  }
+
+  getDocumentById() {
+    this.documentService.getDocumentById(this.documentId).subscribe(res => {
       const url = URL.createObjectURL(res);
       this.loadImage();
-      this.img.src = url;
-      this.uid = localStorage.getItem("uid")!;
+      this.image.src = url;
     });
   }
 
   loadImage() {
-      this.img.onload = () => {
+      this.image.onload = () => {
         const canvas = this.canvas?.nativeElement;
         this.ctx = canvas.getContext('2d');
-        canvas!.width = this.img.width;
-        canvas!.height = this.img.height;
-        // this.ctx?.drawImage(this.img, 0, 0, this.img.width, this.img.height, 0, 0, this.img.width, this.img.height);
-        this.ctx?.drawImage(this.img, 0, 0, this.img.width, this.img.height, 0, 0, canvas!.width, canvas!.height);
+        canvas!.width = this.image.width;
+        canvas!.height = this.image.height;
+        this.ctx?.drawImage(this.image, 0, 0, this.image.width, this.image.height, 0, 0, canvas!.width, canvas!.height);
         this.addEventListener();
       };
   }
 
   addEventListener() {
     const canvas = this.canvas?.nativeElement;
-    const ctx = canvas.getContext('2d');
     let startX: number;
     let startY: number;
     let currentX: number;
@@ -98,11 +98,9 @@ export class DocumentDetailsComponent implements OnInit {
       currentY = e.offsetY;
       const width = currentX - startX;
       const height = currentY - startY;
-      // ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // this.ctx?.drawImage(this.img, 0, 0, this.img.width, this.img.height, 0, 0, this.img.width, this.img.height);
-      this.ctx?.drawImage(this.img, 0, 0, this.img.width, this.img.height, 0, 0, canvas!.width, canvas!.height);
-      ctx.strokeStyle = 'red';
-      ctx.strokeRect(startX, startY, width, height);
+      this.ctx?.drawImage(this.image, 0, 0, this.image.width, this.image.height, 0, 0, canvas!.width, canvas!.height);
+      this.ctx!.strokeStyle = 'red';
+      this.ctx?.strokeRect(startX, startY, width, height);
     });
 
     canvas.addEventListener('mouseup', () => {
@@ -121,7 +119,7 @@ export class DocumentDetailsComponent implements OnInit {
     if (!this.annotations.includes(annotationCoordinates)) {
       const annotation: AnnotationModel = {
         userId: this.uid,
-        imageId: this.imageId,
+        imageId: this.documentId,
         algorithmId: algorithmId,
         content: this.value,
         startX: annotationCoordinates.startX,
@@ -147,11 +145,12 @@ export class DocumentDetailsComponent implements OnInit {
       const width = endX - startX;
       const height = endY - startY;
       if (this.ctx) {
+        this.ctx.strokeStyle = 'red';
         this.ctx?.strokeRect(startX, startY, width, height);
         // Add text
         const text = value;
-        const textX = startX + width;
-        const textY = startY + height;
+        const textX = startX + width / 2;
+        const textY = startY + height / 2 + 3.5;
         this.ctx.font = '14px Arial';
         this.ctx.fillStyle = 'red';
         this.ctx.textAlign = 'center';
