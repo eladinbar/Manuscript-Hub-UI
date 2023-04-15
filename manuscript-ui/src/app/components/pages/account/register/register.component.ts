@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AccountService} from "../auth/account.service";
+import {AccountService} from "../../../../services/auth/account.service";
 import {Router} from "@angular/router";
-import {TownCrierService} from "../services/town-crier.service";
+import {TownCrierService} from "../../../../services/town-crier.service";
 
 @Component({
   selector: 'app-register',

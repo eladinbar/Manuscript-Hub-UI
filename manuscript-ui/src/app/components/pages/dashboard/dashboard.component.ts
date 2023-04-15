@@ -5,16 +5,16 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatSort, Sort} from "@angular/material/sort";
 import {Subscription} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
-import {DocumentTableEnum} from "../../enums/DocumentTableEnum";
-import {DocumentInfoTableModel} from "../../models/DocumentInfoTableModel";
-import {StatusEnum} from "../../enums/StatusEnum";
-import {VideoUploadEnum} from "../../enums/VideoUploadEnum";
-import {DocumentService} from "../../services/document.service";
-import {SocketService} from "../../services/socket.service";
-import {TextService} from "../../services/text.service";
-import {DateService} from "../../services/date.service";
+import {DocumentTableEnum} from "../../../enums/DocumentTableEnum";
+import {DocumentInfoTableModel} from "../../../models/DocumentInfoTableModel";
+import {StatusEnum} from "../../../enums/StatusEnum";
+import {VideoUploadEnum} from "../../../enums/VideoUploadEnum";
+import {DocumentService} from "../../../services/document.service";
+import {SocketService} from "../../../services/socket.service";
+import {TextService} from "../../../services/text.service";
+import {DateService} from "../../../services/date.service";
 import {Client} from "@stomp/stompjs";
-import {RouterEnum} from "../../enums/RouterEnum";
+import {RouterEnum} from "../../../enums/RouterEnum";
 
 @Component({
   selector: 'app-dashboard',

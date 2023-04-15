@@ -21,26 +21,27 @@ export class AnnotationService {
   }
 
   addAnnotation(annotation: AnnotationModel) {
-    return this.http.post<AnnotationModel>(`${this.apiUrl}/addAnnotation`, annotation).subscribe({
-      next: (annotationModel: AnnotationModel) => {
-        console.log('HTTP POST request successful: ', annotationModel);
-      },
-      error: (err: any) => {
-        console.error('HTTP POST request error: ', err);
-      },
-    });
+    return this.http.post<AnnotationModel>(`${this.apiUrl}/addAnnotation`, annotation);
   }
 
-  updateAnnotation() {
-
+  //TODO update algorithm ID when updating annotation?
+  updateAnnotation(annotation: AnnotationModel) {
+    return this.http.patch<AnnotationModel>(`${this.apiUrl}/updateAnnotation`, annotation).subscribe({
+      next: (annotationModel: AnnotationModel) => {
+        console.log('HTTP PATCH request successful: ', annotationModel);
+      },
+      error: (err: any) => {
+        console.error('HTTP PATCH request error: ', err);
+      },
+    });
   }
 
   getAnnotationsByDocumentId(documentId: string, uid: string): Observable<AnnotationModel[]> {
     return this.http.get<AnnotationModel[]>(`${this.apiUrl}/getAnnotationsByDocumentId/${documentId}/${uid}`);
   }
 
-  deleteAnnotation() {
-
+  deleteAnnotation(annotationId: string, documentId: string, uid: string): Observable<AnnotationModel> {
+    return this.http.delete<AnnotationModel>(`${this.apiUrl}/deleteAnnotation/${annotationId}/${documentId}/${uid}`);
   }
 
   deleteAllAnnotationsByDocumentId() {

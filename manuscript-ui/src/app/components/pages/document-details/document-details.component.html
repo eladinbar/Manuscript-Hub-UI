@@ -1,0 +1,16 @@
+<!--<img [src]="image"/>-->
+
+<canvas #canvas>
+  <style>canvas {
+    float: left;
+    margin: 10px;
+  }</style>
+</canvas>
+
+<app-document-item
+  *ngFor="let annotation of annotations"
+  [annotation]="annotation"
+  (onSelectAnnotation)="selectAnnotation(annotation)"
+
+  (onDeleteAnnotation)="deleteAnnotation(annotation)"
+></app-document-item>

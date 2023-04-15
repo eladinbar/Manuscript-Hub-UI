@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {MainComponent} from './main/main.component';
+import {MainComponent} from './components/main/main.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatSidenavModule} from "@angular/material/sidenav";
@@ -29,18 +29,19 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {MatDialogModule} from "@angular/material/dialog";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MaterialModule} from "./shared/material/material.module";
-import {DashboardComponent} from './pages/dashboard/dashboard.component';
+import {DashboardComponent} from './components/pages/dashboard/dashboard.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatSortModule} from "@angular/material/sort";
-import {DocumentDetailsComponent} from './pages/document-details/document-details.component';
-import {LoginComponent} from './account/login/login.component';
+import {DocumentDetailsComponent} from './components/pages/document-details/document-details.component';
+import {LoginComponent} from './components/pages/account/login/login.component';
 import {AngularFireModule} from "@angular/fire/compat";
 import {environment} from "../environments/environment";
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import {HttpErrorInterceptorService} from "./interceptors/http-error-interceptor.interceptor";
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
-import { RegisterComponent } from './register/register.component';
-import { DialogComponent } from './dialog/dialog.component';
+import { RegisterComponent } from './components/pages/account/register/register.component';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { DocumentItemComponent } from './components/document-item/document-item.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { DialogComponent } from './dialog/dialog.component';
     LoginComponent,
     RegisterComponent,
     DialogComponent,
+    DocumentItemComponent,
   ],
     imports: [
         BrowserModule,
