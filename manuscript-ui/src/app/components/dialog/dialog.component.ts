@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Output} from '@angular/core';
-import {MatDialogRef} from "@angular/material/dialog";
+import {Component, EventEmitter, Inject, Output} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {AnnotationModel} from "../../models/AnnotationModel";
 
 @Component({
@@ -11,7 +11,10 @@ export class DialogComponent {
   text?: string;
   @Output() onDelete: EventEmitter<AnnotationModel> = new EventEmitter();
 
-  constructor(public dialogRef: MatDialogRef<DialogComponent>) {
+  constructor(public dialogRef: MatDialogRef<DialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+    if (data && data.text) {
+      this.text = data.text;
+    }
   }
 
   onOkClick(): void {

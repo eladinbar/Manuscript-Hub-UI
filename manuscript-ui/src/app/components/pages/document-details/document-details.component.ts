@@ -64,7 +64,7 @@ export class DocumentDetailsComponent implements OnInit {
     });
   }
 
-  selectAnnotation(annotation: AnnotationModel) {
+  selectAnnotation(annotation: AnnotationModel, oldStartX: number, oldStartY: number, oldEndX: number, oldEndY: number) {
     console.log("onSelect: " + annotation.content);
     this.ctx!.strokeStyle = 'blue';
     this.ctx?.strokeRect(annotation.startX, annotation.startY, annotation.endX - annotation.startX, annotation.endY - annotation.startY);
@@ -80,6 +80,10 @@ export class DocumentDetailsComponent implements OnInit {
       } else if(result == 0) {
         this.deleteAnnotation(annotation);
       } else {
+        annotation.startX = oldStartX;
+        annotation.startY = oldStartY;
+        annotation.endX = oldEndX;
+        annotation.endY = oldEndY;
         this.drawAnnotations();
       }
 
@@ -123,12 +127,20 @@ export class DocumentDetailsComponent implements OnInit {
     let startY: number;
     let currentX: number;
     let currentY: number;
+    let prevX: number;
+    let prevY: number;
     let isDown: boolean = false;
     let selectedAnnotation: AnnotationModel | undefined = undefined;
+    let oldStartX: number;
+    let oldStartY: number;
+    let oldEndX: number;
+    let oldEndY: number;
 
     canvas.addEventListener('mousedown', (e: any) => {
       startX = e.offsetX;
       startY = e.offsetY;
+      prevX = startX;
+      prevY = startY;
 
       for (const annotation of this.annotations) {
         const width: number = annotation.endX - annotation.startX;
@@ -137,6 +149,10 @@ export class DocumentDetailsComponent implements OnInit {
         this.ctx?.rect(annotation.startX, annotation.startY, width, height);
         if (this.ctx?.isPointInPath(startX, startY)) {
           selectedAnnotation = annotation;
+          oldStartX = annotation.startX;
+          oldStartY = annotation.startY;
+          oldEndX = annotation.endX;
+          oldEndY = annotation.endY;
           return;
         }
       }
@@ -150,6 +166,24 @@ export class DocumentDetailsComponent implements OnInit {
       const width = currentX - startX;
       const height = currentY - startY;
 
+      if(selectedAnnotation) {
+        const dx = currentX - prevX;
+        const dy = currentY - prevY;
+        // Move the selected annotation
+        selectedAnnotation.startX += dx;
+        selectedAnnotation.endX += dx;
+        selectedAnnotation.startY += dy;
+        selectedAnnotation.endY += dy;
+
+        prevX = currentX;
+        prevY = currentY;
+
+        // Redraw the canvas with the updated annotation positions
+        this.redrawImage();
+        this.drawAnnotations();
+        return;
+      }
+
       if (!isDown) {
         return;
       }
@@ -162,7 +196,7 @@ export class DocumentDetailsComponent implements OnInit {
 
     canvas.addEventListener('mouseup', () => {
       if(selectedAnnotation) {
-        this.selectAnnotation(selectedAnnotation);
+        this.selectAnnotation(selectedAnnotation, oldStartX, oldStartY, oldEndX, oldEndY);
         selectedAnnotation = undefined;
         return;
       }
@@ -255,7 +289,7 @@ export class DocumentDetailsComponent implements OnInit {
   openDialog(text: string = "") {
     return this.dialog.open(DialogComponent, {
       width: '250px',
-      data: {}
+      data: {text}
     });
   }
 

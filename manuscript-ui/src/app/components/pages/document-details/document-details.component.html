@@ -10,7 +10,7 @@
 <app-document-item
   *ngFor="let annotation of annotations"
   [annotation]="annotation"
-  (onSelectAnnotation)="selectAnnotation(annotation)"
+  (onSelectAnnotation)="selectAnnotation(annotation, annotation.startX, annotation.startY, annotation.endX, annotation.endY)"
 
   (onDeleteAnnotation)="deleteAnnotation(annotation)"
 ></app-document-item>
