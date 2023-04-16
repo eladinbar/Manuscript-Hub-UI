@@ -13,7 +13,10 @@ const routes: Routes = [
     path: '', component: MainComponent, canActivate: [AuthGuard],
 
     children: [
-      {path: RouterEnum.Dashboard, component: DashboardComponent}
+      {path: RouterEnum.Dashboard, component: DashboardComponent},
+
+      {path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId,
+        component: DocumentDetailsComponent,}
     ]
   },
 
@@ -22,11 +25,6 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
 
   {path: RouterEnum.Home, component: MainComponent},
-
-  {
-    path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId,
-    component: DocumentDetailsComponent,
-  },
 
   {path: '**', component: MainComponent},
 ];
