@@ -13,7 +13,7 @@
                mode="side">
     <mat-nav-list>
       <mat-list-item  [routerLink]="'/Dashboard'" routerLinkActive="active">
-        <mat-icon  class="text-white"mat-list-icon>dashboard</mat-icon>
+        <mat-icon  class="text-white" mat-list-icon>dashboard</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
           <div class="menu-item">Dashboard</div>
@@ -23,7 +23,7 @@
 
     <mat-nav-list>
       <mat-list-item  [routerLink]="'/Dashboard'" routerLinkActive="active">
-        <mat-icon  class="text-white"mat-list-icon>Models</mat-icon>
+        <mat-icon  class="text-white" mat-list-icon>Models</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
           <div class="menu-item">Models</div>
@@ -41,10 +41,9 @@
       </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content  class="sidenav-content">
+  <mat-sidenav-content class="sidenav-content">
 
     <router-outlet class="full-width"></router-outlet>
 
   </mat-sidenav-content>
 </mat-sidenav-container>
-

@@ -90,7 +90,6 @@ export class DocumentDetailsComponent implements OnInit {
     });
   }
 
-  //TODO enable drag & drop
   updateAnnotation(annotation: AnnotationModel, newContent: string) {
     annotation.content = newContent;
     this.annotationService.updateAnnotation(annotation);
@@ -179,7 +178,6 @@ export class DocumentDetailsComponent implements OnInit {
         prevY = currentY;
 
         // Redraw the canvas with the updated annotation positions
-        this.redrawImage();
         this.drawAnnotations();
         return;
       }
@@ -188,7 +186,7 @@ export class DocumentDetailsComponent implements OnInit {
         return;
       }
 
-      // Remove lingering boxes
+      // Redraw image to remove lingering boxes
       this.redrawImage();
       this.ctx!.strokeStyle = 'red';
       this.ctx?.strokeRect(startX, startY, width, height);
@@ -262,7 +260,7 @@ export class DocumentDetailsComponent implements OnInit {
   }
 
   drawAnnotations() {
-    // Remove lingering boxes
+    // Redraw image to remove lingering boxes
     this.redrawImage();
 
     for (let i = 0; i < this.annotations.length; i++) {
