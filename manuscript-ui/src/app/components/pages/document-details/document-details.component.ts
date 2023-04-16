@@ -69,7 +69,7 @@ export class DocumentDetailsComponent implements OnInit {
     this.ctx!.strokeStyle = 'blue';
     this.ctx?.strokeRect(annotation.startX, annotation.startY, annotation.endX - annotation.startX, annotation.endY - annotation.startY);
 
-    let dialogRef = this.openDialog();
+    let dialogRef = this.openDialog(annotation.content);
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
 
@@ -124,22 +124,36 @@ export class DocumentDetailsComponent implements OnInit {
     let currentX: number;
     let currentY: number;
     let isDown: boolean = false;
+    let selectedAnnotation: AnnotationModel | undefined = undefined;
 
     canvas.addEventListener('mousedown', (e: any) => {
       startX = e.offsetX;
       startY = e.offsetY;
 
+      for (const annotation of this.annotations) {
+        const width: number = annotation.endX - annotation.startX;
+        const height: number = annotation.endY - annotation.startY;
+        this.ctx?.beginPath();
+        this.ctx?.rect(annotation.startX, annotation.startY, width, height);
+        if (this.ctx?.isPointInPath(startX, startY)) {
+          selectedAnnotation = annotation;
+          return;
+        }
+      }
+
       isDown = true;
     });
 
     canvas.addEventListener('mousemove', (e: any) => {
-      if (!isDown) {
-        return;
-      }
       currentX = e.offsetX;
       currentY = e.offsetY;
       const width = currentX - startX;
       const height = currentY - startY;
+
+      if (!isDown) {
+        return;
+      }
+
       // Remove lingering boxes
       this.redrawImage();
       this.ctx!.strokeStyle = 'red';
@@ -147,6 +161,16 @@ export class DocumentDetailsComponent implements OnInit {
     });
 
     canvas.addEventListener('mouseup', () => {
+      if(selectedAnnotation) {
+        this.selectAnnotation(selectedAnnotation);
+        selectedAnnotation = undefined;
+        return;
+      }
+
+      if(!isDown) {
+        return;
+      }
+
       isDown = false;
       const annotationCoordinates: AnnotationCoordinatesModel = {
         startX: startX,
@@ -228,7 +252,7 @@ export class DocumentDetailsComponent implements OnInit {
     }
   }
 
-  openDialog() {
+  openDialog(text: string = "") {
     return this.dialog.open(DialogComponent, {
       width: '250px',
       data: {}
