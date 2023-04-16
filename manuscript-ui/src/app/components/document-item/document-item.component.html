@@ -1,3 +1,5 @@
 <div class="annotation" (click)="onSelect(annotation)">
-{{annotation.content}}
+  <span [ngStyle]="{'color': 'blue', 'text-decoration': 'underline'}" style="transition: color 0s ease-in-out;">
+    {{annotation.content}}
+  </span>
 </div>
