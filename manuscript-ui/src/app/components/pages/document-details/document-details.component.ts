@@ -116,6 +116,7 @@ export class DocumentDetailsComponent implements OnInit {
       canvas!.width = this.image.width;
       canvas!.height = this.image.height;
       this.ctx?.drawImage(this.image, 0, 0, this.image.width, this.image.height, 0, 0, canvas!.width, canvas!.height);
+      this.drawAnnotations();
       this.addEventListener();
     };
   }
