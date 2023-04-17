@@ -22,7 +22,6 @@ export class DocumentDetailsComponent implements OnInit {
   documentId!: string;
 
   coordinates: AnnotationCoordinatesModel[] = [];
-  value!: string;
   annotations: AnnotationModel[] = [];
 
   image = new Image();
@@ -64,51 +63,6 @@ export class DocumentDetailsComponent implements OnInit {
     });
   }
 
-  selectAnnotation(annotation: AnnotationModel, oldStartX: number, oldStartY: number, oldEndX: number, oldEndY: number) {
-    console.log("onSelect: " + annotation.content);
-    this.ctx!.strokeStyle = 'blue';
-    this.ctx?.strokeRect(annotation.startX, annotation.startY, annotation.endX - annotation.startX, annotation.endY - annotation.startY);
-
-    let dialogRef = this.openDialog(annotation.content);
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-
-      this.value = result;
-      if (result) {
-        //TODO pass algorithmId?
-        this.updateAnnotation(annotation, result);
-      } else if(result == 0) {
-        this.deleteAnnotation(annotation);
-      } else {
-        annotation.startX = oldStartX;
-        annotation.startY = oldStartY;
-        annotation.endX = oldEndX;
-        annotation.endY = oldEndY;
-        this.drawAnnotations();
-      }
-
-    });
-  }
-
-  updateAnnotation(annotation: AnnotationModel, newContent: string) {
-    annotation.content = newContent;
-    this.annotationService.updateAnnotation(annotation);
-    this.drawAnnotations();
-  }
-
-  deleteAnnotation(annotation: AnnotationModel) {
-    this.annotationService.deleteAnnotation(annotation.id!, annotation.imageId, annotation.uid).subscribe({
-      next: () => {
-        console.log('HTTP DELETE request successful: ', annotation);
-        this.annotations = this.annotations.filter(a => a.id !== annotation.id);
-        this.drawAnnotations();
-      },
-      error: (err: any) => {
-        console.error('HTTP DELETE request error: ', err);
-      },
-    });
-  }
-
   loadImage() {
     this.image.onload = () => {
       const canvas = this.canvas?.nativeElement;
@@ -123,13 +77,16 @@ export class DocumentDetailsComponent implements OnInit {
 
   addEventListener() {
     const canvas = this.canvas?.nativeElement;
+
     let startX: number;
     let startY: number;
     let currentX: number;
     let currentY: number;
     let prevX: number;
     let prevY: number;
+
     let isDown: boolean = false;
+
     let selectedAnnotation: AnnotationModel | undefined = undefined;
     let oldStartX: number;
     let oldStartY: number;
@@ -163,8 +120,6 @@ export class DocumentDetailsComponent implements OnInit {
     canvas.addEventListener('mousemove', (e: any) => {
       currentX = e.offsetX;
       currentY = e.offsetY;
-      const width = currentX - startX;
-      const height = currentY - startY;
 
       if(selectedAnnotation) {
         const dx = currentX - prevX;
@@ -186,6 +141,9 @@ export class DocumentDetailsComponent implements OnInit {
       if (!isDown) {
         return;
       }
+
+      const width = currentX - startX;
+      const height = currentY - startY;
 
       // Redraw image to remove lingering boxes
       this.redrawImage();
@@ -213,31 +171,36 @@ export class DocumentDetailsComponent implements OnInit {
       }
 
       let dialogRef: MatDialogRef<DialogComponent, any> = this.openDialog();
-      this.handleNewAnnotation(dialogRef, annotationCoordinates);
+      this.handleNewManualAnnotation(dialogRef, annotationCoordinates);
     });
   }
 
-  handleNewAnnotation(dialogRef: MatDialogRef<DialogComponent, any>, annotationCoordinates: AnnotationCoordinatesModel) {
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+  handleNewManualAnnotation(dialogRef: MatDialogRef<DialogComponent, any>, annotationCoordinates: AnnotationCoordinatesModel) {
+    dialogRef.afterClosed().subscribe(content => {
+      console.debug(`Dialog result: ${content}`);
 
-      this.value = result;
-      if (result) {
-        this.addAnnotation(annotationCoordinates, this.NIL);
+      if (content) {
+        this.addAnnotation(annotationCoordinates, content, this.NIL);
       } else {
         this.drawAnnotations();
       }
-
     });
   }
 
-  addAnnotation(annotationCoordinates: AnnotationCoordinatesModel, algorithmId: string) {
+  openDialog(text: string = "") {
+    return this.dialog.open(DialogComponent, {
+      width: '250px',
+      data: {text}
+    });
+  }
+
+  addAnnotation(annotationCoordinates: AnnotationCoordinatesModel, content: string, algorithmId: string) {
     if (!this.coordinates.includes(annotationCoordinates)) {
       let annotation: AnnotationModel = {
         uid: this.uid,
         imageId: this.documentId,
         algorithmId: algorithmId,
-        content: this.value,
+        content: content,
         startX: annotationCoordinates.startX,
         startY: annotationCoordinates.startY,
         endX: annotationCoordinates.endX,
@@ -257,7 +220,53 @@ export class DocumentDetailsComponent implements OnInit {
         },
       });
     }
+  }
 
+  selectAnnotation(annotation: AnnotationModel, oldStartX: number, oldStartY: number, oldEndX: number, oldEndY: number) {
+    console.debug("onSelect: " + annotation.content);
+    this.ctx!.strokeStyle = 'blue';
+    this.ctx?.strokeRect(annotation.startX, annotation.startY, annotation.endX - annotation.startX, annotation.endY - annotation.startY);
+
+    let dialogRef = this.openDialog(annotation.content);
+    dialogRef.afterClosed().subscribe(content => {
+      console.debug(`Dialog result: ${content}`);
+
+      if (content) {
+        //TODO pass algorithmId?
+        // OK
+        this.updateAnnotation(annotation, content);
+      } else if(content == 0) {
+        // Delete
+        this.deleteAnnotation(annotation);
+      } else {
+        // Cancel
+        // Restore annotation original position
+        annotation.startX = oldStartX;
+        annotation.startY = oldStartY;
+        annotation.endX = oldEndX;
+        annotation.endY = oldEndY;
+        this.drawAnnotations();
+      }
+    });
+  }
+
+  updateAnnotation(annotation: AnnotationModel, newContent: string) {
+    annotation.content = newContent;
+    this.annotationService.updateAnnotation(annotation);
+    this.drawAnnotations();
+  }
+
+  deleteAnnotation(annotation: AnnotationModel) {
+    this.annotationService.deleteAnnotation(annotation.id!, annotation.imageId, annotation.uid).subscribe({
+      next: () => {
+        console.log('HTTP DELETE request successful: ', annotation);
+        this.annotations = this.annotations.filter(a => a.id !== annotation.id);
+        this.drawAnnotations();
+      },
+      error: (err: any) => {
+        console.error('HTTP DELETE request error: ', err);
+      },
+    });
   }
 
   drawAnnotations() {
@@ -266,8 +275,9 @@ export class DocumentDetailsComponent implements OnInit {
 
     for (let i = 0; i < this.annotations.length; i++) {
       const value = this.annotations[i].content;
-      const annotation: AnnotationCoordinatesModel = { startX: this.annotations[i].startX,  startY: this.annotations[i].startY, endX: this.annotations[i].endX, endY: this.annotations[i].endY };
-      const {startX, startY, endX, endY} = annotation;
+      const coordinates: AnnotationCoordinatesModel = { startX: this.annotations[i].startX,  startY: this.annotations[i].startY,
+        endX: this.annotations[i].endX, endY: this.annotations[i].endY };
+      const { startX, startY, endX, endY} = coordinates;
       const width = endX - startX;
       const height = endY - startY;
       if (this.ctx) {
@@ -283,13 +293,6 @@ export class DocumentDetailsComponent implements OnInit {
         this.ctx.fillText(text, textX, textY);
       }
     }
-  }
-
-  openDialog(text: string = "") {
-    return this.dialog.open(DialogComponent, {
-      width: '250px',
-      data: {text}
-    });
   }
 
   redrawImage() {
