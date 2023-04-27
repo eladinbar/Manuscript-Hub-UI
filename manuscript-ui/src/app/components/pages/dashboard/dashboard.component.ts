@@ -58,7 +58,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
 
     this.uid = localStorage.getItem("uid")!;
-    console.log("this.uid : " , this.uid)
     this.documentService.getAllDocumentsByUid(this.uid!).subscribe(res => {
       this.connectToSocket();
       this.setDataToTable(res);

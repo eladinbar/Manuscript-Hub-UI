@@ -12,8 +12,6 @@ export class DocumentItemComponent implements OnInit {
   @Output() onUpdateAnnotation: EventEmitter<AnnotationModel> = new EventEmitter();
   @Output() onDeleteAnnotation: EventEmitter<AnnotationModel> = new EventEmitter();
 
-  constructor() { }
-
   ngOnInit(): void {
   }
 
