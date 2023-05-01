@@ -1,0 +1,48 @@
+<div class="base-div-container">
+  <div class="container">
+    <div class="first-title center">
+
+      <div class="bold" i18n>
+        Create an account for the Manuscript system
+      </div>
+    </div>
+    <div class="bottom-padding center" i18n>
+      Start using Manuscripts to catalog your work and collaborate on it with your colleagues
+    </div>
+
+    <div class="form-container">
+
+      <form class="center" [formGroup]="formGroup">
+        <div>
+          <div class="center bottom-padding">
+            <input class="inputs" type="text" i18n placeholder='Full Name' formControlName="name">
+          </div>
+          <div class="center bottom-padding">
+            <input class="inputs" type="text" i18n placeholder='E-mail Address' formControlName="email">
+          </div>
+          <div class="center bottom-padding  input-icons">
+            <div class="input-icons">
+                           <span class="p-viewer">
+                             <i class="fa fa-eye icon" (click)="showPassword()"></i></span>
+              <input class="input-field inputs" type="{{inputType}}" i18n placeholder='Password' formControlName="password">
+            </div>
+          </div>
+          <div class="center bottom-padding">
+            <input class="inputs" type="text" i18n placeholder='Phone Number' formControlName="phoneNumber">
+          </div>
+          <div class="center bottom-padding">
+            <select class="inputs" name="role" formControlName="role">
+              <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+            </select></div>
+
+          <div class="center bottom-padding ">
+            <input class="input-button" type="button" i18n value="Create Account" (click)="register(formGroup.value)">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+

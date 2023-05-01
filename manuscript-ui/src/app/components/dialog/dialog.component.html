@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Enter Annotation Value</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <input matInput placeholder="Text" [(ngModel)]="text">
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="text" (click)="onOkClick()">OK</button>
+  <button mat-button (click)="onCancelClick()">Cancel</button>
+  <button mat-button (click)="onDeleteClick()" [ngStyle]="{'color': 'red'}">Delete</button>
+</mat-dialog-actions>
+<!-- Confirmation dialog -->
+<ng-template #confirmationDialog let-dialogRef="dialogRef">
+
+  <h2 mat-dialog-title>Confirm Deletion</h2>
+  <mat-dialog-content [ngStyle]="{'text-align': 'center'}">Are you sure you want to delete this annotation?
+    <br>
+    <span [ngStyle]="{'color': 'orange', 'font-weight': 'bold', 'text-decoration': 'underline'}">
+      (This action is irreversible)</span>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()">Cancel</button>
+    <button mat-button [mat-dialog-close]="true" [ngStyle]="{'color': 'red'}">Delete</button>
+  </mat-dialog-actions>
+</ng-template>

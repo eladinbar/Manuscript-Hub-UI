@@ -1,0 +1,4 @@
+div.annotation:hover span {
+  color: purple !important;
+  text-decoration: none !important;
+}

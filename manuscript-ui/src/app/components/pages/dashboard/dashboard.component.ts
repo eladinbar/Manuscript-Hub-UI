@@ -5,16 +5,16 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatSort, Sort} from "@angular/material/sort";
 import {Subscription} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
-import {DocumentTableEnum} from "../../enums/DocumentTableEnum";
-import {DocumentInfoTableModel} from "../../models/DocumentInfoTableModel";
-import {StatusEnum} from "../../enums/StatusEnum";
-import {VideoUploadEnum} from "../../enums/VideoUploadEnum";
-import {DocumentService} from "../../services/document.service";
-import {SocketService} from "../../services/socket.service";
-import {TextService} from "../../services/text.service";
-import {DateService} from "../../services/date.service";
+import {DocumentTableEnum} from "../../../enums/DocumentTableEnum";
+import {DocumentInfoTableModel} from "../../../models/DocumentInfoTableModel";
+import {StatusEnum} from "../../../enums/StatusEnum";
+import {VideoUploadEnum} from "../../../enums/VideoUploadEnum";
+import {DocumentService} from "../../../services/document.service";
+import {SocketService} from "../../../services/socket.service";
+import {TextService} from "../../../services/text.service";
+import {DateService} from "../../../services/date.service";
 import {Client} from "@stomp/stompjs";
-import {RouterEnum} from "../../enums/RouterEnum";
+import {RouterEnum} from "../../../enums/RouterEnum";
 
 @Component({
   selector: 'app-dashboard',
@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit {
   isRetry = false;
   private stompClient: Client | null = null;
   sort: MatSort | null = null
-
+  uid?: string;
   isCancelled = false;
   @ViewChild('paginator') paginator?: MatPaginator;
 
@@ -57,7 +57,8 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.documentService.getAllDocuments().subscribe(res => {
+    this.uid = localStorage.getItem("uid")!;
+    this.documentService.getAllDocumentsByUid(this.uid!).subscribe(res => {
       this.connectToSocket();
       this.setDataToTable(res);
       this.announceSortChange({active: this.time, direction: 'asc'})
@@ -104,11 +105,11 @@ export class DashboardComponent implements OnInit {
 
 
   connectToSocket() {
-    this.stompClient = this.socketService.initSocket()
-    if (this.stompClient != null) {
-      // @ts-ignore
-      this.socketService.subscription(this.stompClient, "/topic/videoList", this.onNotify)
-    }
+    // this.stompClient = this.socketService.initSocket()
+    // if (this.stompClient != null) {
+    //   // @ts-ignore
+    //   this.socketService.subscription(this.stompClient, "/topic/videoList", this.onNotify)
+    // }
   }
 
   clickedRow(row: DocumentInfoTableModel) {
@@ -134,7 +135,7 @@ export class DashboardComponent implements OnInit {
       formData.append('data', file);
       if (this.fileToUpload) {
         formData.append('file', this.fileToUpload);
-        this.subscribe = this.documentService.uploadDocument(formData)
+        this.subscribe = this.documentService.uploadDocument(formData, this.uid!)
           .subscribe(res => {
             this.setDataToTable(res);
             this.formGroup.reset();
@@ -159,9 +160,9 @@ export class DashboardComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscribe?.unsubscribe();
-    if (this.stompClient != null) {
-      this.stompClient.disconnect();
-    }
+    // if (this.stompClient != null) {
+    //   this.stompClient.disconnect();
+    // }
   }
 
   onNotify = (msg: any) => {
