@@ -1,0 +1,25 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label for="title">Title:</label>
+  <input id="title" type="text" formControlName="title">
+
+  <label for="author">Author:</label>
+  <input id="author" type="text" formControlName="author">
+
+  <label for="publicationDate">Publication Date:</label>
+  <input id="publicationDate" type="date" formControlName="publicationDate">
+
+  <label for="description">Description:</label>
+  <textarea id="description" formControlName="description"></textarea>
+
+  <label>Upload Image:
+    <input type="file" formControlName="file" (change)="onImageSelected($event)">
+    <div *ngIf="form.get('file') && form.get('file')!.invalid && (form.get('file')!.dirty || form.get('file')!.touched)">
+      Please select an image file.
+    </div>
+    <div *ngIf="fileToUpload">
+      File selected: {{fileToUpload.name}} ({{fileToUpload.size / 1000 | number:'.2'}} KB)
+    </div>
+  </label>
+
+  <button type="submit" [disabled]="form.invalid">Submit</button>
+</form>
