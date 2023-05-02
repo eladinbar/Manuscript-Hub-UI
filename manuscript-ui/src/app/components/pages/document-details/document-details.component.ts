@@ -1,9 +1,8 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {DocumentService} from "../../../services/document.service";
 import {ActivatedRoute} from "@angular/router";
 import {DomSanitizer} from "@angular/platform-browser";
 import {AnnotationModel} from "../../../models/AnnotationModel";
-import {RouterEnum} from "../../../enums/RouterEnum";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../../dialog/dialog.component";
 import {AnnotationCoordinatesModel} from "../../../models/AnnotationCoordinatesModel";
@@ -18,8 +17,8 @@ import {AnnotationService} from "../../../services/annotation.service";
 export class DocumentDetailsComponent implements OnInit {
   NIL: string = "00000000-0000-0000-0000-000000000000";
 
-  uid!: string;
-  documentId!: string;
+  @Input() uid = '';
+  @Input() documentId = '';
 
   coordinates: AnnotationCoordinatesModel[] = [];
   annotations: AnnotationModel[] = [];
@@ -30,12 +29,13 @@ export class DocumentDetailsComponent implements OnInit {
   ctx?: CanvasRenderingContext2D;
 
   constructor(private documentService: DocumentService, private annotationService: AnnotationService,
-              private route: ActivatedRoute, private sanitizer: DomSanitizer, private dialog: MatDialog) {}
+              private route: ActivatedRoute, private sanitizer: DomSanitizer, private dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
-    const routeParams = this.route.snapshot.paramMap;
-    this.uid = localStorage.getItem("uid")!;
-    this.documentId = routeParams.get(RouterEnum.DocumentId) as string;
+    // const routeParams = this.route.snapshot.paramMap;
+    // this.uid = localStorage.getItem("uid")!;
+    // this.documentId = routeParams.get(RouterEnum.DocumentId) as string;
 
     this.getAllAnnotations();
 
@@ -121,7 +121,7 @@ export class DocumentDetailsComponent implements OnInit {
       currentX = e.offsetX;
       currentY = e.offsetY;
 
-      if(selectedAnnotation) {
+      if (selectedAnnotation) {
         const dx = currentX - prevX;
         const dy = currentY - prevY;
         // Move the selected annotation
@@ -152,13 +152,13 @@ export class DocumentDetailsComponent implements OnInit {
     });
 
     canvas.addEventListener('mouseup', () => {
-      if(selectedAnnotation) {
+      if (selectedAnnotation) {
         this.selectAnnotation(selectedAnnotation, oldStartX, oldStartY, oldEndX, oldEndY);
         selectedAnnotation = undefined;
         return;
       }
 
-      if(!isDown) {
+      if (!isDown) {
         return;
       }
 
@@ -235,7 +235,7 @@ export class DocumentDetailsComponent implements OnInit {
         //TODO pass algorithmId?
         // OK
         this.updateAnnotation(annotation, content);
-      } else if(content == 0) {
+      } else if (content == 0) {
         // Delete
         this.deleteAnnotation(annotation);
       } else {
@@ -275,9 +275,11 @@ export class DocumentDetailsComponent implements OnInit {
 
     for (let i = 0; i < this.annotations.length; i++) {
       const value = this.annotations[i].content;
-      const coordinates: AnnotationCoordinatesModel = { startX: this.annotations[i].startX,  startY: this.annotations[i].startY,
-        endX: this.annotations[i].endX, endY: this.annotations[i].endY };
-      const { startX, startY, endX, endY} = coordinates;
+      const coordinates: AnnotationCoordinatesModel = {
+        startX: this.annotations[i].startX, startY: this.annotations[i].startY,
+        endX: this.annotations[i].endX, endY: this.annotations[i].endY
+      };
+      const {startX, startY, endX, endY} = coordinates;
       const width = endX - startX;
       const height = endY - startY;
       if (this.ctx) {

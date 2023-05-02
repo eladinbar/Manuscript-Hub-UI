@@ -7,6 +7,7 @@ import {LoginComponent} from "./components/pages/account/login/login.component";
 import {MainComponent} from "./components/main/main.component";
 import {AuthGuard} from "./shared/guards/auth.guard";
 import {RegisterComponent} from "./components/pages/account/register/register.component";
+import {LayoutDocumentsComponent} from "./components/pages/layout-documents/layout-documents.component";
 
 const routes: Routes = [
   {
@@ -15,14 +16,17 @@ const routes: Routes = [
     children: [
       {path: RouterEnum.Dashboard, component: DashboardComponent},
 
+      // {path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId,
+      //   component: DocumentDetailsComponent,},
       {path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId,
-        component: DocumentDetailsComponent,}
+        component: LayoutDocumentsComponent,}
     ]
   },
 
   {path: 'login', component: LoginComponent},
 
   {path: 'register', component: RegisterComponent},
+  {path: 'stam', component: LayoutDocumentsComponent},
 
   {path: RouterEnum.Home, component: MainComponent},
 
