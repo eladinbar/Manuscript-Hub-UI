@@ -38,7 +38,7 @@ export class RegisterComponent {
       this.auth.createUserWithEmailAndPassword(email, password)
         .then(user => {
           this.sendEmail();
-          console.log(user);
+
           this.accountService.registerNewUser(user.user?.email!, user.user?.uid!, name, phoneNumber, role).subscribe(result => {
             console.log("result: ", result);
             if (result) {
