@@ -1,17 +1,19 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
-import {catchError, map, shareReplay} from "rxjs/operators";
+import {map, shareReplay} from "rxjs/operators";
 import {Role} from "../../models/Role";
-import {Status} from "../../enums/Status";
+
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  controller =  'api/invitation';
+  controller = 'api/invitation';
   private roleReuslt$: Observable<any> | undefined;
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient) {
+  }
 
   registerNewUser(email: string, uid: string, name: string, phoneNumber: string, role: string): Observable<any> {
 
@@ -27,8 +29,9 @@ export class AccountService {
     return this.http.post(`${environment.baseUrl}/${this.controller}/createInvitation`, data);
 
   }
-  authenticateUser(uid: string, email:string ,name:string, token: string): Observable<any> {
-    if(!name){
+
+  authenticateUser(uid: string, email: string, name: string, token: string): Observable<any> {
+    if (!name) {
       name = email;
     }
     const data = {
@@ -36,13 +39,15 @@ export class AccountService {
       email,
       name
     };
-    console.log("data " , data);
     return this.http.post(`${environment.baseUrl}/api/accountController/login`, data, {
       headers: {
         Authorization: 'Bearer ' + token,
         skip: 'true'
       }
-    });
+    }).pipe(map((res: any) => {
+      localStorage.setItem("role", res.role)  //todo: should be changed
+      return res;
+    }));
   }
 
   getUserAuthRole(): Observable<string> {
@@ -71,6 +76,7 @@ export class AccountService {
     }
     return this.roleReuslt$;
   }
+
   public areUserRolesAllowed(userRoles: string[], allowedUserRoles: Role[]): boolean {
     for (const role of userRoles) {
       for (const allowedRole of allowedUserRoles) {

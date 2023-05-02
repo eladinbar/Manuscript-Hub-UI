@@ -32,10 +32,9 @@ export class LoginComponent {
     this.authService.signIn(value.username, value.password).then(res => {
       if (res) {
         res.user?.reload();
-        if(res.user?.emailVerified ){
+        if (res.user?.emailVerified) {
           this.authUser(res);
-        }
-        else{
+        } else {
           Swal.fire('Important Notice', 'You have to verify your mail before singing in ', 'error');
         }
       }
@@ -54,20 +53,21 @@ export class LoginComponent {
   }
 
   authUser = (res: any) => {
+    console.log("sdffffffffffffffffffffffff")
     const user = res.user;
     res.user.getIdToken(false)
       .then((token: string) => {
-        console.log("Email : ", res.user.email);
-        console.log(token);
         if (res.additionalUserInfo.isNewUser) {
           this.accountService
             .authenticateUser(res.user.uid, res.user.email, res.user.displayName, token)
             .subscribe({
               next: result => {
+                debugger
+                console.log("result ", result)
                 if (result.status) {
                   result.token = token;
 
-                  this.authService.updateLocalStorage(result, user);
+                  this.authService.updateLocalStorage(result, user, );
                   this.reload();
 
                 } else {

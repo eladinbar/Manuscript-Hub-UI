@@ -8,13 +8,14 @@ import {AuthService} from "../../services/auth/auth.service";
 })
 export class MainComponent implements OnInit {
   sidenavWidth = 18;
-
+  public role?: string;
   sidenavStatus = true;
 
 
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.role = localStorage.getItem("role")!
   }
 
   toggleSidenav() {
