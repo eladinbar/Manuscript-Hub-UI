@@ -15,29 +15,16 @@ import {InvitationRequestTable} from "../../models/InvitationRequestTable";
 })
 export class InvitationsComponent implements OnInit {
 
-  data = {
-    id: 0
-  };
   tableElements?: Array<InvitationRequestTable> = [];
   dataSource: MatTableDataSource<InvitationRequestTable> = new MatTableDataSource<InvitationRequestTable>();
   @ViewChild(MatSort, {static: false}) sort!: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
   tableCols = ['email', 'name', 'role', 'invitationEnum', 'edit'];
   @ViewChild('assignStationModal') assignModal?: ElementRef;
-  form!: FormGroup;
   message = '';
-  assignValid = true;
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder, private invitationService: InvitationsService
+  constructor(private route: ActivatedRoute, private invitationService: InvitationsService
     ,) {
-
-    // this.form = this.fb.group({
-    //   requestType: [''],
-    //   endDate: '',
-    //   id: [''],
-    //   userId: ''
-    // });
-
   }
 
   ngOnInit(): void {

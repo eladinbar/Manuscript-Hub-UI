@@ -28,7 +28,7 @@
           <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header></th>
           <td mat-cell *matCellDef="let element">
             <button mat-raised-button color="primary" *ngIf="element.invitationEnum != 'approved' " (click)="acceptRequest(element)">Accept</button>
-            <button mat-raised-button color="warn"  *ngIf="element.invitationEnum != 'disapproved' " (click)="denyRequest(element)">Deny</button>
+            <button mat-raised-button color="warn"  *ngIf="element.invitationEnum != 'disapprove' " (click)="denyRequest(element)">Deny</button>
           </td>
         </ng-container>
 

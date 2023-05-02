@@ -10,7 +10,6 @@ import {catchError, from, map} from "rxjs";
   providedIn: 'root'
 })
 export class InvitationsService {
-  apiUrl: string = `${environment.baseUrl}/api/invitation`;
 
   constructor(private http: HttpClient,
               private router: Router,
@@ -22,7 +21,6 @@ export class InvitationsService {
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_All_INVITATIONS}`))
       .pipe(
         map((res: any) => {
-          console.log(res)
           return res;
         }),
         catchError(errorRes => {
@@ -35,7 +33,6 @@ export class InvitationsService {
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_ACCEPT_REQUEST_INVITATIONS}${email}`))
       .pipe(
         map((res: any) => {
-          console.log(res)
           return res;
         }),
         catchError(errorRes => {
@@ -48,7 +45,6 @@ export class InvitationsService {
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_DENY_REQUEST_INVITATIONS}${email}`))
       .pipe(
         map((res: any) => {
-          console.log(res)
           return res;
         }),
         catchError(errorRes => {
