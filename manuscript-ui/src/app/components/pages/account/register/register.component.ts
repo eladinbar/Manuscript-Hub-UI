@@ -37,6 +37,7 @@ export class RegisterComponent {
     if (email != null && password != null) {
       this.auth.createUserWithEmailAndPassword(email, password)
         .then(user => {
+          this.sendEmail();
           console.log(user);
           this.accountService.registerNewUser(user.user?.email!, user.user?.uid!, name, phoneNumber, role).subscribe(result => {
             console.log("result: ", result);
@@ -69,6 +70,15 @@ export class RegisterComponent {
       this.hide = false;
 
     }
-
+  }
+  sendEmail() {
+    this.auth.currentUser.then((u) => {
+      //If a user is successfully created with an appropriate email
+      if (u != null){
+        u?.sendEmailVerification();
+      }
+    }).catch(error => {
+      this.townCrier.error('could not send email verification ' +  error);
+    });
   }
 }

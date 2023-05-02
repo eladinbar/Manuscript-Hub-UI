@@ -22,7 +22,7 @@ export class AccountService {
       role
     };
 
-    return this.http.post(`${environment.baseUrl}/${this.controller}/registerNew`, data);
+    return this.http.post(`${environment.baseUrl}/${this.controller}/register`, data);
 
   }
   authenticateUser(uid: string, email:string ,name:string, token: string): Observable<any> {

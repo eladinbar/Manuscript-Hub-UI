@@ -31,8 +31,15 @@ export class LoginComponent {
   login(value: any) {
     this.authService.signIn(value.username, value.password).then(res => {
       if (res) {
-        this.authUser(res);
+        res.user?.reload();
+        if(res.user?.emailVerified ){
+          this.authUser(res);
+        }
+        else{
+          Swal.fire('Important Notice', 'You have to verify your mail before singing in ', 'error');
+        }
       }
+
     })
   }
 
