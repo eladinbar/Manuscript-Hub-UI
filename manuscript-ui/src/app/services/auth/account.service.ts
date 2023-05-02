@@ -4,6 +4,7 @@ import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
 import {map, shareReplay} from "rxjs/operators";
 import {Role} from "../../models/Role";
+import {CryptoService} from "../crypto.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AccountService {
   controller = 'api/invitation';
   private roleReuslt$: Observable<any> | undefined;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,public cryptoService: CryptoService) {
   }
 
   registerNewUser(email: string, uid: string, name: string, phoneNumber: string, role: string): Observable<any> {
@@ -45,7 +46,7 @@ export class AccountService {
         skip: 'true'
       }
     }).pipe(map((res: any) => {
-      localStorage.setItem("role", res.role)  //todo: should be changed
+      localStorage.setItem("role", <string>this.cryptoService.encrypt(res.role))  //todo: should be changed
       return res;
     }));
   }

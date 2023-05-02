@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../services/auth/auth.service";
+import {CryptoService} from "../../services/crypto.service";
 
 @Component({
   selector: 'app-main',
@@ -12,10 +13,10 @@ export class MainComponent implements OnInit {
   sidenavStatus = true;
 
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, public cryptoService:CryptoService) { }
 
   ngOnInit(): void {
-    this.role = localStorage.getItem("role")!
+    this.role = this.cryptoService.decrypt( localStorage.getItem('role')!);
   }
 
   toggleSidenav() {
