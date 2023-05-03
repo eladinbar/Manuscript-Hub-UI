@@ -6,7 +6,7 @@ import {MatSort, Sort} from "@angular/material/sort";
 import {Subscription} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
 import {DocumentTableEnum} from "../../../enums/DocumentTableEnum";
-import {DocumentInfoTableModel} from "../../../models/DocumentInfoTableModel";
+import {DocumentModel} from "../../../models/DocumentModel";
 import {StatusEnum} from "../../../enums/StatusEnum";
 import {VideoUploadEnum} from "../../../enums/VideoUploadEnum";
 import {DocumentService} from "../../../services/document.service";
@@ -22,9 +22,9 @@ import {RouterEnum} from "../../../enums/RouterEnum";
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  documentInfoTableModels: Array<DocumentInfoTableModel> = [];
+  documentInfoTableModels: Array<DocumentModel> = [];
   displayedColumns: string[] = [DocumentTableEnum.Status, DocumentTableEnum.CreatedTime, DocumentTableEnum.FileName, DocumentTableEnum.Actions];
-  dataSource: MatTableDataSource<DocumentInfoTableModel> = new MatTableDataSource<DocumentInfoTableModel>([]);
+  dataSource: MatTableDataSource<DocumentModel> = new MatTableDataSource<DocumentModel>([]);
   isStatusFinished = false;
   status = StatusEnum;
   private subscribe?: Subscription;
@@ -72,21 +72,21 @@ export class DashboardComponent implements OnInit {
   }
 
   private sortByTime(sortState: Sort) {
-    let big = 1
-    let small = -1
+    let big = 1;
+    let small = -1;
     if (sortState.direction === 'asc') {
-      big = -1
-      small = 1
+      big = -1;
+      small = 1;
     }
     this.dataSource.data = this.dataSource.data.sort((a, b) => {
       if (a.createdTime && b.createdTime) {
         if (a.createdTime > b.createdTime) {
-          return big
+          return big;
         } else {
-          return small
+          return small;
         }
       }
-      return big
+      return big;
     })
   }
 
@@ -102,12 +102,18 @@ export class DashboardComponent implements OnInit {
     // }
   }
 
-  clickedRow(row: DocumentInfoTableModel) {
-    console.log(row)
-    if (row == null || row.documentId == undefined) return;
-    this.router.navigate(['/' + RouterEnum.DocumentDetail, row.documentId]);
+  onOpenDocument(document: DocumentModel) {
+    console.log(document);
+    if (document == null || document.documentId == undefined) return;
+    this.router.navigate(['/' + RouterEnum.DocumentDetail, document.documentId]);
   }
 
+  onDocumentDelete(document: DocumentModel) {
+    console.log(document);
+    this.documentService.deleteDocumentById(document.documentId!, this.uid!)
+      .subscribe(res => {
+      });
+  }
 
   uploadFileService() {
     this.router.navigate(['/' + RouterEnum.DocumentUpload]);
