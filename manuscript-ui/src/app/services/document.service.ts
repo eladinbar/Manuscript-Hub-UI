@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {catchError, from, map} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
@@ -11,17 +11,19 @@ import {RouterEnum} from "../enums/RouterEnum";
   providedIn: 'root'
 })
 export class DocumentService {
-
-  constructor(private http: HttpClient,
-              private router: Router,
-              private restErrorsHandlerService: RestErrorsHandlerService,
-              private townCrier: TownCrierService) {
+  constructor(private http: HttpClient, private router: Router,
+              private restErrorsHandlerService: RestErrorsHandlerService, private townCrier: TownCrierService) {
   }
-  getAllDocumentsByUid(uid: string) {
-    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_All_DOCUMENTS_BY_UID}${uid}`))
+
+  uploadDocument(data: FormData, uid: string) {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+
+    return from(this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_FILE}/${uid}`, data, {headers: headers}))
       .pipe(
         map((res: any) => {
-          console.log(res)
+          this.townCrier.info("Please wait until the new document is processed...")
+          this.router.navigate(['/' + RouterEnum.Dashboard]);
           return res;
         }),
         catchError(errorRes => {
@@ -29,7 +31,6 @@ export class DocumentService {
           return this.restErrorsHandlerService.handleRequestError(errorRes);
         }));
   }
-
 
   getDocumentById(id: string | undefined) {
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_BY_ID}${id}`, {responseType: 'blob'}))
@@ -40,22 +41,17 @@ export class DocumentService {
           return res;
         }),
         catchError(errorRes => {
-          this.townCrier.error('No Document found')
+          this.townCrier.error('No document found.')
           this.router.navigate(['/' + RouterEnum.Dashboard]);
           return this.restErrorsHandlerService.handleRequestError(errorRes);
         }));
   }
 
-
-  uploadDocument(data: FormData, uid: string) {
-
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'multipart/form-data');
-
-    return from( this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_FILE}/${uid}`,data,{ headers: headers } ))
+  getAllDocumentsByUid(uid: string) {
+    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_All_DOCUMENTS_BY_UID}${uid}`))
       .pipe(
         map((res: any) => {
-          this.townCrier.info("Wait till new document processed..")
+          console.log(res)
           return res;
         }),
         catchError(errorRes => {

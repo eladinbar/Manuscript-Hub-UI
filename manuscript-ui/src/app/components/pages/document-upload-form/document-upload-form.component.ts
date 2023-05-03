@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
+import {DocumentService} from "../../../services/document.service";
 
 @Component({
   selector: 'app-document-upload-form',
@@ -8,19 +9,25 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./document-upload-form.component.css']
 })
 export class DocumentUploadFormComponent implements OnInit {
+  uid?: string;
   form!: FormGroup;
   fileToUpload?: File = undefined;
   faTimes = faTimes;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private documentService: DocumentService) {
     this.createForm();
   }
 
-  ngOnInit(): void {  }
+  ngOnInit(): void {
+    this.uid = localStorage.getItem("uid")!;
+  }
 
   createForm() {
     this.form = this.formBuilder.group({
       title: ['', Validators.required],
+      author: [''],
+      publicationDate: [''],
+      description: [''],
       file: [null, Validators.required]
     });
   }
@@ -38,8 +45,11 @@ export class DocumentUploadFormComponent implements OnInit {
       formData.append('description', this.form.value.description);
       if (this.fileToUpload) {
         formData.append('image', this.fileToUpload);
+        console.log("Uploading file");
+        this.documentService.uploadDocument(formData, this.uid!)
+          .subscribe(res => {
+          });
       }
-      // Send formData to server for processing
     }
   }
 
@@ -47,7 +57,4 @@ export class DocumentUploadFormComponent implements OnInit {
     this.form.get('file')?.setValue(null);
     this.fileToUpload = undefined;
   }
-
-
-  protected readonly undefined = undefined;
 }

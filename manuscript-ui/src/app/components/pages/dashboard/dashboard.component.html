@@ -2,24 +2,16 @@
   <mat-card-title>Document Dashboard</mat-card-title>
 
   <form [formGroup]="formGroup" class="form">
-    <input  formControlName="uploadFile"  class="form-element"
-            #uploadFile
-            type="file"
-            id="uploadFile"
-            hidden
-            accept="*/*"
-            (change)="uploadFileService($event)"
-    />
-
-    <mat-button-toggle class="fileUpload" (click)="uploadFile.click()">
-      Upload New Document </mat-button-toggle>
+    <mat-button-toggle class="fileUpload" (click)="uploadFileService($event)">
+      Upload New Document
+    </mat-button-toggle>
   </form>
 </div>
 
 <div *ngIf="dataSource; else emptyTable" class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" matSort matTableResponsive (matSortChange)="announceSortChange($event)">
     <ng-container matColumnDef="status">
-      <th  mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Status">Status</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Status">Status</th>
       <td *matCellDef="let element" mat-cell> {{textService.toTitleCase(element.status)}} </td>
     </ng-container>
 
@@ -53,8 +45,8 @@
     ></tr>
   </table>
 
-  <mat-paginator  #paginator [pageSizeOptions]="[10, 20, 50]"
-                  showFirstLastButtons></mat-paginator>
+  <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50]"
+                 showFirstLastButtons></mat-paginator>
 </div>
 
 <ng-template #emptyTable>

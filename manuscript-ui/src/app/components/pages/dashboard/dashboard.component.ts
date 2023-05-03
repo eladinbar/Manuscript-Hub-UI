@@ -22,8 +22,7 @@ import {RouterEnum} from "../../../enums/RouterEnum";
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-
-  VideoInfoTableModels: Array<DocumentInfoTableModel> = [];
+  documentInfoTableModels: Array<DocumentInfoTableModel> = [];
   displayedColumns: string[] = [DocumentTableEnum.Status, DocumentTableEnum.CreatedTime, DocumentTableEnum.FileName, DocumentTableEnum.Actions];
   dataSource: MatTableDataSource<DocumentInfoTableModel> = new MatTableDataSource<DocumentInfoTableModel>([]);
   isStatusFinished = false;
@@ -41,14 +40,9 @@ export class DashboardComponent implements OnInit {
   isCancelled = false;
   @ViewChild('paginator') paginator?: MatPaginator;
 
-
-  constructor(public textService: TextService,
-              public dateService: DateService,
-              public router: Router,
-              private formBuilder: FormBuilder,
-              private socketService: SocketService
-    , private documentService: DocumentService,
-  ) {
+  constructor(public textService: TextService, public dateService: DateService,
+              public router: Router, private formBuilder: FormBuilder,
+              private socketService: SocketService, private documentService: DocumentService) {
     this.formGroup = this.formBuilder.group({
       selectedFile: null,
       uploadFile: null
@@ -56,7 +50,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.uid = localStorage.getItem("uid")!;
     this.documentService.getAllDocumentsByUid(this.uid!).subscribe(res => {
       this.connectToSocket();
@@ -64,7 +57,6 @@ export class DashboardComponent implements OnInit {
       this.announceSortChange({active: this.time, direction: 'asc'})
 
     });
-
   }
 
   @ViewChild(MatSort) set x(mat: MatSort) {
@@ -75,7 +67,7 @@ export class DashboardComponent implements OnInit {
     if (sortState.active === this.time) {
       this.sortByTime(sortState)
     } else {
-      this.sortSBytatus(sortState);
+      this.sortByStatus(sortState);
     }
   }
 
@@ -102,8 +94,6 @@ export class DashboardComponent implements OnInit {
     return confirm(`Are you sure that you want to ${msg} the video`)
   }
 
-
-
   connectToSocket() {
     // this.stompClient = this.socketService.initSocket()
     // if (this.stompClient != null) {
@@ -119,43 +109,39 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  uploadFileService(event: any) {
-
-    const file: File = event.target.files[0];
-
-    const element = event.currentTarget as HTMLInputElement;
-    let fileList: FileList | null = element.files;
-    if (fileList) {
-
-      this.fileStatus = fileList.item(0)?.name || this.fileStatus;
-      this.fileToUpload = fileList.item(0);
-      this.formGroup.controls[VideoUploadEnum.SelectedFile].setValue(fileList.item(0)?.name);
-      const formData: FormData = new FormData();
-
-      formData.append('data', file);
-      if (this.fileToUpload) {
-        formData.append('file', this.fileToUpload);
-        this.subscribe = this.documentService.uploadDocument(formData, this.uid!)
-          .subscribe(res => {
-            this.setDataToTable(res);
-            this.formGroup.reset();
-          });
-      }
-    }
+  uploadFileService() {
+    this.router.navigate(['/' + RouterEnum.DocumentUpload]);
+    // const file: File = event.target.files[0];
+    //
+    // const element = event.currentTarget as HTMLInputElement;
+    // let fileList: FileList | null = element.files;
+    // if (fileList) {
+    //   this.fileStatus = fileList.item(0)?.name || this.fileStatus;
+    //   this.fileToUpload = fileList.item(0);
+    //   this.formGroup.controls[VideoUploadEnum.SelectedFile].setValue(fileList.item(0)?.name);
+    //   const formData: FormData = new FormData();
+    //
+    //   formData.append('data', file);
+    //   if (this.fileToUpload) {
+    //     formData.append('file', this.fileToUpload);
+    //     this.subscribe = this.documentService.uploadDocument(formData, this.uid!)
+    //       .subscribe(res => {
+    //         this.setDataToTable(res);
+    //         this.formGroup.reset();
+    //       });
+    //   }
+    // }
   }
-
 
   private setDataToTable(res: any) {
     if (res) {
-      this.VideoInfoTableModels = res;
+      this.documentInfoTableModels = res;
     }
-    this.dataSource = new MatTableDataSource(this.VideoInfoTableModels);
+    this.dataSource = new MatTableDataSource(this.documentInfoTableModels);
     if (this.paginator) {
       this.dataSource.paginator = this.paginator;
     }
     this.announceSortChange({active: this.time, direction: 'asc'})
-
-
   }
 
   ngOnDestroy() {
@@ -171,7 +157,7 @@ export class DashboardComponent implements OnInit {
   };
 
 
-  private sortSBytatus(sortState: Sort) {
+  private sortByStatus(sortState: Sort) {
     let big = 1
     let small = -1
     if (sortState.direction === 'asc') {
@@ -190,6 +176,4 @@ export class DashboardComponent implements OnInit {
       return small
     })
   }
-
-
 }
