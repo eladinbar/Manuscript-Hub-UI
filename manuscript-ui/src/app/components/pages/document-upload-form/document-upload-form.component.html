@@ -1,25 +1,28 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <label for="title">Title:</label>
+  <label for="title">Title<span class="required">*</span></label>
   <input id="title" type="text" formControlName="title">
 
-  <label for="author">Author:</label>
+  <label for="author">Author</label>
   <input id="author" type="text" formControlName="author">
 
-  <label for="publicationDate">Publication Date:</label>
+  <label for="publicationDate">Publication Date</label>
   <input id="publicationDate" type="date" formControlName="publicationDate">
 
-  <label for="description">Description:</label>
+  <label for="description">Description</label>
   <textarea id="description" formControlName="description"></textarea>
 
-  <label>Upload Image:
-    <input type="file" formControlName="file" (change)="onImageSelected($event)">
-    <div *ngIf="form.get('file') && form.get('file')!.invalid && (form.get('file')!.dirty || form.get('file')!.touched)">
-      Please select an image file.
+  <label for="fileInput" class="file-upload-button">Choose File</label>
+  <input id="fileInput" type="file" formControlName="file" (change)="onImageSelected($event)" style="display:none">
+  <div><!--   *ngIf="form.get('file') && form.get('file')!.invalid && (form.get('file')!.dirty || form.get('file')!.touched)">-->
+    Please select an image file<span class="required">*</span>
+  </div>
+  <ng-container *ngIf="fileToUpload">
+    <div>File selected:</div>
+    <div class="uploaded-file">
+      {{fileToUpload.name}} ({{fileToUpload.size / 1000 | number:'.2'}} KB)
+      <fa-icon class="file-upload-remove" (click)="removeFile()" [ngStyle]="{'color': 'red'}" [icon]="faTimes"></fa-icon>
     </div>
-    <div *ngIf="fileToUpload">
-      File selected: {{fileToUpload.name}} ({{fileToUpload.size / 1000 | number:'.2'}} KB)
-    </div>
-  </label>
+  </ng-container>
 
   <button type="submit" [disabled]="form.invalid">Submit</button>
 </form>

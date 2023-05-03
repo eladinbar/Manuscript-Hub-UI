@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-document-upload-form',
@@ -9,6 +10,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class DocumentUploadFormComponent implements OnInit {
   form!: FormGroup;
   fileToUpload?: File = undefined;
+  faTimes = faTimes;
 
   constructor(private formBuilder: FormBuilder) {
     this.createForm();
@@ -40,6 +42,12 @@ export class DocumentUploadFormComponent implements OnInit {
       // Send formData to server for processing
     }
   }
+
+  removeFile() {
+    this.form.get('file')?.setValue(null);
+    this.fileToUpload = undefined;
+  }
+
 
   protected readonly undefined = undefined;
 }

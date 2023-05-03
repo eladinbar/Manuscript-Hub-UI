@@ -43,6 +43,7 @@ import { RegisterComponent } from './components/pages/account/register/register.
 import { DialogComponent } from './components/dialog/dialog.component';
 import { DocumentItemComponent } from './components/document-item/document-item.component';
 import { DocumentUploadFormComponent } from './components/pages/document-upload-form/document-upload-form.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 
 @NgModule({
   declarations: [
@@ -90,7 +91,7 @@ import { DocumentUploadFormComponent } from './components/pages/document-upload-
         AngularFireModule.initializeApp(environment.firebase),
         AngularFireAuthModule,
         FormsModule,
-
+        FontAwesomeModule
     ],
   providers: [
     {
