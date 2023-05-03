@@ -53,7 +53,6 @@ export class LoginComponent {
   }
 
   authUser = (res: any) => {
-    console.log("sdffffffffffffffffffffffff")
     const user = res.user;
     res.user.getIdToken(false)
       .then((token: string) => {
@@ -63,7 +62,6 @@ export class LoginComponent {
             .subscribe({
               next: result => {
                 debugger
-                console.log("result ", result)
                 if (result.status) {
                   result.token = token;
 
