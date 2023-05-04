@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {faTimes} from '@fortawesome/free-solid-svg-icons';
+import {faTimes, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {DocumentService} from "../../../services/document.service";
+import {DocumentMetadataModel} from "../../../models/DocumentMetadataModel";
 
 @Component({
   selector: 'app-document-upload-form',
@@ -9,10 +10,10 @@ import {DocumentService} from "../../../services/document.service";
   styleUrls: ['./document-upload-form.component.css']
 })
 export class DocumentUploadFormComponent implements OnInit {
-  uid?: string;
+  uid!: string;
   form!: FormGroup;
-  fileToUpload?: File = undefined;
-  faTimes = faTimes;
+  fileToUpload?: File;
+  faTimes: IconDefinition = faTimes;
 
   constructor(private formBuilder: FormBuilder, private documentService: DocumentService) {
     this.createForm();
@@ -38,15 +39,23 @@ export class DocumentUploadFormComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      const formData = new FormData();
-      formData.append('title', this.form.value.title);
-      formData.append('author', this.form.value.author);
-      formData.append('publicationDate', this.form.value.publicationDate);
-      formData.append('description', this.form.value.description);
+      const formData: FormData = new FormData();
+      // formData.append('title', this.form.value.title);
+      // formData.append('author', this.form.value.author);
+      // formData.append('publicationDate', this.form.value.publicationDate);
+      // formData.append('description', this.form.value.description);
       if (this.fileToUpload) {
-        formData.append('image', this.fileToUpload);
+        const documentMetadata: DocumentMetadataModel = new DocumentMetadataModel({
+          uid: this.uid,
+          title: this.form.value.title,
+          author: this.form.value.author,
+          publicationDate: this.form.value.publicationDate,
+          description: this.form.value.description,
+        });
+        formData.append('file', this.fileToUpload, this.fileToUpload.name);
+        formData.append('metadata', JSON.stringify(documentMetadata));
         console.log("Uploading file");
-        this.documentService.uploadDocument(formData, this.uid!)
+        this.documentService.uploadDocument(formData)
           .subscribe(res => {
           });
       }

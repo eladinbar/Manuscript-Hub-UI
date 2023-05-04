@@ -14,31 +14,31 @@
     </ng-container>
 
     <ng-container matColumnDef="fileName">
-      <th *matHeaderCellDef mat-header-cell>FileName</th>
-      <td *matCellDef="let element" mat-cell> {{element.fileName}} </td>
+      <th *matHeaderCellDef mat-header-cell>File Name</th>
+      <td *matCellDef="let document" mat-cell> {{document.fileName}} </td>
     </ng-container>
 
     <ng-container [matColumnDef]="time">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time">Created Time</th>
-      <td *matCellDef="let element" mat-cell> {{dateService.toFormattedDate(element.createdTime)}} </td>
+      <td *matCellDef="let document" mat-cell> {{dateService.toFormattedDate(document.createdTime)}} </td>
     </ng-container>
 
     <ng-container matColumnDef="Actions">
       <th *matHeaderCellDef mat-header-cell>Actions</th>
-      <td *matCellDef="let element" class="action-link" mat-cell>
-        <button (click)="onOpenDocument(element)" color="primary" mat-raised-button>Open</button>
+      <td *matCellDef="let document" class="action-link" mat-cell>
+        <button (click)="onDocumentOpen(document)" color="primary" mat-raised-button>Open</button>
 
         <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="onDocumentDelete(element)">Delete</button>
+          <button mat-menu-item (click)="onDocumentDelete(document)">Delete</button>
         </mat-menu>
 
       </td>
     </ng-container>
     <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight':  row.status === 'ENABLED' }" mat-row></tr>
+    <tr *matRowDef="let document; columns: displayedColumns;" [ngClass]="{'highlight': document.status === 'ENABLED'}" mat-row></tr>
   </table>
 
   <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>

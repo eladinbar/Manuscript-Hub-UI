@@ -102,15 +102,15 @@ export class DashboardComponent implements OnInit {
     // }
   }
 
-  onOpenDocument(document: DocumentModel) {
+  onDocumentOpen(document: DocumentModel) {
     console.log(document);
-    if (document == null || document.documentId == undefined) return;
-    this.router.navigate(['/' + RouterEnum.DocumentDetail, document.documentId]);
+    if (document == null || document.id == undefined) return;
+    this.router.navigate(['/' + RouterEnum.DocumentDetail, document.id]);
   }
 
   onDocumentDelete(document: DocumentModel) {
     console.log(document);
-    this.documentService.deleteDocumentById(document.documentId!, this.uid!)
+    this.documentService.deleteDocumentById(document.id!, this.uid!)
       .subscribe(res => {
       });
   }
@@ -161,7 +161,6 @@ export class DashboardComponent implements OnInit {
     const result = JSON.parse(msg.body)
     this.setDataToTable(result)
   };
-
 
   private sortByStatus(sortState: Sort) {
     let big = 1

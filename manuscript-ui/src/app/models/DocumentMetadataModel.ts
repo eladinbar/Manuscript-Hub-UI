@@ -1,16 +1,19 @@
+import {StatusEnum} from "../enums/StatusEnum";
+import {PrivacyEnum} from "../enums/PrivacyEnum";
+
 export class DocumentMetadataModel {
   public id?: string;
-  public documentId!: string;
+  public documentId?: string;
   public uid!: string;
-  public fileName!: string;
-  public author!: string;
+  public title!: string;
+  public author?: string = "";
   public publicationDate?: Date;
-  public language!: string;
-  public description!: string;
-  public status!: string;
-  public privacy!: string;
-  public createdTime!: Date;
-  public updatedTime!: Date;
+  public language?: string;
+  public description?: string = "";
+  public status?: string = StatusEnum.ENABLED;
+  public privacy?: string = PrivacyEnum.Private;
+  public createdTime?: Date = new Date();
+  public updatedTime?: Date = new Date();
 
   constructor(documentMetadataModel: DocumentMetadataModel) {
     Object.assign(this, documentMetadataModel, {});

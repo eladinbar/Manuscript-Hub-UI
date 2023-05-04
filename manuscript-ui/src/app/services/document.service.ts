@@ -15,11 +15,11 @@ export class DocumentService {
               private restErrorsHandlerService: RestErrorsHandlerService, private townCrier: TownCrierService) {
   }
 
-  uploadDocument(data: FormData, uid: string) {
+  uploadDocument(data: FormData) {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
 
-    return from(this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_FILE}/${uid}`, data, {headers: headers}))
+    return from(this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_FILE}`, data, {headers: headers}))
       .pipe(
         map((res: any) => {
           this.townCrier.info("Please wait until the new document is processed...")

@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   baseUrl: 'http://localhost:8080',
-  RESOURCE_UPLOAD_FILE: "/api/document/uploadInputDocument",
+  RESOURCE_UPLOAD_FILE: "/api/document/uploadDocument",
   RESOURCE_GET_VIDEO_INFO_STATISTIC: "/api/video/getVideoInfo/",
   RESOURCE_GET_DOCUMENT_BY_ID: "/api/document/getDocumentById/",
   RESOURCE_GET_All_DOCUMENTS_BY_UID: "/api/document/getAllDocumentsByUid/",
