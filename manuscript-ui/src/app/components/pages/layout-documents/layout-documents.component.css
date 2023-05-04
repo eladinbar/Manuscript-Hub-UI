@@ -1,3 +1,5 @@
+
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -17,17 +19,18 @@
   grid-column: 1 / span 1;
 }
 
-.item2 {
-  grid-row: 1 / span 1;
-  grid-column: 2 / span 1;
+
+/* Add these styles */
+.add-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 48px;
+  color: #aaa;
+  cursor: pointer;
 }
 
-.item3 {
-  grid-row: 2 / span 1;
-  grid-column: 1 / span 1;
-}
-
-.item4 {
-  grid-row: 2 / span 1;
-  grid-column: 2 / span 1;
+.item1 img {
+  max-width: 100%;
+  height: auto;
 }

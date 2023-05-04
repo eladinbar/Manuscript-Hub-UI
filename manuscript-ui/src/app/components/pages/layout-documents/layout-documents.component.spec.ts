@@ -10,7 +10,7 @@ describe('LayoutDocumentsComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ LayoutDocumentsComponent ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(LayoutDocumentsComponent);
     component = fixture.componentInstance;

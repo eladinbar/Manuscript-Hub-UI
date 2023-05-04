@@ -1,24 +1,15 @@
 <div class="grid-container">
   <div class="grid-item item1">
-
     <app-document-details [documentId]="documentId" [uid]="uid"></app-document-details>
+    <button (click)="showMenu = !showMenu" class="add-button">+</button>
+    <div *ngIf="showMenu" class="menu">
+      <ul>
+        <li *ngFor="let doc of addedDocs; let i = index" (click)="addImage(i, doc)">{{ doc.fileName }}</li>
+      </ul>
+    </div>
   </div>
 
-
-  <div class="grid-item item2">
-    <app-document-details [documentId]="documentId" [uid]="uid"></app-document-details>
-
-  </div>
-
-  <div class="grid-item item3">
-
-    <app-document-details [documentId]="documentId" [uid]="uid"></app-document-details>
-
-  </div>
-
-  <div class="grid-item item4">
-    <app-document-details [documentId]="documentId" [uid]="uid"></app-document-details>
-
-
+  <div class="grid-item" *ngFor="let addedDocId of addedDocIds; let i = index" [ngClass]="'item' + (i+2)" >
+    <app-document-details [documentId]="addedDocId!" [uid]="uid"></app-document-details>
   </div>
 </div>
