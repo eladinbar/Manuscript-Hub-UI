@@ -1,27 +1,24 @@
-
 /*Check the font family*/
 .first-title {
   text-align: center;
   font-size: 2em;
   font-weight: bold;
   padding-bottom: 1em;
-  font:normal normal 600 30px/26px Rubik;
-
+  font: normal normal 600 30px/26px Rubik;
 }
-img{
+
+img {
   padding-bottom: 4em;
 }
-html{
-  background-color: #F5F6FA !important;
 
+html {
+  background-color: #F5F6FA !important;
 }
+
 .bottom-padding {
   font-family: Rubik;
   padding-bottom: 1em;
 }
-
-
-
 
 .center {
   text-align: center;
@@ -36,15 +33,10 @@ html{
   padding-top: 0.5em;
   padding-bottom: 0.5em;
   padding-right: 1em;
-  font-family:Rubik;
+  font-family: Rubik;
   font-size: 1.2em;
   padding: 10px;
-
   text-align: center;
-
-
-
-
 }
 
 .input-button {
@@ -52,7 +44,7 @@ html{
   border: 2px;
   padding-top: 0.5em;
   border-radius: 25px;
-  background-color: burlywood  ;
+  background-color: burlywood;
   color: white;
   width: 18em;
   padding-bottom: 0.5em;
@@ -60,18 +52,17 @@ html{
   font-size: 1.2em;
 }
 
-.divider{
+.divider {
   width: 18em;
   display: inline-block;
   padding-bottom: 1em;
-  padding-top:1em;
-
-
-
+  padding-top: 1em;
 }
+
 .mat-divider {
   border-top-color: black;
 }
+
 .input-button-provider {
   height: 2.5rem;
   border: 2px;
@@ -85,9 +76,7 @@ html{
   font-size: 1.2em;
 }
 
-
 .login-with-google-btn {
-
   transition: background-color 0.3s, box-shadow 0.3s;
   box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
   background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=);
@@ -96,7 +85,6 @@ html{
 }
 
 .login-with-microsoft-btn {
-
   transition: background-color 0.3s, box-shadow 0.3s;
   box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAV1BMVEX0Qzb6PzVGs1FMr1D6PzVGs1H8QC/8QC//PC0+s1RFrlNFrlMZmfoZmfoQmP//wwD/wgT/wgQYlPz/wwAYlPz/wwAhlvP/wQf0QzZMr1AhlvP/wQf///8tQX6kAAAAGHRSTlP1bW31bm5tbi8vbm1tbi8vbm1ubm1t9fXDRvKOAAAAAWJLR0QcnARBBwAAAAlwSFlzAAAN1wAADdcBQiibeAAAAAd0SU1FB+YMDwkJHSxPQ3cAAABCSURBVBjTY2CQgABGJkkIYIaJIIQk6SXEwgoXYoMAdg5OLm4IYOCBAF4+fgFBCGCQggIhYWkogAuJiNJLSAxdSBwA+PEcSzp2T/kAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjItMTItMTVUMDk6MDk6MDkrMDA6MDAg+OBhAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIyLTEyLTE1VDA5OjA5OjA5KzAwOjAwUaVY3QAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAAASUVORK5CYII=");
@@ -111,8 +99,7 @@ html{
   cursor: not-allowed;
 }
 
-
-.base-div-container{
+.base-div-container {
   background-color: #F5F6FA;
   height: 100%;
   width: 100%;
@@ -120,33 +107,22 @@ html{
   align-items: center;
   display: flex;
   padding-bottom: 10em;
-  padding-top: 10em;
-
+  overflow-x: hidden;
 }
 
-.bold{
+.bold {
   font-size: 1.2em;
 }
-
-
 
 .input-field {
   padding: 10px;
   text-align: center;
 }
 
-
-
-
-
-
-
-
-
 h1 {
   background: #41C2CB;
   padding: 0 0 0 50px;
-  color:white;
+  color: white;
   font-size: 20px;
 }
 
