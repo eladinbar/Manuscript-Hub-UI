@@ -42,15 +42,15 @@
   <!-- File input -->
   <label for="fileInput" class="file-upload-button">Choose File</label>
   <input id="fileInput" type="file" formControlName="file" (change)="onImageSelected($event)" style="display:none">
-  <div><!--   *ngIf="form.get('file') && form.get('file')!.invalid && (form.get('file')!.dirty || form.get('file')!.touched)">-->
-    Please select an image file<span class="required">*</span>
-  </div>
   <ng-container *ngIf="fileToUpload">
     <div>File selected:</div>
     <div class="uploaded-file">
       {{fileToUpload.name}} ({{fileToUpload.size / 1000 | number:'.2'}} KB)
       <fa-icon class="file-upload-remove" (click)="removeFile()" [ngStyle]="{'color': 'red'}" [icon]="faTimes"></fa-icon>
     </div>
+  </ng-container>
+  <ng-container *ngIf="!fileToUpload">
+    <div>Please select an image file<span class="required">*</span></div>
   </ng-container>
 
   <!-- Submit button -->

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {faTimes, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {DocumentService} from "../../../services/document.service";
 import {DocumentMetadataModel} from "../../../models/DocumentMetadataModel";
@@ -32,8 +32,8 @@ export class DocumentUploadFormComponent implements OnInit {
       author: [''],
       publicationDate: [''],
       description: [''],
-      file: [null, Validators.required],
-      tags: ['']
+      tags: [''],
+      file: [null, Validators.required]
     });
   }
 
@@ -66,10 +66,6 @@ export class DocumentUploadFormComponent implements OnInit {
   onSubmit() {
     if (this.form.valid) {
       const formData: FormData = new FormData();
-      // formData.append('title', this.form.value.title);
-      // formData.append('author', this.form.value.author);
-      // formData.append('publicationDate', this.form.value.publicationDate);
-      // formData.append('description', this.form.value.description);
       if (this.fileToUpload) {
         const documentMetadata: DocumentMetadataModel = new DocumentMetadataModel({
           uid: this.uid,
