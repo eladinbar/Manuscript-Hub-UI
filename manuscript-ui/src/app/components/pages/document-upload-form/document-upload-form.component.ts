@@ -15,6 +15,7 @@ export class DocumentUploadFormComponent implements OnInit {
   fileToUpload?: File;
   tags: string[] = [];
   showTagExists: boolean = false;
+  tagToAdd: string = '';
   faTimes: IconDefinition = faTimes;
 
   constructor(private formBuilder: FormBuilder, private documentService: DocumentService) {
@@ -37,13 +38,16 @@ export class DocumentUploadFormComponent implements OnInit {
   }
 
   addTag() {
-    const tagToAdd = this.form.controls['tags'].value.trim();
-    if (tagToAdd !== '' && !this.tags.includes(tagToAdd)) {
-      this.tags.push(tagToAdd);
+    this.tagToAdd = this.form.controls['tags'].value.trim();
+    if (this.tagToAdd !== '' && !this.tags.includes(this.tagToAdd)) {
+      this.tags.push(this.tagToAdd);
       this.form.controls['tags'].setValue('');
       this.showTagExists = false;
-    } else if (tagToAdd !== '') {
+    } else if (this.tagToAdd !== '') {
       this.showTagExists = true;
+      setTimeout(() => {
+        this.showTagExists = false;
+      }, 2500);
     }
   }
 

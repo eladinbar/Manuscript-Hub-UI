@@ -18,11 +18,16 @@
   <textarea id="description" formControlName="description"></textarea>
 
   <!-- Tags input -->
-  <div class="form-group">
+  <div class="form-group tags-input">
     <label for="tags" class="col-sm-2 control-label">Tags</label>
     <div class="col-sm-10">
-      <input type="text" id="tags" name="tags" class="form-control" formControlName="tags"
-             (keydown.enter)="addTag()" (blur)="addTag()" placeholder="Add tags...">
+      <div class="tags-container">
+        <input type="text" id="tags" name="tags" class="form-control" formControlName="tags"
+               (keydown.enter)="addTag()" (blur)="addTag()" placeholder="Add tags...">
+        <div *ngIf="showTagExists" class="speech-bubble">
+          The '{{ tagToAdd }}' tag already exists!
+        </div>
+      </div>
       <div class="tags">
       <span *ngFor="let tag of tags" class="tag">
         {{ tag }}
@@ -30,9 +35,6 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </span>
-      </div>
-      <div *ngIf="showTagExists" class="speech-bubble">
-        This tag already exists!
       </div>
     </div>
   </div>
