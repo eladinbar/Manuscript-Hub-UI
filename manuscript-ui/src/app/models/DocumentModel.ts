@@ -1,5 +1,6 @@
 export class DocumentModel {
-  public id?: string;
+  public documentId?: string;
+  public userId?: string;
   public fileName?: string;
   public status?: string;
   public createdTime?: Date;

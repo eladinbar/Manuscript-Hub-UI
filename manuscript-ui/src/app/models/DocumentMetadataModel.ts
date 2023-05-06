@@ -12,6 +12,7 @@ export class DocumentMetadataModel {
   public description?: string = "";
   public status?: string = StatusEnum.ENABLED;
   public privacy?: string = PrivacyEnum.Private;
+  public tags?: string[] = [];
   public createdTime?: Date = new Date();
   public updatedTime?: Date = new Date();
 

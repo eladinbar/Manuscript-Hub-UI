@@ -104,13 +104,13 @@ export class DashboardComponent implements OnInit {
 
   onDocumentOpen(document: DocumentModel) {
     console.log(document);
-    if (document == null || document.id == undefined) return;
-    this.router.navigate(['/' + RouterEnum.DocumentDetail, document.id]);
+    if (document == null || document.documentId == undefined) return;
+    this.router.navigate(['/' + RouterEnum.DocumentDetail, document.documentId]);
   }
 
   onDocumentDelete(document: DocumentModel) {
     console.log(document);
-    this.documentService.deleteDocumentById(document.id!, this.uid!)
+    this.documentService.deleteDocumentById(document.documentId!, this.uid!)
       .subscribe(res => {
       });
   }

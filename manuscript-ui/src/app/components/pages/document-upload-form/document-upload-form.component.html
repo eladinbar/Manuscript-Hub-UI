@@ -1,18 +1,43 @@
 <h1>Upload a new document to the system</h1>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- Title input -->
   <label for="title">Title<span class="required">*</span></label>
   <input id="title" type="text" formControlName="title">
 
+  <!-- Author input -->
   <label for="author">Author</label>
   <input id="author" type="text" formControlName="author">
 
+  <!-- Publication date input -->
   <label for="publicationDate">Publication Date</label>
   <input id="publicationDate" type="date" formControlName="publicationDate">
 
+  <!-- Description input -->
   <label for="description">Description</label>
   <textarea id="description" formControlName="description"></textarea>
 
+  <!-- Tags input -->
+  <div class="form-group">
+    <label for="tags" class="col-sm-2 control-label">Tags</label>
+    <div class="col-sm-10">
+      <input type="text" id="tags" name="tags" class="form-control" formControlName="tags"
+             (keydown.enter)="addTag()" (blur)="addTag()" placeholder="Add tags...">
+      <div class="tags">
+      <span *ngFor="let tag of tags" class="tag">
+        {{ tag }}
+        <button type="button" class="close" aria-label="Close" (click)="removeTag(tag)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </span>
+      </div>
+      <div *ngIf="showTagExists" class="speech-bubble">
+        This tag already exists!
+      </div>
+    </div>
+  </div>
+
+  <!-- File input -->
   <label for="fileInput" class="file-upload-button">Choose File</label>
   <input id="fileInput" type="file" formControlName="file" (change)="onImageSelected($event)" style="display:none">
   <div><!--   *ngIf="form.get('file') && form.get('file')!.invalid && (form.get('file')!.dirty || form.get('file')!.touched)">-->
@@ -26,5 +51,6 @@
     </div>
   </ng-container>
 
+  <!-- Submit button -->
   <button type="submit" [disabled]="form.invalid">Submit</button>
 </form>

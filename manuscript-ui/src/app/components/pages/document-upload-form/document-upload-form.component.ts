@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {faTimes, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {DocumentService} from "../../../services/document.service";
 import {DocumentMetadataModel} from "../../../models/DocumentMetadataModel";
@@ -13,6 +13,8 @@ export class DocumentUploadFormComponent implements OnInit {
   uid!: string;
   form!: FormGroup;
   fileToUpload?: File;
+  tags: string[] = [];
+  showTagExists: boolean = false;
   faTimes: IconDefinition = faTimes;
 
   constructor(private formBuilder: FormBuilder, private documentService: DocumentService) {
@@ -29,8 +31,28 @@ export class DocumentUploadFormComponent implements OnInit {
       author: [''],
       publicationDate: [''],
       description: [''],
-      file: [null, Validators.required]
+      file: [null, Validators.required],
+      tags: ['']
     });
+  }
+
+  addTag() {
+    const tagToAdd = this.form.controls['tags'].value.trim();
+    if (tagToAdd !== '' && !this.tags.includes(tagToAdd)) {
+      this.tags.push(tagToAdd);
+      this.form.controls['tags'].setValue('');
+      this.showTagExists = false;
+    } else if (tagToAdd !== '') {
+      this.showTagExists = true;
+    }
+  }
+
+  removeTag(tag: string) {
+    const index = this.tags.indexOf(tag);
+    if (index !== -1) {
+      this.tags.splice(index, 1);
+      this.form.controls['tags'].setValue('');
+    }
   }
 
   onImageSelected(event: any) {
@@ -51,6 +73,7 @@ export class DocumentUploadFormComponent implements OnInit {
           author: this.form.value.author,
           publicationDate: this.form.value.publicationDate,
           description: this.form.value.description,
+          tags: this.tags
         });
         formData.append('file', this.fileToUpload, this.fileToUpload.name);
         formData.append('metadata', JSON.stringify(documentMetadata));
