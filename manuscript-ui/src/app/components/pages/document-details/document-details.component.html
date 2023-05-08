@@ -1,14 +1,15 @@
-<canvas #canvas>
-  <style>canvas {
-    float: left;
-    margin: 10px;
-  }</style>
-</canvas>
+<div #div style="overflow: auto;">
+  <button (click)="zoomIn()">Zoom In</button>
+  <button (click)="zoomOut()">Zoom Out</button>
+  <button (click)="setDrawingMode(true)">Drawing Mode</button>
+  <button (click)="setDrawingMode(false)">Pan Mode</button>
+  <canvas #canvas></canvas>
+</div>
+
 
 <app-document-item
   *ngFor="let annotation of annotations"
   [annotation]="annotation"
   (onSelectAnnotation)="selectAnnotation(annotation, annotation.startX, annotation.startY, annotation.endX, annotation.endY)"
-
   (onDeleteAnnotation)="deleteAnnotation(annotation)"
 ></app-document-item>
