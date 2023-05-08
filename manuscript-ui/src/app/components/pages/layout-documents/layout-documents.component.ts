@@ -4,6 +4,7 @@ import {ActivatedRoute} from "@angular/router";
 import {DocumentService} from "../../../services/document.service";
 import {AnnotationModel} from "../../../models/AnnotationModel";
 import {DocumentInfoTableModel} from "../../../models/DocumentInfoTableModel";
+import {TownCrierService} from "../../../services/town-crier.service";
 
 @Component({
   selector: 'app-layout-documents',
@@ -19,10 +20,13 @@ export class LayoutDocumentsComponent implements OnInit {
   showMenu: boolean = false;
   images: string[] = []
   addedDocs: DocumentInfoTableModel[] = []
+  photosCounter: number = 0;
+  imageCount: number = 1;
 
 
 
-  constructor(private route: ActivatedRoute, private docService: DocumentService) { }
+
+  constructor(private route: ActivatedRoute, private docService: DocumentService, public townCrier: TownCrierService) { }
 
   ngOnInit(): void {
     const routeParams = this.route.snapshot.paramMap;
@@ -32,20 +36,19 @@ export class LayoutDocumentsComponent implements OnInit {
     this.getAllDocIds();
   }
 
-  // Add this method to load the uploaded image URL
   loadUploadedImageUrl(): void {
-    // Retrieve the uploaded image URL from your data source and assign it to this.uploadedImageUrl
-    // For demonstration purposes, we'll use the first image from the imagePool as the uploaded image
+    this.townCrier.info('Loading image...');
     this.uploadedImageUrl = this.documentId;
-
+    this.photosCounter = 1;
   }
 
   getAllDocIds() {
       this.docService.getAllDocumentsByUid(this.uid).subscribe({
         next: (documentTableModels: DocumentInfoTableModel[]) => {
           console.log('HTTP GET Annotation retrieval request successful: ', documentTableModels);
-          documentTableModels.forEach((doc) => this.addedDocs.push(doc));
-          documentTableModels.forEach((doc) => this.images.push(doc.fileName!));
+          // building the lists without the opened image, so user cant open it twice
+          documentTableModels.forEach((doc) => {if (this.documentId != doc.documentId) this.addedDocs.push(doc)});
+          documentTableModels.forEach((doc) => {if (this.documentId != doc.fileName) this.images.push(doc.fileName!)});
           console.log('images: ', this.images);
         },
         error: (err: any) => {
@@ -54,9 +57,15 @@ export class LayoutDocumentsComponent implements OnInit {
       });
   }
 
-  // Add this method to add the selected image to the grid layout
   addImage(index: number, nextDoc: DocumentInfoTableModel): void {
-    this.addedDocIds.push(nextDoc.documentId!);
-    // this.addedDocIds[index] = nextDoc;
+    if (this.photosCounter < 4) {
+      this.townCrier.info('Loading image...');
+      this.addedDocIds.push(nextDoc.documentId!);
+      this.photosCounter += 1;
+      this.imageCount = Math.min(this.photosCounter, 4);
+    } else {
+      this.townCrier.info('Can not open more than 4 photos');
+    }
   }
+
 }
