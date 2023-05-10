@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../services/auth/auth.service";
+import {RouterEnum} from "../../enums/RouterEnum";
 
 @Component({
   selector: 'app-main',
@@ -43,4 +44,6 @@ export class MainComponent implements OnInit {
   signout() {
     this.authService.logout();
   }
+
+  protected readonly RouterEnum = RouterEnum;
 }

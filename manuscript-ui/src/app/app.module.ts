@@ -42,6 +42,7 @@ import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import { RegisterComponent } from './components/pages/account/register/register.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { DocumentItemComponent } from './components/document-item/document-item.component';
+import { AlgorithmUploadFormComponent } from './components/pages/algorithm-upload-form/algorithm-upload-form.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { DocumentItemComponent } from './components/document-item/document-item.
     RegisterComponent,
     DialogComponent,
     DocumentItemComponent,
+    AlgorithmUploadFormComponent,
   ],
     imports: [
         BrowserModule,

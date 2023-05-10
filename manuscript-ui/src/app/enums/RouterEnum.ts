@@ -3,6 +3,7 @@ export enum RouterEnum {
     Dashboard = 'Dashboard',
     Home = 'HOME',
     DocumentDetail = 'DocumentDetail',
+    AlgorithmUploadForm = 'AlgorithmUploadForm',
     PageNotFound = 'PageNotFound',
     DocumentId = 'documentId',
 }

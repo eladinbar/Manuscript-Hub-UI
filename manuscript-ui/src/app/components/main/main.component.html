@@ -8,12 +8,14 @@
 </mat-toolbar>
 
 <mat-sidenav-container autosize>
+  <!--  Side navigator  -->
   <mat-sidenav #sidenav [ngStyle]="{ 'width.em': sidenavWidth }" [opened]="sidenavStatus"
                class="sidenav"
                mode="side">
+    <!--  Dashboard  -->
     <mat-nav-list>
-      <mat-list-item  [routerLink]="'/Dashboard'" routerLinkActive="active">
-        <mat-icon  class="text-white" mat-list-icon>dashboard</mat-icon>
+      <mat-list-item [routerLink]="RouterEnum.Dashboard" routerLinkActive="active">
+        <mat-icon class="text-white" mat-list-icon>dashboard</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
           <div class="menu-item">Dashboard</div>
@@ -21,9 +23,10 @@
       </mat-list-item>
     </mat-nav-list>
 
+    <!--  Models  -->
     <mat-nav-list>
-      <mat-list-item  [routerLink]="'/Dashboard'" routerLinkActive="active">
-        <mat-icon  class="text-white" mat-list-icon>Models</mat-icon>
+      <mat-list-item [routerLink]="RouterEnum.Dashboard" routerLinkActive="active">
+        <mat-icon class="text-white" mat-list-icon>Models</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
           <div class="menu-item">Models</div>
@@ -31,9 +34,22 @@
       </mat-list-item>
     </mat-nav-list>
 
+    <!--  Algorithm upload  -->
     <mat-nav-list>
-      <mat-list-item  (click)="signout()" routerLinkActive="active">
-        <mat-icon  class="material-icons text-white" mat-list-icon>logout</mat-icon>
+      <!--  *ngIf="role == 'Admin' || role == 'Developer'"  -->
+      <mat-list-item [routerLink]="RouterEnum.AlgorithmUploadForm" routerLinkActive="active">
+        <mat-icon class="text-white">models</mat-icon>
+        <div fxFlex="10"></div>
+        <div *ngIf="sidenavWidth > 6" class="sidenav-item">
+          <div class="menu-item">Algorithm Upload Form</div>
+        </div>
+      </mat-list-item>
+    </mat-nav-list>
+
+    <!--  Logout  -->
+    <mat-nav-list>
+      <mat-list-item (click)="signout()" routerLinkActive="active">
+        <mat-icon class="material-icons text-white" mat-list-icon>logout</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
           <div class="menu-item">Logout</div>

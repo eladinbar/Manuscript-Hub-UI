@@ -7,6 +7,7 @@ import {LoginComponent} from "./components/pages/account/login/login.component";
 import {MainComponent} from "./components/main/main.component";
 import {AuthGuard} from "./shared/guards/auth.guard";
 import {RegisterComponent} from "./components/pages/account/register/register.component";
+import {AlgorithmUploadFormComponent} from "./components/pages/algorithm-upload-form/algorithm-upload-form.component";
 
 const routes: Routes = [
   {
@@ -16,7 +17,9 @@ const routes: Routes = [
       {path: RouterEnum.Dashboard, component: DashboardComponent},
 
       {path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId,
-        component: DocumentDetailsComponent,}
+        component: DocumentDetailsComponent,},
+
+      {path: RouterEnum.AlgorithmUploadForm, component: AlgorithmUploadFormComponent},
     ]
   },
 
