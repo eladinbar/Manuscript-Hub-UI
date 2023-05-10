@@ -14,7 +14,7 @@
                mode="side">
     <!--  Dashboard  -->
     <mat-nav-list>
-      <mat-list-item [routerLink]="RouterEnum.Dashboard" routerLinkActive="active">
+      <mat-list-item [routerLink]="'/' + RouterEnum.Dashboard" routerLinkActive="active">
         <mat-icon class="text-white" mat-list-icon>dashboard</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
@@ -25,7 +25,7 @@
 
     <!--  Models  -->
     <mat-nav-list>
-      <mat-list-item [routerLink]="RouterEnum.Dashboard" routerLinkActive="active">
+      <mat-list-item [routerLink]="'/' + RouterEnum.Dashboard" routerLinkActive="active">
         <mat-icon class="text-white" mat-list-icon>Models</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
@@ -37,11 +37,11 @@
     <!--  Algorithm upload  -->
     <mat-nav-list>
       <!--  *ngIf="role == 'Admin' || role == 'Developer'"  -->
-      <mat-list-item [routerLink]="RouterEnum.AlgorithmUploadForm" routerLinkActive="active">
+      <mat-list-item [routerLink]="'/' + RouterEnum.AlgorithmSubmissionForm" routerLinkActive="active">
         <mat-icon class="text-white">models</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
-          <div class="menu-item">Algorithm Upload Form</div>
+          <div class="menu-item">Algorithm Submission Form</div>
         </div>
       </mat-list-item>
     </mat-nav-list>

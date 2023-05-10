@@ -1,0 +1,54 @@
+<form (ngSubmit)="onSubmit()">
+  <!-- Title input -->
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" class="form-control" id="title" [(ngModel)]="title" name="title">
+    <i class="fa fa-question-circle" aria-hidden="true" title="Enter a title for your algorithm"></i>
+  </div>
+
+  <!-- Model Type input -->
+  <label for="modelType">Model Type</label>
+  <div class="form-group">
+    <select class="form-control" id="modelType" [(ngModel)]="modelType" name="modelType">
+      <option value="OCR">OCR</option>
+      <option value="Line Extraction">Line Extraction</option>
+    </select>
+    <i class="fa fa-question-circle" aria-hidden="true" title="Select the type of model you are submitting"></i>
+  </div>
+
+  <!-- Description input -->
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea class="form-control" id="description" [(ngModel)]="description" name="description"></textarea>
+    <i class="fa fa-question-circle" aria-hidden="true" title="Enter a description of your algorithm"></i>
+  </div>
+
+  <!-- Repository input -->
+  <div class="form-group">
+    <label for="repository">Repository</label>
+    <input type="text" class="form-control" id="repository" [(ngModel)]="repository" name="repository" [ngClass]="{'is-invalid': invalidLink}">
+    <i class="fa fa-question-circle" aria-hidden="true" title="Enter the link to the repository of your algorithm"></i>
+    <div class="invalid-feedback" *ngIf="invalidLink">Please enter a valid link</div>
+  </div>
+
+  <!-- Demo input -->
+  <label for="demoFile" class="file-upload-button">Choose File</label>
+  <div class="form-group">
+    <input id="demoFile" type="file" class="form-control-file" (change)="onFileSelected($event)" style="display:none">
+    <ng-container *ngIf="demoFile">
+      <div>File selected:</div>
+      <div class="uploaded-file">
+        {{demoFile.name}} ({{demoFile.size / 1000 | number:'.2'}} KB)
+        <fa-icon class="file-upload-remove" (click)="removeFile()" [ngStyle]="{'color': 'red'}" [icon]="faTimes"></fa-icon>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!demoFile">
+      <div>Please select a demo video file<span class="required">*</span></div>
+    </ng-container>
+
+    <i class="fa fa-question-circle" aria-hidden="true" title="Upload a demo file of your algorithm"></i>
+  </div>
+
+  <!-- Submit button -->
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

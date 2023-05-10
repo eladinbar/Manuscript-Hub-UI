@@ -42,7 +42,8 @@ import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import { RegisterComponent } from './components/pages/account/register/register.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { DocumentItemComponent } from './components/document-item/document-item.component';
-import { AlgorithmUploadFormComponent } from './components/pages/algorithm-upload-form/algorithm-upload-form.component';
+import { AlgorithmSubmissionFormComponent } from './components/pages/algorithm-submission-form/algorithm-submission-form.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 
 @NgModule({
   declarations: [
@@ -54,7 +55,7 @@ import { AlgorithmUploadFormComponent } from './components/pages/algorithm-uploa
     RegisterComponent,
     DialogComponent,
     DocumentItemComponent,
-    AlgorithmUploadFormComponent,
+    AlgorithmSubmissionFormComponent,
   ],
     imports: [
         BrowserModule,
@@ -90,7 +91,7 @@ import { AlgorithmUploadFormComponent } from './components/pages/algorithm-uploa
         AngularFireModule.initializeApp(environment.firebase),
         AngularFireAuthModule,
         FormsModule,
-
+        FontAwesomeModule
     ],
   providers: [
     {

@@ -7,7 +7,7 @@ import {LoginComponent} from "./components/pages/account/login/login.component";
 import {MainComponent} from "./components/main/main.component";
 import {AuthGuard} from "./shared/guards/auth.guard";
 import {RegisterComponent} from "./components/pages/account/register/register.component";
-import {AlgorithmUploadFormComponent} from "./components/pages/algorithm-upload-form/algorithm-upload-form.component";
+import {AlgorithmSubmissionFormComponent} from "./components/pages/algorithm-submission-form/algorithm-submission-form.component";
 
 const routes: Routes = [
   {
@@ -19,7 +19,7 @@ const routes: Routes = [
       {path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId,
         component: DocumentDetailsComponent,},
 
-      {path: RouterEnum.AlgorithmUploadForm, component: AlgorithmUploadFormComponent},
+      {path: RouterEnum.AlgorithmSubmissionForm, component: AlgorithmSubmissionFormComponent},
     ]
   },
 

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AlgorithmUploadFormComponent } from './algorithm-upload-form.component';
+import { AlgorithmSubmissionFormComponent } from './algorithm-submission-form.component';
 
 describe('AlgorithmUploadFormComponent', () => {
-  let component: AlgorithmUploadFormComponent;
-  let fixture: ComponentFixture<AlgorithmUploadFormComponent>;
+  let component: AlgorithmSubmissionFormComponent;
+  let fixture: ComponentFixture<AlgorithmSubmissionFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AlgorithmUploadFormComponent ]
+      declarations: [ AlgorithmSubmissionFormComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AlgorithmUploadFormComponent);
+    fixture = TestBed.createComponent(AlgorithmSubmissionFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

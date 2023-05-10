@@ -1,0 +1,31 @@
+@import "../../../shared/styles/form-styles.scss";
+
+.form-group select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.fa-question-circle {
+  margin-left: 0.5rem;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.fa-question-circle:hover {
+  color: #0056b3;
+}
+
+.invalid-link {
+  border-color: red;
+}
+
+.invalid-feedback {
+  color: red;
+  margin-top: 0.25rem;
+}
+
+.btn-primary {
+  margin-top: 1rem;
+}
