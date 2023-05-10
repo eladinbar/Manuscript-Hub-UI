@@ -3,33 +3,54 @@
 <form (ngSubmit)="onSubmit()">
   <!-- Title input -->
   <div class="form-group">
-    <label for="title">Title</label>
+    <label for="title">Title
+      <span class="tooltip-container">
+        <i class="fa fa-question-circle tooltip-icon" aria-hidden="true">
+          <span class="tooltip-text">Enter a title for your algorithm</span>
+        </i>
+      </span>
+    </label>
     <input type="text" class="form-control" id="title" [(ngModel)]="title" name="title">
-    <i class="fa fa-question-circle" aria-hidden="true" title="Enter a title for your algorithm"></i>
   </div>
 
   <!-- Model Type input -->
-  <label for="modelType">Model Type</label>
+  <label for="modelType">Model Type
+    <span class="tooltip-container">
+      <i class="fa fa-question-circle tooltip-icon" aria-hidden="true">
+        <span class="tooltip-text">Select the type of model you are submitting</span>
+      </i>
+    </span>
+  </label>
   <div class="form-group">
     <select class="form-control" id="modelType" [(ngModel)]="modelType" name="modelType">
       <option value="OCR">OCR</option>
       <option value="Line Extraction">Line Extraction</option>
     </select>
-    <i class="fa fa-question-circle" aria-hidden="true" title="Select the type of model you are submitting"></i>
   </div>
 
   <!-- Description input -->
   <div class="form-group">
-    <label for="description">Description</label>
+    <label for="description">Description
+      <span class="tooltip-container">
+        <i class="fa fa-question-circle tooltip-icon" aria-hidden="true">
+          <span class="tooltip-text">Enter a description of your algorithm</span>
+        </i>
+      </span>
+    </label>
     <textarea class="form-control" id="description" [(ngModel)]="description" name="description"></textarea>
-    <i class="fa fa-question-circle" aria-hidden="true" title="Enter a description of your algorithm"></i>
   </div>
 
   <!-- Repository input -->
   <div class="form-group">
-    <label for="repository">Repository</label>
-    <input type="text" class="form-control" id="repository" [(ngModel)]="repository" name="repository" [ngClass]="{'is-invalid': invalidLink}">
-    <i class="fa fa-question-circle" aria-hidden="true" title="Enter the link to the repository of your algorithm"></i>
+    <label for="repository">Repository
+      <span class="tooltip-container">
+        <i class="fa fa-question-circle tooltip-icon" aria-hidden="true">
+          <span class="tooltip-text">Enter the link to the repository of your algorithm</span>
+        </i>
+      </span>
+    </label>
+    <input type="text" class="form-control" id="repository" [(ngModel)]="repository" name="repository"
+           [ngClass]="{'is-invalid': invalidLink}">
     <div class="invalid-feedback" *ngIf="invalidLink">Please enter a valid link</div>
   </div>
 
@@ -45,10 +66,14 @@
       </div>
     </ng-container>
     <ng-container *ngIf="!demoFile">
-      <div>Please select a demo video file<span class="required">*</span></div>
+      <div>Please select a demo video file
+        <span class="tooltip-container">
+          <i class="fa fa-question-circle tooltip-icon" aria-hidden="true">
+            <span class="tooltip-text">Upload a demo file of your algorithm</span>
+          </i>
+        </span>
+      </div>
     </ng-container>
-
-    <i class="fa fa-question-circle" aria-hidden="true" title="Upload a demo file of your algorithm"></i>
   </div>
 
   <!-- Submit button -->
