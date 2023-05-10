@@ -43,7 +43,8 @@ import { RegisterComponent } from './components/pages/account/register/register.
 import { DialogComponent } from './components/dialog/dialog.component';
 import { DocumentItemComponent } from './components/document-item/document-item.component';
 import { AlgorithmSubmissionFormComponent } from './components/pages/algorithm-submission-form/algorithm-submission-form.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
+import {FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome'
+import {faQuestionCircle, faTimes} from "@fortawesome/free-solid-svg-icons";
 
 @NgModule({
   declarations: [
@@ -108,4 +109,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  constructor(library: FaIconLibrary) {
+    library.addIcons(faTimes, faQuestionCircle);
+  }
 }

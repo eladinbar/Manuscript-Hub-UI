@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {faTimes, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {AlgorithmService} from "../../../services/algorithm.service";
 
 @Component({
@@ -17,7 +16,6 @@ export class AlgorithmSubmissionFormComponent implements OnInit {
   repository?: string;
   demoFile?: File;
   invalidLink: boolean = false;
-  faTimes: IconDefinition = faTimes;
 
   constructor(private formBuilder: FormBuilder, private algorithmService: AlgorithmService) {
     this.createForm();

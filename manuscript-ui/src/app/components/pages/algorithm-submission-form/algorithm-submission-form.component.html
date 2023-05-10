@@ -1,3 +1,5 @@
+<h1>Submit a new algorithm to the system</h1>
+
 <form (ngSubmit)="onSubmit()">
   <!-- Title input -->
   <div class="form-group">
@@ -39,7 +41,7 @@
       <div>File selected:</div>
       <div class="uploaded-file">
         {{demoFile.name}} ({{demoFile.size / 1000 | number:'.2'}} KB)
-        <fa-icon class="file-upload-remove" (click)="removeFile()" [ngStyle]="{'color': 'red'}" [icon]="faTimes"></fa-icon>
+        <fa-icon class="file-upload-remove" (click)="removeFile()" [ngStyle]="{'color': 'red'}" icon="times"></fa-icon>
       </div>
     </ng-container>
     <ng-container *ngIf="!demoFile">
