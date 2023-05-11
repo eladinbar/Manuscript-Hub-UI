@@ -1,6 +1,6 @@
 <h1>Submit a new algorithm to the system</h1>
 
-<form (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
   <!-- Title input -->
   <div class="form-group">
     <label for="title">Title
@@ -10,7 +10,7 @@
         </i>
       </span>
     </label>
-    <input type="text" class="form-control" id="title" [(ngModel)]="title" name="title">
+    <input type="text" class="form-control" id="title" formControlName="title" name="title">
   </div>
 
   <!-- Model Type input -->
@@ -22,7 +22,7 @@
     </span>
   </label>
   <div class="form-group">
-    <select class="form-control" id="modelType" [(ngModel)]="modelType" name="modelType">
+    <select class="form-control" id="modelType" formControlName="modelType" name="modelType">
       <option value="OCR">OCR</option>
       <option value="Line Extraction">Line Extraction</option>
     </select>
@@ -37,7 +37,7 @@
         </i>
       </span>
     </label>
-    <textarea class="form-control" id="description" [(ngModel)]="description" name="description"></textarea>
+    <textarea class="form-control" id="description" formControlName="description" name="description"></textarea>
   </div>
 
   <!-- Repository input -->
@@ -49,7 +49,7 @@
         </i>
       </span>
     </label>
-    <input type="text" class="form-control" id="repository" [(ngModel)]="repository" name="repository"
+    <input type="text" class="form-control" id="repository" formControlName="repository" name="repository"
            [ngClass]="{'is-invalid': invalidLink}">
     <div class="invalid-feedback" *ngIf="invalidLink">Please enter a valid link</div>
   </div>
@@ -57,7 +57,7 @@
   <!-- Demo input -->
   <label for="demoFile" class="file-upload-button">Choose File</label>
   <div class="form-group">
-    <input id="demoFile" type="file" class="form-control-file" (change)="onFileSelected($event)" style="display:none">
+    <input id="demoFile" type="file" class="form-control-file" formControlName="demoFile" (change)="onFileSelected($event)" style="display:none">
     <ng-container *ngIf="demoFile">
       <div>File selected:</div>
       <div class="uploaded-file">
@@ -77,5 +77,5 @@
   </div>
 
   <!-- Submit button -->
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" [disabled]="form.invalid">Submit</button>
 </form>

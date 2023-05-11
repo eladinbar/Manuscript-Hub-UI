@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AlgorithmService} from "../../../services/algorithm.service";
+import {AlgorithmModel} from "../../../models/AlgorithmModel";
 
 @Component({
   selector: 'app-algorithm-submission-form',
@@ -10,10 +11,6 @@ import {AlgorithmService} from "../../../services/algorithm.service";
 export class AlgorithmSubmissionFormComponent implements OnInit {
   uid!: string;
   form!: FormGroup;
-  title?: string;
-  modelType?: string;
-  description?: string;
-  repository?: string;
   demoFile?: File;
   invalidLink: boolean = false;
 
@@ -31,12 +28,31 @@ export class AlgorithmSubmissionFormComponent implements OnInit {
       modelType: ['', Validators.required],
       description: ['', Validators.required],
       repository: ['', Validators.required],
-      file: [null, Validators.required]
+      demoFile: [null, Validators.required]
     });
   }
 
   onSubmit() {
-    // handle form submission here
+    if (this.form.valid) {
+      console.log("valid submit")
+      const formData: FormData = new FormData();
+      if (this.demoFile) {
+        const algorithm: AlgorithmModel = new AlgorithmModel({
+          uid: this.uid,
+          title: this.form.value.title,
+          modelType: this.form.value.modelType,
+          description: this.form.value.description,
+          url: this.form.value.repository,
+          demoFile: this.demoFile,
+        });
+        console.log(algorithm);
+        formData.append('algorithm', JSON.stringify(algorithm));
+        console.log("Submitting algorithm");
+        this.algorithmService.submitAlgorithm(formData)
+          .subscribe(res => {
+          });
+      }
+    }
   }
 
   onFileSelected(event: any) {
@@ -44,12 +60,8 @@ export class AlgorithmSubmissionFormComponent implements OnInit {
   }
 
   removeFile() {
-    this.form.get('file')?.setValue(null);
+    this.form.get('demoFile')?.setValue(null);
     this.demoFile = undefined;
-    const fileInput = document.getElementById('demoFile') as HTMLInputElement;
-    if (fileInput) {
-      fileInput.value = ''; // reset the input element
-    }
   }
 
   checkLinkValidity() {
