@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Choose a privacy setting</h2>
+<mat-dialog-content>
+  <mat-radio-group [(ngModel)]="selectedOption">
+    <mat-radio-button *ngFor="let option of options" [value]="option">
+      {{ option }}
+    </mat-radio-button>
+  </mat-radio-group>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button [mat-dialog-close]="selectedOption" cdkFocusInitial>Confirm</button>
+</mat-dialog-actions>

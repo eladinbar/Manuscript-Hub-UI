@@ -5,7 +5,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {AnnotationModel} from "../../../models/AnnotationModel";
 import {RouterEnum} from "../../../enums/RouterEnum";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {DialogComponent} from "../../dialog/dialog.component";
+import {DialogComponent} from "../../dialogs/dialog/dialog.component";
 import {AnnotationCoordinatesModel} from "../../../models/AnnotationCoordinatesModel";
 import {AnnotationService} from "../../../services/annotation.service";
 

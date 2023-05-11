@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Inject, Output, TemplateRef, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {AnnotationModel} from "../../models/AnnotationModel";
+import {AnnotationModel} from "../../../models/AnnotationModel";
 
 @Component({
   selector: 'app-dialog',

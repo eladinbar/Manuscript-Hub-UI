@@ -15,6 +15,10 @@ import {TextService} from "../../../services/text.service";
 import {DateService} from "../../../services/date.service";
 import {Client} from "@stomp/stompjs";
 import {RouterEnum} from "../../../enums/RouterEnum";
+import {PrivacyEnum} from "../../../enums/PrivacyEnum";
+import {DocumentMetadataModel} from "../../../models/DocumentMetadataModel";
+import {MatDialog} from "@angular/material/dialog";
+import {PrivacyDialogComponent} from "../../dialogs/privacy-dialog/privacy-dialog.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -41,7 +45,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild('paginator') paginator?: MatPaginator;
 
   constructor(public textService: TextService, public dateService: DateService,
-              public router: Router, private formBuilder: FormBuilder,
+              public router: Router, private formBuilder: FormBuilder, private dialog: MatDialog,
               private socketService: SocketService, private documentService: DocumentService) {
     this.formGroup = this.formBuilder.group({
       selectedFile: null,
@@ -113,6 +117,20 @@ export class DashboardComponent implements OnInit {
     this.documentService.deleteDocumentById(document.documentId!, this.uid!)
       .subscribe(res => {
       });
+  }
+
+  onDocumentChangePrivacy(documentMetadata: DocumentMetadataModel) {
+    const dialogRef = this.dialog.open(PrivacyDialogComponent, {
+      data: { currentPrivacy: documentMetadata.privacy },
+      width: '350px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && Object.values(PrivacyEnum).includes(result)) {
+        documentMetadata.privacy = result;
+        this.documentService.updateDocumentMetadata(documentMetadata);
+      }
+    });
   }
 
   uploadFileService() {

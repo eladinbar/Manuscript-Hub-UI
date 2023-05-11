@@ -6,6 +6,7 @@ import {RestErrorsHandlerService} from "./rest-errors-handler.service";
 import {TownCrierService} from "./town-crier.service";
 import {environment} from "../../environments/environment";
 import {RouterEnum} from "../enums/RouterEnum";
+import {DocumentMetadataModel} from "../models/DocumentMetadataModel";
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +20,27 @@ export class DocumentService {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
 
-    return from(this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_FILE}`, data, {headers: headers}))
+    return from(this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_DOCUMENT}`, data, {headers: headers}))
       .pipe(
         map((res: any) => {
           this.townCrier.info("Please wait until the new document is processed...")
           this.router.navigate(['/' + RouterEnum.Dashboard]);
+          return res;
+        }),
+        catchError(errorRes => {
+          this.townCrier.error(errorRes.error)
+          return this.restErrorsHandlerService.handleRequestError(errorRes);
+        }));
+  }
+
+  updateDocumentMetadata(documentMetadata: DocumentMetadataModel) {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+
+    return from(this.http.patch(`${environment.baseUrl}${environment.RESOURCE_UPDATE_DOCUMENT_METADATA}`, documentMetadata, {headers: headers}))
+      .pipe(
+        map((res: any) => {
+          this.townCrier.info("Document is being updated.")
           return res;
         }),
         catchError(errorRes => {
@@ -48,7 +65,7 @@ export class DocumentService {
   }
 
   getAllDocumentsByUid(uid: string) {
-    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_All_DOCUMENTS_BY_UID}${uid}`))
+    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_DOCUMENTS_BY_UID}${uid}`))
       .pipe(
         map((res: any) => {
           console.log(res)

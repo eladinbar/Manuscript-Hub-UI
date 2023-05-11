@@ -40,10 +40,11 @@ import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import {HttpErrorInterceptorService} from "./interceptors/http-error-interceptor.interceptor";
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import { RegisterComponent } from './components/pages/account/register/register.component';
-import { DialogComponent } from './components/dialog/dialog.component';
+import { DialogComponent } from './components/dialogs/dialog/dialog.component';
 import { DocumentItemComponent } from './components/document-item/document-item.component';
 import { DocumentUploadFormComponent } from './components/pages/document-upload-form/document-upload-form.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PrivacyDialogComponent } from './components/dialogs/privacy-dialog/privacy-dialog.component'
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
     DialogComponent,
     DocumentItemComponent,
     DocumentUploadFormComponent,
+    PrivacyDialogComponent,
   ],
     imports: [
         BrowserModule,
