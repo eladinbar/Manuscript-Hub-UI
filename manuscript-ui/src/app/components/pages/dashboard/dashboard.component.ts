@@ -25,9 +25,9 @@ import {PrivacyDialogComponent} from "../../dialogs/privacy-dialog/privacy-dialo
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  documentInfoTableModels: Array<DocumentModel> = [];
+  documentInfoTableModels: Array<DocumentMetadataModel> = [];
   displayedColumns: string[] = [DocumentTableEnum.Status, DocumentTableEnum.CreatedTime, DocumentTableEnum.FileName, DocumentTableEnum.Actions];
-  dataSource: MatTableDataSource<DocumentModel> = new MatTableDataSource<DocumentModel>([]);
+  dataSource: MatTableDataSource<DocumentMetadataModel> = new MatTableDataSource<DocumentMetadataModel>([]);
   isStatusFinished = false;
   status = StatusEnum;
   private subscribe?: Subscription;

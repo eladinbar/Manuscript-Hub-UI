@@ -1,5 +1,6 @@
 export class DocumentModel {
   public documentId?: string;
+  public documentMetadataId?: string;
   public userId?: string;
   public fileName?: string;
   public status?: string;

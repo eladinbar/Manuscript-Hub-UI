@@ -1,6 +1,6 @@
 <h1>Upload a new document to the system</h1>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
   <!-- Title input -->
   <label for="title">Title<span class="required">*</span></label>
   <input id="title" type="text" formControlName="title">
@@ -41,7 +41,7 @@
 
   <!-- File input -->
   <label for="fileInput" class="file-upload-button">Choose File</label>
-  <input id="fileInput" type="file" formControlName="file" (change)="onImageSelected($event)" style="display:none">
+  <input id="fileInput" name="file" type="file" formControlName="file" (change)="onImageSelected($event)" style="display:none">
   <ng-container *ngIf="fileToUpload">
     <div>File selected:</div>
     <div class="uploaded-file">

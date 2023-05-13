@@ -75,9 +75,9 @@ export class DocumentUploadFormComponent implements OnInit {
           description: this.form.value.description,
           tags: this.tags
         });
-        formData.append('file', this.fileToUpload, this.fileToUpload.name);
+        // formData.append('file', this.fileToUpload, this.fileToUpload.name);
         formData.append('metadata', JSON.stringify(documentMetadata));
-        console.log("Uploading file");
+        console.log("Uploading file", documentMetadata);
         this.documentService.uploadDocument(formData)
           .subscribe(res => {
           });
