@@ -8,7 +8,6 @@ import {MatTableDataSource} from "@angular/material/table";
 import {DocumentTableEnum} from "../../../enums/DocumentTableEnum";
 import {DocumentModel} from "../../../models/DocumentModel";
 import {StatusEnum} from "../../../enums/StatusEnum";
-import {VideoUploadEnum} from "../../../enums/VideoUploadEnum";
 import {DocumentService} from "../../../services/document.service";
 import {SocketService} from "../../../services/socket.service";
 import {TextService} from "../../../services/text.service";
@@ -33,7 +32,6 @@ export class DashboardComponent implements OnInit {
   status = StatusEnum;
   private subscribe?: Subscription;
   public formGroup: FormGroup;
-  fileStatus: string = VideoUploadEnum.NoFileChosen;
   fileToUpload!: File | null;
   isStart = true;
   time = "Created Time";

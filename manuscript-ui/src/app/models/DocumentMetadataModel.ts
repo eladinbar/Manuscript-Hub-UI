@@ -8,7 +8,6 @@ export class DocumentMetadataModel {
   public title!: string;
   public author?: string = "";
   public publicationDate?: Date;
-  public language?: string;
   public description?: string = "";
   public status?: string = StatusEnum.ENABLED;
   public privacy?: string = PrivacyEnum.Private;
