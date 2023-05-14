@@ -3,11 +3,9 @@ table {
   width: 100%;
 }
 
-
 .title-element {
   padding-top: 1em;
   padding-bottom: 1em;
-
 }
 
 mat-button-toggle {
@@ -23,10 +21,10 @@ button {
   margin-right: 0.5em;
 }
 
-.highlight{
+.highlight {
   background: #d4edda;
 }
+
 mat-paginator {
   overflow: auto;
 }
-

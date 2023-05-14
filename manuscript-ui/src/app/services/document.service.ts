@@ -6,7 +6,8 @@ import {RestErrorsHandlerService} from "./rest-errors-handler.service";
 import {TownCrierService} from "./town-crier.service";
 import {environment} from "../../environments/environment";
 import {RouterEnum} from "../enums/RouterEnum";
-import {DocumentMetadataModel} from "../models/DocumentMetadataModel";
+import {DocumentInfoModel} from "../models/DocumentInfoModel";
+import {doc} from "@angular/fire/firestore";
 
 @Injectable({
   providedIn: 'root'
@@ -16,11 +17,11 @@ export class DocumentService {
               private restErrorsHandlerService: RestErrorsHandlerService, private townCrier: TownCrierService) {
   }
 
-  uploadDocument(metadata: DocumentMetadataModel, data: FormData) {
+  uploadDocument(documentInfo: DocumentInfoModel, data: FormData) {
     console.log("metadata")
-    return from(this.http.post<DocumentMetadataModel>(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_DOCUMENT_METADATA}`, metadata))
+    return from(this.http.post<DocumentInfoModel>(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_DOCUMENT_INFO}`, documentInfo))
       .pipe(
-        map((metadataResponse: DocumentMetadataModel) => {
+        map((metadataResponse: DocumentInfoModel) => {
           this.townCrier.info("Please wait until the new document is processed...");
           this.uploadDocumentData(data, metadataResponse.id!).subscribe();
           return metadataResponse;
@@ -49,11 +50,11 @@ export class DocumentService {
         }));
   }
 
-  updateDocumentMetadata(documentMetadata: DocumentMetadataModel) {
+  updateDocumentMetadata(documentMetadata: DocumentInfoModel) {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
 
-    return from(this.http.patch(`${environment.baseUrl}${environment.RESOURCE_UPDATE_DOCUMENT_METADATA}`, documentMetadata, {headers: headers}))
+    return from(this.http.patch(`${environment.baseUrl}${environment.RESOURCE_UPDATE_DOCUMENT_INFO}`, documentMetadata, {headers: headers}))
       .pipe(
         map((res: any) => {
           this.townCrier.info("Document is being updated.")
@@ -66,7 +67,7 @@ export class DocumentService {
   }
 
   getDocumentDataById(id: string | undefined) {
-    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_DATA_BY_ID}/${id}`, {responseType: 'blob'}))
+    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_DATAS_BY_DOCUMENT_INFO_ID}/${id}`, {responseType: 'blob'}))
       .pipe(
         map((res: any) => {
           return res;
@@ -78,8 +79,22 @@ export class DocumentService {
         }));
   }
 
-  getAllDocumentsMetadataByUid(uid: string) {
-    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_DOCUMENTS_METADATA_BY_UID}/${uid}`))
+  getAllDocumentInfosByUid(uid: string) {
+    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_DOCUMENT_INFOS_BY_UID}/${uid}`))
+      .pipe(
+        map((res: any) => {
+          return res;
+        }),
+        catchError(errorRes => {
+          this.townCrier.error(errorRes.error)
+          return this.restErrorsHandlerService.handleRequestError(errorRes);
+        }));
+  }
+
+  getDocumentDatasByDocumentInfoId(documentInfoId: string, uid: string) {
+    console.log("documentInfoId: ", documentInfoId);
+    console.log("uid: ", uid);
+    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_DATAS_BY_DOCUMENT_INFO_ID}/${documentInfoId}/${uid}`))
       .pipe(
         map((res: any) => {
           return res;

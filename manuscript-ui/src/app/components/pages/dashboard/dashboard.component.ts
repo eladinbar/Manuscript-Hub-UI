@@ -3,19 +3,16 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort, Sort} from "@angular/material/sort";
-import {Subscription} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
 import {DocumentTableEnum} from "../../../enums/DocumentTableEnum";
-import {DocumentModel} from "../../../models/DocumentModel";
-import {StatusEnum} from "../../../enums/StatusEnum";
+import {DocumentDataModel} from "../../../models/DocumentDataModel";
 import {DocumentService} from "../../../services/document.service";
 import {SocketService} from "../../../services/socket.service";
 import {TextService} from "../../../services/text.service";
 import {DateService} from "../../../services/date.service";
-import {Client} from "@stomp/stompjs";
 import {RouterEnum} from "../../../enums/RouterEnum";
 import {PrivacyEnum} from "../../../enums/PrivacyEnum";
-import {DocumentMetadataModel} from "../../../models/DocumentMetadataModel";
+import {DocumentInfoModel} from "../../../models/DocumentInfoModel";
 import {MatDialog} from "@angular/material/dialog";
 import {PrivacyDialogComponent} from "../../dialogs/privacy-dialog/privacy-dialog.component";
 
@@ -25,21 +22,13 @@ import {PrivacyDialogComponent} from "../../dialogs/privacy-dialog/privacy-dialo
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  documentInfoTableModels: Array<DocumentMetadataModel> = [];
-  displayedColumns: string[] = [DocumentTableEnum.Status, DocumentTableEnum.CreatedTime, DocumentTableEnum.FileName, DocumentTableEnum.Actions];
-  dataSource: MatTableDataSource<DocumentMetadataModel> = new MatTableDataSource<DocumentMetadataModel>([]);
-  isStatusFinished = false;
-  status = StatusEnum;
-  private subscribe?: Subscription;
+  documentInfoTableModels: Array<DocumentInfoModel> = [];
+  displayedColumns: string[] = [DocumentTableEnum.Privacy, DocumentTableEnum.CreatedTime, DocumentTableEnum.Title, DocumentTableEnum.Actions];
+  dataSource: MatTableDataSource<DocumentInfoModel> = new MatTableDataSource<DocumentInfoModel>([]);
   public formGroup: FormGroup;
-  fileToUpload!: File | null;
-  isStart = true;
-  time = "Created Time";
-  isRetry = false;
-  private stompClient: Client | null = null;
-  sort: MatSort | null = null
+  time: string = "Created Time";
+  sort?: MatSort;
   uid?: string;
-  isCancelled = false;
   @ViewChild('paginator') paginator?: MatPaginator;
 
   constructor(public textService: TextService, public dateService: DateService,
@@ -53,23 +42,32 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.uid = localStorage.getItem("uid")!;
-    this.documentService.getAllDocumentsMetadataByUid(this.uid!).subscribe(res => {
-      this.connectToSocket();
+    this.documentService.getAllDocumentInfosByUid(this.uid!).subscribe(res => {
       this.setDataToTable(res);
       this.announceSortChange({active: this.time, direction: 'asc'})
-
     });
   }
 
   @ViewChild(MatSort) set x(mat: MatSort) {
-    this.sort = mat
-  };
+    this.sort = mat;
+  }
+
+  private setDataToTable(res: any) {
+    if (res) {
+      this.documentInfoTableModels = res;
+    }
+    this.dataSource = new MatTableDataSource(this.documentInfoTableModels);
+    if (this.paginator) {
+      this.dataSource.paginator = this.paginator;
+    }
+    this.announceSortChange({active: this.time, direction: 'asc'});
+  }
 
   announceSortChange(sortState: Sort) {
     if (sortState.active === this.time) {
-      this.sortByTime(sortState)
+      this.sortByTime(sortState);
     } else {
-      this.sortByStatus(sortState);
+      this.sortByPrivacy(sortState);
     }
   }
 
@@ -92,109 +90,53 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  ask(msg: string): boolean {
-    return confirm(`Are you sure that you want to ${msg} the video`)
+  private sortByPrivacy(sortState: Sort) {
+    let big = 1;
+    let small = -1;
+    if (sortState.direction === 'asc') {
+      big = -1;
+      small = 1;
+    }
+    this.dataSource.data = this.dataSource.data.sort((a, b) => {
+      if (a.privacy && !b.privacy) {
+        return big;
+      } else if (a.privacy === b.privacy) {
+        if (a.privacy == 'Private') {
+          return -1;
+        }
+        return 1;
+      }
+      return small;
+    });
   }
 
-  connectToSocket() {
-    // this.stompClient = this.socketService.initSocket()
-    // if (this.stompClient != null) {
-    //   // @ts-ignore
-    //   this.socketService.subscription(this.stompClient, "/topic/videoList", this.onNotify)
-    // }
+  onDocumentOpen(documentInfo: DocumentInfoModel) {
+    if (documentInfo == null || documentInfo.id == undefined) return;
+    this.documentService.getDocumentDatasByDocumentInfoId(documentInfo.id, this.uid!).subscribe((documents: DocumentDataModel[]) => {
+      console.log(documents[0]);
+      this.router.navigate(['/' + RouterEnum.DocumentDetail, documents[0].id]);
+    });
   }
 
-  onDocumentOpen(document: DocumentModel) {
-    console.log(document);
-    if (document == null || document.documentId == undefined) return;
-    this.router.navigate(['/' + RouterEnum.DocumentDetail, document.documentId]);
+  onDocumentDelete(documentInfo: DocumentInfoModel) {
+    this.documentService.deleteDocumentDataById(documentInfo.id!, this.uid!).subscribe();
   }
 
-  onDocumentDelete(document: DocumentModel) {
-    console.log(document);
-    this.documentService.deleteDocumentDataById(document.documentId!, this.uid!)
-      .subscribe(res => {
-      });
-  }
-
-  onDocumentChangePrivacy(documentMetadata: DocumentMetadataModel) {
+  onDocumentChangePrivacy(documentInfo: DocumentInfoModel) {
     const dialogRef = this.dialog.open(PrivacyDialogComponent, {
-      data: { currentPrivacy: documentMetadata.privacy },
+      data: { currentPrivacy: documentInfo.privacy },
       width: '350px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result && Object.values(PrivacyEnum).includes(result)) {
-        documentMetadata.privacy = result;
-        this.documentService.updateDocumentMetadata(documentMetadata);
+        documentInfo.privacy = result;
+        this.documentService.updateDocumentMetadata(documentInfo);
       }
     });
   }
 
   uploadFileService() {
     this.router.navigate(['/' + RouterEnum.DocumentUpload]);
-    // const file: File = event.target.files[0];
-    //
-    // const element = event.currentTarget as HTMLInputElement;
-    // let fileList: FileList | null = element.files;
-    // if (fileList) {
-    //   this.fileStatus = fileList.item(0)?.name || this.fileStatus;
-    //   this.fileToUpload = fileList.item(0);
-    //   this.formGroup.controls[VideoUploadEnum.SelectedFile].setValue(fileList.item(0)?.name);
-    //   const formData: FormData = new FormData();
-    //
-    //   formData.append('data', file);
-    //   if (this.fileToUpload) {
-    //     formData.append('file', this.fileToUpload);
-    //     this.subscribe = this.documentService.uploadDocument(formData, this.uid!)
-    //       .subscribe(res => {
-    //         this.setDataToTable(res);
-    //         this.formGroup.reset();
-    //       });
-    //   }
-    // }
-  }
-
-  private setDataToTable(res: any) {
-    if (res) {
-      this.documentInfoTableModels = res;
-    }
-    this.dataSource = new MatTableDataSource(this.documentInfoTableModels);
-    if (this.paginator) {
-      this.dataSource.paginator = this.paginator;
-    }
-    this.announceSortChange({active: this.time, direction: 'asc'})
-  }
-
-  ngOnDestroy() {
-    this.subscribe?.unsubscribe();
-    // if (this.stompClient != null) {
-    //   this.stompClient.disconnect();
-    // }
-  }
-
-  onNotify = (msg: any) => {
-    const result = JSON.parse(msg.body)
-    this.setDataToTable(result)
-  };
-
-  private sortByStatus(sortState: Sort) {
-    let big = 1
-    let small = -1
-    if (sortState.direction === 'asc') {
-      big = -1
-      small = 1
-    }
-    this.dataSource.data = this.dataSource.data.sort((a, b) => {
-      if (a.status && !b.status) {
-        return big
-      } else if (a.status === b.status) {
-        if (a.status == 'Ready') {
-          return -1
-        }
-        return 1
-      }
-      return small
-    })
   }
 }

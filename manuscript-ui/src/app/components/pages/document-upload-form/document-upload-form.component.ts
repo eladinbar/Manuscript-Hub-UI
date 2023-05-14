@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {faTimes, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {DocumentService} from "../../../services/document.service";
-import {DocumentMetadataModel} from "../../../models/DocumentMetadataModel";
+import {DocumentInfoModel} from "../../../models/DocumentInfoModel";
 
 @Component({
   selector: 'app-document-upload-form',
@@ -67,7 +67,7 @@ export class DocumentUploadFormComponent implements OnInit {
     if (this.form.valid) {
       const formData: FormData = new FormData();
       if (this.fileToUpload) {
-        const documentMetadata: DocumentMetadataModel = new DocumentMetadataModel({
+        const documentInfo: DocumentInfoModel = new DocumentInfoModel({
           uid: this.uid,
           title: this.form.value.title,
           author: this.form.value.author,
@@ -77,7 +77,7 @@ export class DocumentUploadFormComponent implements OnInit {
         });
 
         formData.append('file', this.fileToUpload, this.fileToUpload.name);
-        this.documentService.uploadDocument(documentMetadata, formData)
+        this.documentService.uploadDocument(documentInfo, formData)
           .subscribe(res => {
           });
       }

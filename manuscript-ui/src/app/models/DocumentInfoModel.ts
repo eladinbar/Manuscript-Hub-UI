@@ -1,7 +1,7 @@
 import {StatusEnum} from "../enums/StatusEnum";
 import {PrivacyEnum} from "../enums/PrivacyEnum";
 
-export class DocumentMetadataModel {
+export class DocumentInfoModel {
   public id?: string;
   public uid!: string;
   public title!: string;
@@ -15,7 +15,7 @@ export class DocumentMetadataModel {
   public createdTime?: Date = new Date();
   public updatedTime?: Date = new Date();
 
-  constructor(documentMetadataModel: DocumentMetadataModel) {
-    Object.assign(this, documentMetadataModel, {});
+  constructor(documentInfoModel: DocumentInfoModel) {
+    Object.assign(this, documentInfoModel, {});
   }
 }

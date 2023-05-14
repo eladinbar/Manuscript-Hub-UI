@@ -8,16 +8,16 @@ export const environment = {
 
   RESOURCE_UPLOAD_DOCUMENT_DATA: "/api/document/uploadDocumentData",
   RESOURCE_UPDATE_DOCUMENT_DATA: "/api/document/updateDocumentData",
-  RESOURCE_GET_DOCUMENT_DATA_BY_ID: "/api/document/getDocumentDataById",
+  RESOURCE_GET_DOCUMENT_DATAS_BY_DOCUMENT_INFO_ID: "/api/document/getDocumentDatasByDocumentInfoId",
   RESOURCE_DELETE_DOCUMENT_DATA_BY_ID: "/api/document/deleteDocumentDataById",
 
-  RESOURCE_UPLOAD_DOCUMENT_METADATA: "/api/document/uploadDocumentMetadata",
-  RESOURCE_UPDATE_DOCUMENT_METADATA: "/api/document/updateDocumentMetadata",
-  RESOURCE_GET_DOCUMENT_METADATA_BY_ID: "/api/document/getDocumentMetadataById",
-  RESOURCE_GET_ALL_DOCUMENTS_METADATA_BY_UID: "/api/document/getAllDocumentsMetadataByUid",
-  RESOURCE_GET_ALL_PUBLIC_DOCUMENTS_METADATA: "/api/document/getAllPublicDocumentsMetadata",
-  RESOURCE_GET_ALL_SHARED_DOCUMENTS_METADATA_BY_UID: "/api/document/getAllSharedDocumentsMetadataByUid",
-  RESOURCE_DELETE_DOCUMENT_METADATA_BY_ID: "/api/document/deleteDocumentMetadataById",
+  RESOURCE_UPLOAD_DOCUMENT_INFO: "/api/document/uploadDocumentInfo",
+  RESOURCE_UPDATE_DOCUMENT_INFO: "/api/document/updateDocumentInfo",
+  RESOURCE_GET_DOCUMENT_INFO_BY_ID: "/api/document/getDocumentInfoById",
+  RESOURCE_GET_ALL_DOCUMENT_INFOS_BY_UID: "/api/document/getAllDocumentInfosByUid",
+  RESOURCE_GET_ALL_PUBLIC_DOCUMENT_INFOS: "/api/document/getAllPublicDocumentInfos",
+  RESOURCE_GET_ALL_SHARED_DOCUMENT_INFOS_BY_UID: "/api/document/getAllSharedDocumentInfosByUid",
+  RESOURCE_DELETE_DOCUMENT_INFO_BY_ID: "/api/document/deleteDocumentInfoById",
 
   SOCKET:"/ads-socket",
   firebase: {

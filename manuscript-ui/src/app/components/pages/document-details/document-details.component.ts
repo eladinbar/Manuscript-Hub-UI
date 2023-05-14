@@ -8,6 +8,7 @@ import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../../dialogs/dialog/dialog.component";
 import {AnnotationCoordinatesModel} from "../../../models/AnnotationCoordinatesModel";
 import {AnnotationService} from "../../../services/annotation.service";
+import {DocumentDataModel} from "../../../models/DocumentDataModel";
 
 @Component({
   selector: 'app-document-details',
@@ -56,8 +57,8 @@ export class DocumentDetailsComponent implements OnInit {
   }
 
   getDocumentById() {
-    this.documentService.getDocumentDataById(this.documentId).subscribe(res => {
-      const url = URL.createObjectURL(res);
+    this.documentService.getDocumentDatasByDocumentInfoId(this.documentId, this.uid!).subscribe((res) => {
+      const url = URL.createObjectURL(res[0]);
       this.loadImage();
       this.image.src = url;
     });
