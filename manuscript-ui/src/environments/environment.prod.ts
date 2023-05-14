@@ -2,12 +2,13 @@ export const environment = {
   production: true,
   baseUrl: 'http://localhost:8080',
 
-  RESOURCE_UPLOAD_DOCUMENT: "/api/document/uploadDocument",
+  RESOURCE_UPLOAD_DOCUMENT_DATA: "/api/document/uploadDocumentData",
   RESOURCE_UPDATE_DOCUMENT: "/api/document/updateDocument",
   RESOURCE_GET_DOCUMENT_BY_ID: "/api/document/getDocumentById/",
   RESOURCE_GET_ALL_DOCUMENTS_BY_UID: "/api/document/getAllDocumentsByUid/",
   RESOURCE_DELETE_DOCUMENT_BY_ID: "/api/document/deleteDocumentById/",
 
+  RESOURCE_UPLOAD_DOCUMENT: "/api/document/uploadDocument",
   RESOURCE_UPDATE_DOCUMENT_METADATA: "/api/document/updateDocumentMetadata",
 
   SOCKET: "/ads-socket",

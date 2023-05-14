@@ -1,5 +1,5 @@
 export enum PrivacyEnum {
-  Public = 'public',
-  Private = 'private',
-  Shared = 'shared',
+  Public = 'Public',
+  Private = 'Private',
+  Shared = 'Shared',
 }

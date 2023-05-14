@@ -16,14 +16,29 @@ export class DocumentService {
               private restErrorsHandlerService: RestErrorsHandlerService, private townCrier: TownCrierService) {
   }
 
-  uploadDocument(data: FormData) {
+  uploadDocument(metadata: DocumentMetadataModel, data: FormData) {
+    return from(this.http.post<DocumentMetadataModel>(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_DOCUMENT}`, metadata))
+      .pipe(
+        map((metadataResponse: DocumentMetadataModel) => {
+          this.townCrier.info("Please wait until the new document is processed...");
+          this.uploadDocumentData(data, metadataResponse.id!).subscribe();
+          return metadataResponse;
+        }),
+        catchError(errorRes => {
+          this.townCrier.error(errorRes.error)
+          return this.restErrorsHandlerService.handleRequestError(errorRes);
+        }));
+  }
+
+
+  uploadDocumentData(data: FormData, id: string) {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
 
-    return from(this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_DOCUMENT}`, data, {headers: headers}))
+    return from(this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_DOCUMENT_DATA}/${id}`, data, {headers: headers}))
       .pipe(
         map((res: any) => {
-          this.townCrier.info("Please wait until the new document is processed...")
+          this.townCrier.info("Uploading document data...");
           this.router.navigate(['/' + RouterEnum.Dashboard]);
           return res;
         }),
