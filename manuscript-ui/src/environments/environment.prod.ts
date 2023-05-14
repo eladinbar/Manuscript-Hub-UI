@@ -3,13 +3,17 @@ export const environment = {
   baseUrl: 'http://localhost:8080',
 
   RESOURCE_UPLOAD_DOCUMENT_DATA: "/api/document/uploadDocumentData",
-  RESOURCE_UPDATE_DOCUMENT: "/api/document/updateDocument",
-  RESOURCE_GET_DOCUMENT_BY_ID: "/api/document/getDocumentById/",
-  RESOURCE_GET_ALL_DOCUMENTS_BY_UID: "/api/document/getAllDocumentsByUid/",
-  RESOURCE_DELETE_DOCUMENT_BY_ID: "/api/document/deleteDocumentById/",
+  RESOURCE_UPDATE_DOCUMENT_DATA: "/api/document/updateDocumentData",
+  RESOURCE_GET_DOCUMENT_DATA_BY_ID: "/api/document/getDocumentDataById",
+  RESOURCE_DELETE_DOCUMENT_DATA_BY_ID: "/api/document/deleteDocumentDataById",
 
-  RESOURCE_UPLOAD_DOCUMENT: "/api/document/uploadDocument",
+  RESOURCE_UPLOAD_DOCUMENT_METADATA: "/api/document/uploadDocumentMetadata",
   RESOURCE_UPDATE_DOCUMENT_METADATA: "/api/document/updateDocumentMetadata",
+  RESOURCE_GET_DOCUMENT_METADATA_BY_ID: "/api/document/getDocumentMetadataById",
+  RESOURCE_GET_ALL_DOCUMENTS_METADATA_BY_UID: "/api/document/getAllDocumentsMetadataByUid",
+  RESOURCE_GET_ALL_PUBLIC_DOCUMENTS_METADATA: "/api/document/getAllPublicDocumentsMetadata",
+  RESOURCE_GET_ALL_SHARED_DOCUMENTS_METADATA_BY_UID: "/api/document/getAllSharedDocumentsMetadataByUid",
+  RESOURCE_DELETE_DOCUMENT_METADATA_BY_ID: "/api/document/deleteDocumentMetadataById",
 
   SOCKET: "/ads-socket",
   firebase: {

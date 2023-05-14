@@ -17,7 +17,8 @@ export class DocumentService {
   }
 
   uploadDocument(metadata: DocumentMetadataModel, data: FormData) {
-    return from(this.http.post<DocumentMetadataModel>(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_DOCUMENT}`, metadata))
+    console.log("metadata")
+    return from(this.http.post<DocumentMetadataModel>(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_DOCUMENT_METADATA}`, metadata))
       .pipe(
         map((metadataResponse: DocumentMetadataModel) => {
           this.townCrier.info("Please wait until the new document is processed...");
@@ -30,8 +31,8 @@ export class DocumentService {
         }));
   }
 
-
-  uploadDocumentData(data: FormData, id: string) {
+  private uploadDocumentData(data: FormData, id: string) {
+    console.log("data")
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
 
@@ -64,12 +65,10 @@ export class DocumentService {
         }));
   }
 
-  getDocumentById(id: string | undefined) {
-    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_BY_ID}${id}`, {responseType: 'blob'}))
+  getDocumentDataById(id: string | undefined) {
+    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_DATA_BY_ID}/${id}`, {responseType: 'blob'}))
       .pipe(
         map((res: any) => {
-          console.log(res)
-
           return res;
         }),
         catchError(errorRes => {
@@ -79,11 +78,10 @@ export class DocumentService {
         }));
   }
 
-  getAllDocumentsByUid(uid: string) {
-    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_DOCUMENTS_BY_UID}${uid}`))
+  getAllDocumentsMetadataByUid(uid: string) {
+    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_DOCUMENTS_METADATA_BY_UID}/${uid}`))
       .pipe(
         map((res: any) => {
-          console.log(res)
           return res;
         }),
         catchError(errorRes => {
@@ -92,8 +90,8 @@ export class DocumentService {
         }));
   }
 
-  deleteDocumentById(id: string, uid: string) {
-    return from(this.http.delete(`${environment.baseUrl}${environment.RESOURCE_DELETE_DOCUMENT_BY_ID}${id}/${uid}`))
+  deleteDocumentDataById(id: string, uid: string) {
+    return from(this.http.delete(`${environment.baseUrl}${environment.RESOURCE_DELETE_DOCUMENT_DATA_BY_ID}/${id}/${uid}`))
       .pipe(
         map((res: any) => {
           return res;

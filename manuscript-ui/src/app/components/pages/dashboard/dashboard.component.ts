@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.uid = localStorage.getItem("uid")!;
-    this.documentService.getAllDocumentsByUid(this.uid!).subscribe(res => {
+    this.documentService.getAllDocumentsMetadataByUid(this.uid!).subscribe(res => {
       this.connectToSocket();
       this.setDataToTable(res);
       this.announceSortChange({active: this.time, direction: 'asc'})
@@ -112,7 +112,7 @@ export class DashboardComponent implements OnInit {
 
   onDocumentDelete(document: DocumentModel) {
     console.log(document);
-    this.documentService.deleteDocumentById(document.documentId!, this.uid!)
+    this.documentService.deleteDocumentDataById(document.documentId!, this.uid!)
       .subscribe(res => {
       });
   }

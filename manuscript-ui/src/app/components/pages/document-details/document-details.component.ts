@@ -56,7 +56,7 @@ export class DocumentDetailsComponent implements OnInit {
   }
 
   getDocumentById() {
-    this.documentService.getDocumentById(this.documentId).subscribe(res => {
+    this.documentService.getDocumentDataById(this.documentId).subscribe(res => {
       const url = URL.createObjectURL(res);
       this.loadImage();
       this.image.src = url;
