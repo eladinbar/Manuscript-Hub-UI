@@ -4,6 +4,7 @@ export const environment = {
 
   RESOURCE_UPLOAD_DOCUMENT_DATA: "/api/document/uploadDocumentData",
   RESOURCE_UPDATE_DOCUMENT_DATA: "/api/document/updateDocumentData",
+  RESOURCE_GET_DOCUMENT_DATA_BY_ID: "/api/document/getDocumentDataById",
   RESOURCE_GET_DOCUMENT_DATAS_BY_DOCUMENT_INFO_ID: "/api/document/getDocumentDatasByDocumentInfoId",
   RESOURCE_DELETE_DOCUMENT_DATA_BY_ID: "/api/document/deleteDocumentDataById",
 

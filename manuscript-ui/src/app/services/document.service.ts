@@ -66,8 +66,8 @@ export class DocumentService {
         }));
   }
 
-  getDocumentDataById(id: string | undefined) {
-    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_DATAS_BY_DOCUMENT_INFO_ID}/${id}`, {responseType: 'blob'}))
+  getDocumentDataById(id: string, uid: string) {
+    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_DATA_BY_ID}/${id}/${uid}`, {responseType: 'blob'}))
       .pipe(
         map((res: any) => {
           return res;
