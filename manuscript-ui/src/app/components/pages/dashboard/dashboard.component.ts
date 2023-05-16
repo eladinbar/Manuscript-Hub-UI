@@ -124,14 +124,14 @@ export class DashboardComponent implements OnInit {
 
   onDocumentChangePrivacy(documentInfo: DocumentInfoModel) {
     const dialogRef = this.dialog.open(PrivacyDialogComponent, {
-      data: { currentPrivacy: documentInfo.privacy },
+      data: {currentPrivacy: documentInfo.privacy},
       width: '350px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result && Object.values(PrivacyEnum).includes(result)) {
         documentInfo.privacy = result;
-        this.documentService.updateDocumentMetadata(documentInfo);
+        this.documentService.updateDocumentInfo(documentInfo).subscribe();
       }
     });
   }

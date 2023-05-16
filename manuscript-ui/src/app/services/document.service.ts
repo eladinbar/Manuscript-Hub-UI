@@ -7,7 +7,6 @@ import {TownCrierService} from "./town-crier.service";
 import {environment} from "../../environments/environment";
 import {RouterEnum} from "../enums/RouterEnum";
 import {DocumentInfoModel} from "../models/DocumentInfoModel";
-import {doc} from "@angular/fire/firestore";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,6 @@ export class DocumentService {
   }
 
   uploadDocument(documentInfo: DocumentInfoModel, data: FormData) {
-    console.log("metadata")
     return from(this.http.post<DocumentInfoModel>(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_DOCUMENT_INFO}`, documentInfo))
       .pipe(
         map((metadataResponse: DocumentInfoModel) => {
@@ -27,13 +25,12 @@ export class DocumentService {
           return metadataResponse;
         }),
         catchError(errorRes => {
-          this.townCrier.error(errorRes.error)
+          this.townCrier.error(errorRes.error);
           return this.restErrorsHandlerService.handleRequestError(errorRes);
         }));
   }
 
   private uploadDocumentData(data: FormData, id: string) {
-    console.log("data")
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
 
@@ -45,23 +42,23 @@ export class DocumentService {
           return res;
         }),
         catchError(errorRes => {
-          this.townCrier.error(errorRes.error)
+          this.townCrier.error(errorRes.error);
           return this.restErrorsHandlerService.handleRequestError(errorRes);
         }));
   }
 
-  updateDocumentMetadata(documentMetadata: DocumentInfoModel) {
+  updateDocumentInfo(documentInfo: DocumentInfoModel) {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
 
-    return from(this.http.patch(`${environment.baseUrl}${environment.RESOURCE_UPDATE_DOCUMENT_INFO}`, documentMetadata, {headers: headers}))
+    return from(this.http.patch(`${environment.baseUrl}${environment.RESOURCE_UPDATE_DOCUMENT_INFO}`, documentInfo, {headers: headers}))
       .pipe(
         map((res: any) => {
           this.townCrier.info("Document is being updated.")
           return res;
         }),
         catchError(errorRes => {
-          this.townCrier.error(errorRes.error)
+          this.townCrier.error(errorRes.error);
           return this.restErrorsHandlerService.handleRequestError(errorRes);
         }));
   }
@@ -73,7 +70,7 @@ export class DocumentService {
           return res;
         }),
         catchError(errorRes => {
-          this.townCrier.error('No document found.')
+          this.townCrier.error('No document found.');
           this.router.navigate(['/' + RouterEnum.Dashboard]);
           return this.restErrorsHandlerService.handleRequestError(errorRes);
         }));
@@ -86,21 +83,19 @@ export class DocumentService {
           return res;
         }),
         catchError(errorRes => {
-          this.townCrier.error(errorRes.error)
+          this.townCrier.error(errorRes.error);
           return this.restErrorsHandlerService.handleRequestError(errorRes);
         }));
   }
 
   getDocumentDatasByDocumentInfoId(documentInfoId: string, uid: string) {
-    console.log("documentInfoId: ", documentInfoId);
-    console.log("uid: ", uid);
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_DATAS_BY_DOCUMENT_INFO_ID}/${documentInfoId}/${uid}`))
       .pipe(
         map((res: any) => {
           return res;
         }),
         catchError(errorRes => {
-          this.townCrier.error(errorRes.error)
+          this.townCrier.error(errorRes.error);
           return this.restErrorsHandlerService.handleRequestError(errorRes);
         }));
   }
@@ -112,7 +107,7 @@ export class DocumentService {
           return res;
         }),
         catchError(errorRes => {
-          this.townCrier.error(errorRes.error)
+          this.townCrier.error(errorRes.error);
           return this.restErrorsHandlerService.handleRequestError(errorRes);
         }));
   }

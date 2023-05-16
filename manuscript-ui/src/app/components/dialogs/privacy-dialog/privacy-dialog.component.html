@@ -7,6 +7,6 @@
   </mat-radio-group>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-button [mat-dialog-close]="selectedOption" cdkFocusInitial>Confirm</button>
+  <button mat-button [mat-dialog-close]="selectedOption">Confirm</button>
+  <button mat-button (click)="onCancel()" cdkFocusInitial>Cancel</button>
 </mat-dialog-actions>
