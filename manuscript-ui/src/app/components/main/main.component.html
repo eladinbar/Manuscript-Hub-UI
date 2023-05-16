@@ -30,7 +30,15 @@
         </div>
       </mat-list-item>
     </mat-nav-list>
-
+    <mat-nav-list>
+      <mat-list-item *ngIf="role == 'Admin'"  [routerLink]="'/InvitationRequests'" routerLinkActive="active">
+        <mat-icon class="text-white" >supervised_user_circle</mat-icon>
+        <div fxFlex="10"></div>
+        <div *ngIf="sidenavWidth > 6" class="sidenav-item">
+          <div class="menu-item">Invitation Requests</div>
+        </div>
+      </mat-list-item>
+    </mat-nav-list>
     <mat-nav-list>
       <mat-list-item  (click)="signout()" routerLinkActive="active">
         <mat-icon  class="material-icons text-white" mat-list-icon>logout</mat-icon>

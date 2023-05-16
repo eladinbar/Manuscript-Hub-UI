@@ -42,6 +42,7 @@ import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import { RegisterComponent } from './components/pages/account/register/register.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { DocumentItemComponent } from './components/document-item/document-item.component';
+import { InvitationsComponent } from './components/invitations/invitations.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { DocumentItemComponent } from './components/document-item/document-item.
     RegisterComponent,
     DialogComponent,
     DocumentItemComponent,
+    InvitationsComponent,
   ],
     imports: [
         BrowserModule,
