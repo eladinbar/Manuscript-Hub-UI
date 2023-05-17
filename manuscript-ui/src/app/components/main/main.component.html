@@ -12,13 +12,14 @@
   <mat-sidenav #sidenav [ngStyle]="{ 'width.em': sidenavWidth }" [opened]="sidenavStatus"
                class="sidenav"
                mode="side">
+
     <!--  Dashboard  -->
     <mat-nav-list>
       <mat-list-item [routerLink]="'/' + RouterEnum.Dashboard" routerLinkActive="active">
         <mat-icon class="text-white" mat-list-icon>dashboard</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
-          <div class="menu-item">Dashboard</div>
+          <div class="menu-item" i18n>Dashboard</div>
         </div>
       </mat-list-item>
     </mat-nav-list>
@@ -29,30 +30,29 @@
         <mat-icon class="text-white" mat-list-icon>Models</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
-          <div class="menu-item">Models</div>
+          <div class="menu-item" i18n>Models</div>
         </div>
       </mat-list-item>
     </mat-nav-list>
 
     <!--  Algorithm upload  -->
     <mat-nav-list>
-      <!--  *ngIf="role == 'Admin' || role == 'Developer'"  -->
-      <mat-list-item [routerLink]="'/' + RouterEnum.AlgorithmSubmissionForm" routerLinkActive="active">
+      <mat-list-item *ngIf="role == 'Admin' || role == 'Developer'" [routerLink]="'/' + RouterEnum.AlgorithmSubmissionForm" routerLinkActive="active">
         <mat-icon class="text-white">models</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
-          <div class="menu-item">Algorithm Submission Form</div>
+          <div class="menu-item" i18n>Algorithm Submission Form</div>
         </div>
       </mat-list-item>
     </mat-nav-list>
 
     <!--  Invitation Requests  -->
     <mat-nav-list>
-      <mat-list-item *ngIf="role == 'Admin'"  [routerLink]="'/InvitationRequests'" routerLinkActive="active">
-        <mat-icon class="text-white" >supervised_user_circle</mat-icon>
+      <mat-list-item *ngIf="role == 'Admin'" [routerLink]="'/' + RouterEnum.InvitationRequests" routerLinkActive="active">
+        <mat-icon class="text-white">supervised_user_circle</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
-          <div class="menu-item">Invitation Requests</div>
+          <div class="menu-item" i18n>Invitation Requests</div>
         </div>
       </mat-list-item>
     </mat-nav-list>
@@ -63,7 +63,7 @@
         <mat-icon class="material-icons text-white" mat-list-icon>logout</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
-          <div class="menu-item">Logout</div>
+          <div class="menu-item" i18n>Logout</div>
         </div>
       </mat-list-item>
     </mat-nav-list>

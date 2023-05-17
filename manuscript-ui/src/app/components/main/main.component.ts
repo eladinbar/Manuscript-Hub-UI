@@ -17,7 +17,7 @@ export class MainComponent implements OnInit {
   constructor(private authService: AuthService, public cryptoService:CryptoService) { }
 
   ngOnInit(): void {
-    this.role = this.cryptoService.decrypt( localStorage.getItem('role')!);
+    this.role = this.cryptoService.decrypt(localStorage.getItem('role')!);
   }
 
   toggleSidenav() {
@@ -33,7 +33,6 @@ export class MainComponent implements OnInit {
     }
   }
 
-
   increase() {
     this.sidenavWidth = 18;
   }
@@ -41,7 +40,6 @@ export class MainComponent implements OnInit {
   decrease() {
     this.sidenavWidth = 4;
   }
-
 
   signout() {
     this.authService.logout();

@@ -1,10 +1,15 @@
 export const environment = {
   production: true,
   baseUrl: 'http://localhost:8080',
+
   RESOURCE_UPLOAD_FILE: "/api/document/uploadInputDocument",
-  RESOURCE_GET_VIDEO_INFO_STATISTIC: "/api/video/getVideoInfo/",
-  RESOURCE_GET_VIDEO_BY_ID: "/api/video/getVideoById/",
-  RESOURCE_GET_All_DOCUMENTS_BY_UID: "/api/document/getAllDocuments/",
+  RESOURCE_GET_DOCUMENT_BY_ID: "/api/document/getDocumentById/",
+  RESOURCE_GET_All_DOCUMENTS_BY_UID: "/api/document/getAllDocumentsByUid/",
+  RESOURCE_SUBMIT_ALGORITHM: "/api/algorithm/uploadAlgorithm/",
+  RESOURCE_GET_ALL_INVITATIONS: "/api/invitation/getAllInvitations/",
+  RESOURCE_ACCEPT_REQUEST_INVITATIONS: "/api/invitation/acceptRequest/",
+  RESOURCE_DENY_REQUEST_INVITATIONS: "/api/invitation/denyRequest/",
+
   SOCKET: "/ads-socket",
   firebase: {
     apiKey: "AIzaSyAabED_QgmCVo72G8PV3vPgDVBboIX2uSg",

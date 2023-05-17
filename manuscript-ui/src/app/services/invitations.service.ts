@@ -18,7 +18,7 @@ export class InvitationsService {
 
 
   getAllInvitations() {
-    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_All_INVITATIONS}`))
+    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_INVITATIONS}`))
       .pipe(
         map((res: any) => {
           return res;

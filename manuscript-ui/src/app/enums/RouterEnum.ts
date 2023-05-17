@@ -4,6 +4,7 @@ export enum RouterEnum {
     Home = 'HOME',
     DocumentDetail = 'DocumentDetail',
     AlgorithmSubmissionForm = 'AlgorithmSubmissionForm',
+    InvitationRequests = 'InvitationRequests',
     PageNotFound = 'PageNotFound',
     DocumentId = 'documentId',
 }
