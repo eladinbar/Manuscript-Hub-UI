@@ -1,16 +1,20 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
-import {catchError, map, shareReplay} from "rxjs/operators";
-import {Roles} from "../../models/Roles";
+import {map, shareReplay} from "rxjs/operators";
+import {Role} from "../../models/Role";
+import {CryptoService} from "../crypto.service";
+
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  controller =  'api/accountController';
+  controller = 'api/invitation';
   private roleReuslt$: Observable<any> | undefined;
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient,public cryptoService: CryptoService) {
+  }
 
   registerNewUser(email: string, uid: string, name: string, phoneNumber: string, role: string): Observable<any> {
 
@@ -22,11 +26,13 @@ export class AccountService {
       role
     };
 
-    return this.http.post(`${environment.baseUrl}/${this.controller}/register`, data);
+    // return this.http.post(`${environment.baseUrl}/${this.controller}/register`, data);
+    return this.http.post(`${environment.baseUrl}/${this.controller}/createInvitation`, data);
 
   }
-  authenticateUser(uid: string, email:string ,name:string, token: string): Observable<any> {
-    if(!name){
+
+  authenticateUser(uid: string, email: string, name: string, token: string): Observable<any> {
+    if (!name) {
       name = email;
     }
     const data = {
@@ -34,13 +40,15 @@ export class AccountService {
       email,
       name
     };
-    console.log("data " , data);
-    return this.http.post(`${environment.baseUrl}/${this.controller}/login`, data, {
+    return this.http.post(`${environment.baseUrl}/api/accountController/login`, data, {
       headers: {
         Authorization: 'Bearer ' + token,
         skip: 'true'
       }
-    });
+    }).pipe(map((res: any) => {
+      localStorage.setItem("role", <string>this.cryptoService.encrypt(res.role))  //todo: should be changed
+      return res;
+    }));
   }
 
   getUserAuthRole(): Observable<string> {
@@ -63,13 +71,14 @@ export class AccountService {
       this.roleReuslt$ = this.http
         .get(`${environment.baseUrl}/api/user/getRole`)
         .pipe(map((res: any) => {
-          res.push(Roles.GUEST);
+          res.push(Role.GUEST);
           return res;
         }), shareReplay(1));
     }
     return this.roleReuslt$;
   }
-  public areUserRolesAllowed(userRoles: string[], allowedUserRoles: Roles[]): boolean {
+
+  public areUserRolesAllowed(userRoles: string[], allowedUserRoles: Role[]): boolean {
     for (const role of userRoles) {
       for (const allowedRole of allowedUserRoles) {
         if (role.toLowerCase() === allowedRole.toLowerCase()) {

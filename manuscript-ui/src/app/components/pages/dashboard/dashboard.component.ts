@@ -7,7 +7,7 @@ import {Subscription} from "rxjs";
 import {MatTableDataSource} from "@angular/material/table";
 import {DocumentTableEnum} from "../../../enums/DocumentTableEnum";
 import {DocumentInfoTableModel} from "../../../models/DocumentInfoTableModel";
-import {StatusEnum} from "../../../enums/StatusEnum";
+import {Status} from "../../../enums/Status";
 import {VideoUploadEnum} from "../../../enums/VideoUploadEnum";
 import {DocumentService} from "../../../services/document.service";
 import {SocketService} from "../../../services/socket.service";
@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit {
   displayedColumns: string[] = [DocumentTableEnum.Status, DocumentTableEnum.CreatedTime, DocumentTableEnum.FileName, DocumentTableEnum.Actions];
   dataSource: MatTableDataSource<DocumentInfoTableModel> = new MatTableDataSource<DocumentInfoTableModel>([]);
   isStatusFinished = false;
-  status = StatusEnum;
+  status = Status;
   private subscribe?: Subscription;
   public formGroup: FormGroup;
   fileStatus: string = VideoUploadEnum.NoFileChosen;
