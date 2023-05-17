@@ -3,7 +3,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <!-- Title input -->
   <div class="form-group">
-    <label for="title">Title
+    <label for="title" i18n>Title
       <span class="tooltip-container">
         <i class="fa fa-question-circle tooltip-icon" aria-hidden="true">
           <span class="tooltip-text">Enter a title for your algorithm</span>
@@ -14,23 +14,27 @@
   </div>
 
   <!-- Model Type input -->
-  <label for="modelType">Model Type
+  <label for="modelType" i18n>Model Type
     <span class="tooltip-container">
-      <i class="fa fa-question-circle tooltip-icon" aria-hidden="true">
-        <span class="tooltip-text">Select the type of model you are submitting</span>
-      </i>
-    </span>
+    <i class="fa fa-question-circle tooltip-icon" aria-hidden="true">
+      <span class="tooltip-text">Select the type of model you are submitting</span>
+    </i>
+  </span>
   </label>
   <div class="form-group">
-    <select class="form-control" id="modelType" formControlName="modelType" name="modelType">
-      <option value="OCR">OCR</option>
-      <option value="Line Extraction">Line Extraction</option>
+    <select class="form-control" id="modelType" formControlName="modelType" name="modelType" (change)="showExpectedLines()">
+      <option value="OCR" data-expected-input="Expected Input for OCR" data-expected-output="Expected Output for OCR" i18n>OCR</option>
+      <option value="Line Extraction" data-expected-input="Expected Input for Line Extraction" data-expected-output="Expected Output for Line Extraction" i18n>Line Extraction</option>
     </select>
+  </div>
+  <div *ngIf="expectedLinesVisible" class="expected-lines">
+    <div class="expected-input" i18n>Expected Input: {{ expectedInput }}</div>
+    <div class="expected-output" i18n>Expected Output: {{ expectedOutput }}</div>
   </div>
 
   <!-- Description input -->
   <div class="form-group">
-    <label for="description">Description
+    <label for="description" i18n>Description
       <span class="tooltip-container">
         <i class="fa fa-question-circle tooltip-icon" aria-hidden="true">
           <span class="tooltip-text">Enter a description of your algorithm</span>
@@ -42,7 +46,7 @@
 
   <!-- Repository input -->
   <div class="form-group">
-    <label for="repository">Repository
+    <label for="repository" i18n>Repository
       <span class="tooltip-container">
         <i class="fa fa-question-circle tooltip-icon" aria-hidden="true">
           <span class="tooltip-text">Enter the link to the repository of your algorithm</span>
@@ -53,28 +57,8 @@
            [ngClass]="{'is-invalid': invalidLink}">
     <div class="invalid-feedback" *ngIf="invalidLink">Please enter a valid link</div>
   </div>
-
-  <!-- Demo input -->
-  <label for="demoFile" class="file-upload-button">Choose File</label>
-  <div class="form-group">
-    <input id="demoFile" type="file" class="form-control-file" formControlName="demoFile" (change)="onFileSelected($event)" style="display:none">
-    <ng-container *ngIf="demoFile">
-      <div>File selected:</div>
-      <div class="uploaded-file">
-        {{demoFile.name}} ({{demoFile.size / 1000 | number:'.2'}} KB)
-        <fa-icon class="file-upload-remove" (click)="removeFile()" [ngStyle]="{'color': 'red'}" icon="times"></fa-icon>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="!demoFile">
-      <div>Please select a demo video file
-        <span class="tooltip-container">
-          <i class="fa fa-question-circle tooltip-icon" aria-hidden="true">
-            <span class="tooltip-text">Upload a demo file of your algorithm</span>
-          </i>
-        </span>
-      </div>
-    </ng-container>
-  </div>
+  <p i18n>Note: The more detailed your repository is, the more likely your algorithm is to be accepted by a system admin.<br>
+    A link to a video clip demonstrating your algorithm's performance in the README file will help us in properly assessing your work.</p>
 
   <!-- Submit button -->
   <button type="submit" [disabled]="form.invalid">Submit</button>

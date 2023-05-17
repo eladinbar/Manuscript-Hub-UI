@@ -1,6 +1,8 @@
 export enum AlgorithmStatusEnum {
-  PullRequest = 'Pull Request',
+  Pending = 'Pending',
+  Approved = 'Approved',
   CloudStaging = 'Cloud Staging',
+  Trial = 'Trial',
   Production = 'Production',
   Inactive = 'Inactive',
   Declined = 'Declined',

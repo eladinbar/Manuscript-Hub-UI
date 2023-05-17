@@ -11,8 +11,10 @@ import {AlgorithmModel} from "../../../models/AlgorithmModel";
 export class AlgorithmSubmissionFormComponent implements OnInit {
   uid!: string;
   form!: FormGroup;
-  demoFile?: File;
   invalidLink: boolean = false;
+  expectedLinesVisible: boolean = false;
+  expectedInput: string = '';
+  expectedOutput: string = '';
 
   constructor(private formBuilder: FormBuilder, private algorithmService: AlgorithmService) {
     this.createForm();
@@ -28,45 +30,38 @@ export class AlgorithmSubmissionFormComponent implements OnInit {
       modelType: ['', Validators.required],
       description: ['', Validators.required],
       repository: ['', Validators.required],
-      demoFile: [null, Validators.required]
     });
   }
 
   onSubmit() {
     if (this.form.valid) {
-      console.log("valid submit")
-      const formData: FormData = new FormData();
-      if (this.demoFile) {
-        const algorithm: AlgorithmModel = new AlgorithmModel({
-          uid: this.uid,
-          title: this.form.value.title,
-          modelType: this.form.value.modelType,
-          description: this.form.value.description,
-          url: this.form.value.repository,
-          demoFile: this.demoFile,
-        });
-        console.log(algorithm);
-        formData.append('algorithm', JSON.stringify(algorithm));
-        console.log("Submitting algorithm");
-        this.algorithmService.submitAlgorithm(formData)
-          .subscribe(res => {
-          });
-      }
+      const algorithmModel: AlgorithmModel = new AlgorithmModel({
+        uid: this.uid,
+        title: this.form.value.title,
+        modelType: this.form.value.modelType,
+        description: this.form.value.description,
+        url: this.form.value.repository,
+      });
+      this.algorithmService.submitAlgorithm(algorithmModel).subscribe();
     }
-  }
-
-  onFileSelected(event: any) {
-    this.demoFile = event.target.files[0];
-  }
-
-  removeFile() {
-    this.form.get('demoFile')?.setValue(null);
-    this.demoFile = undefined;
   }
 
   checkLinkValidity() {
     // Here you can implement any logic you need to check the validity of the repository link
     // For example, you can use a regular expression to check if the link is a valid URL
     // If the link is invalid, set the invalidLink property to true so that the form displays an error message and a red border around the Repository field
+  }
+
+  showExpectedLines(): void {
+    const selectedOption: HTMLOptionElement = this.getSelectedOption();
+    this.expectedLinesVisible = true;
+    this.expectedInput = selectedOption.getAttribute('data-expected-input') || '';
+    this.expectedOutput = selectedOption.getAttribute('data-expected-output') || '';
+  }
+
+  getSelectedOption(): HTMLOptionElement {
+    const selectElement: HTMLSelectElement = document.getElementById('modelType') as HTMLSelectElement;
+    const selectedOptionIndex: number = selectElement.selectedIndex;
+    return selectElement.options[selectedOptionIndex] as HTMLOptionElement;
   }
 }

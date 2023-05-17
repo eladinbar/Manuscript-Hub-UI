@@ -8,8 +8,7 @@ export class AlgorithmModel {
   public modelType!: ModelTypeEnum;
   public description!: string;
   public url!: string;
-  public demoFile!: File;
-  public status?: AlgorithmStatusEnum = AlgorithmStatusEnum.PullRequest;
+  public status?: AlgorithmStatusEnum = AlgorithmStatusEnum.Pending;
 
   constructor(algorithmModel: AlgorithmModel) {
     Object.assign(this, algorithmModel, {});
