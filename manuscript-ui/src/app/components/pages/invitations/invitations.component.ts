@@ -5,8 +5,8 @@ import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
-import {InvitationsService} from "../../services/invitations.service";
-import {InvitationRequestTable} from "../../models/InvitationRequestTable";
+import {InvitationsService} from "../../../services/invitations.service";
+import {InvitationRequestTable} from "../../../models/InvitationRequestTable";
 
 @Component({
   selector: 'app-invitations',

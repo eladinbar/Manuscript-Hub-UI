@@ -8,7 +8,7 @@ import {MainComponent} from "./components/main/main.component";
 import {AuthGuard} from "./shared/guards/auth.guard";
 import {RegisterComponent} from "./components/pages/account/register/register.component";
 import {AlgorithmSubmissionFormComponent} from "./components/pages/algorithm-submission-form/algorithm-submission-form.component";
-import {InvitationsComponent} from "./components/invitations/invitations.component";
+import {InvitationsComponent} from "./components/pages/invitations/invitations.component";
 
 const routes: Routes = [
   {
