@@ -42,7 +42,7 @@ export class InvitationsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  denyRequest(element: any): void {
+  denyRequest(invitationRequest: InvitationRequestTable): void {
     Swal.fire({
       title: 'Subscribe request',
       text: `The user will be disabled`,
@@ -54,7 +54,7 @@ export class InvitationsComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.invitationService
-          .denyRequest(element.email)
+          .denyRequest(invitationRequest.email!)
           .subscribe(res => {
             if (res) {
               this.tableElements = res;
@@ -66,7 +66,7 @@ export class InvitationsComponent implements OnInit {
     });
   }
 
-  approveRequest(element: any): void {
+  approveRequest(invitationRequest: InvitationRequestTable): void {
     Swal.fire({
       title: 'Subscribe request',
       text: `The user will be approved`,
@@ -78,7 +78,7 @@ export class InvitationsComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.invitationService
-          .acceptRequest(element.email)
+          .acceptRequest(invitationRequest.email!)
           .subscribe(res => {
             if (res) {
               this.tableElements = res;
