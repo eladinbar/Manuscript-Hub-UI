@@ -3,7 +3,6 @@ import Swal from "sweetalert2";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
-import {FormBuilder, FormGroup} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {InvitationsService} from "../../../services/invitations.service";
 import {InvitationRequestTable} from "../../../models/InvitationRequestTable";
@@ -14,7 +13,6 @@ import {InvitationRequestTable} from "../../../models/InvitationRequestTable";
   styleUrls: ['./invitations.component.css']
 })
 export class InvitationsComponent implements OnInit {
-
   tableElements?: Array<InvitationRequestTable> = [];
   dataSource: MatTableDataSource<InvitationRequestTable> = new MatTableDataSource<InvitationRequestTable>();
   @ViewChild(MatSort, {static: false}) sort!: MatSort;
@@ -23,9 +21,7 @@ export class InvitationsComponent implements OnInit {
   @ViewChild('assignStationModal') assignModal?: ElementRef;
   message = '';
 
-  constructor(private route: ActivatedRoute, private invitationService: InvitationsService
-    ,) {
-  }
+  constructor(private route: ActivatedRoute, private invitationService: InvitationsService) { }
 
   ngOnInit(): void {
     this.fetchTableData();
@@ -49,12 +45,12 @@ export class InvitationsComponent implements OnInit {
   denyRequest(element: any): void {
     Swal.fire({
       title: 'Subscribe request',
-      text: `The request will be permanently deleted`,
+      text: `The user will be disabled`,
       icon: 'info',
       showCancelButton: true,
-      confirmButtonText: 'Delete',
+      confirmButtonText: 'Deny',
       cancelButtonText: 'Cancel',
-      confirmButtonColor: '#ff4500'
+      confirmButtonColor: '#f44336'
     }).then((result) => {
       if (result.value) {
         this.invitationService
@@ -70,15 +66,15 @@ export class InvitationsComponent implements OnInit {
     });
   }
 
-  acceptRequest(element: any): void {
+  approveRequest(element: any): void {
     Swal.fire({
       title: 'Subscribe request',
-      text: `The request will be accepted`,
+      text: `The user will be approved`,
       icon: 'info',
       showCancelButton: true,
-      confirmButtonText: 'Delete',
+      confirmButtonText: 'Approve',
       cancelButtonText: 'Cancel',
-      confirmButtonColor: '#ff4500'
+      confirmButtonColor: '#051390'
     }).then((result) => {
       if (result.value) {
         this.invitationService
