@@ -7,12 +7,15 @@ import {AuthService} from "../../services/auth/auth.service";
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit {
+  displayName: string;
+  email: string;
   sidenavWidth = 18;
-
   sidenavStatus = true;
 
-
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
+    this.displayName = localStorage.getItem('displayName')!;
+    this.email = localStorage.getItem('email')!;
+  }
 
   ngOnInit(): void {
   }
@@ -30,7 +33,6 @@ export class MainComponent implements OnInit {
     }
   }
 
-
   increase() {
     this.sidenavWidth = 18;
   }
@@ -39,8 +41,7 @@ export class MainComponent implements OnInit {
     this.sidenavWidth = 4;
   }
 
-
-  signout() {
+  signOut() {
     this.authService.logout();
   }
 }

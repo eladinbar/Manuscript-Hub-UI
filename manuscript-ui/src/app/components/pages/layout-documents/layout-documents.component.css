@@ -44,6 +44,38 @@
   list-style-type: none;
 }
 
+.doc-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.doc-list-item {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.doc-list-item:last-child {
+  border-bottom: none;
+}
+
+.doc-list-item:hover {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.mat-menu-panel .menu li {
+  cursor: pointer;
+}
+
+.plus-icon {
+  font-size: 30px; /* Adjust the size as desired */
+}
+
+
+
+
+
 
 
 

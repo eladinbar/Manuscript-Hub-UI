@@ -1,15 +1,20 @@
-<div class="add-button-container">
-  <button mat-icon-button [matMenuTriggerFor]="showMenu" aria-label="Example icon-button with a menu">
-    <mat-icon>add</mat-icon>
-  </button>
-  <mat-menu #showMenu="matMenu">
-    <div *ngIf="showMenu" class="menu">
-      <ul>
-        <li *ngFor="let doc of addedDocs; let i = index" (click)="addImage(i, doc)" class="no-bullet">{{ doc.fileName }}</li>
-      </ul>
-    </div>
-  </mat-menu>
-</div>
+<mat-toolbar>
+  <div class="add-button-container">
+    <button mat-icon-button [matMenuTriggerFor]="showMenu" aria-label="Example icon-button with a menu">
+      <mat-icon class="plus-icon">add</mat-icon>
+    </button>
+    <mat-menu #showMenu="matMenu">
+      <div *ngIf="showMenu" class="menu">
+        <ul>
+          <li *ngFor="let doc of addedDocs; let i = index" (click)="addImage(i, doc)" class="no-bullet">{{ doc.fileName }}</li>
+        </ul>
+      </div>
+    </mat-menu>
+  </div>
+</mat-toolbar>
+
+
+
 
 
 <div class="grid-container">
