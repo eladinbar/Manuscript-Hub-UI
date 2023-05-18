@@ -119,7 +119,7 @@ export class DashboardComponent implements OnInit {
   }
 
   onDocumentDelete(documentInfo: DocumentInfoModel) {
-    this.documentService.deleteDocumentDataById(documentInfo.id!, this.uid!).subscribe();
+    this.documentService.deleteDocumentInfoById(documentInfo.id!, this.uid!).subscribe();
   }
 
   onDocumentChangePrivacy(documentInfo: DocumentInfoModel) {

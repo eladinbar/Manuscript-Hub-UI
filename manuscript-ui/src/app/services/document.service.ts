@@ -111,4 +111,17 @@ export class DocumentService {
           return this.restErrorsHandlerService.handleRequestError(errorRes);
         }));
   }
+
+  deleteDocumentInfoById(id: string, uid: string) {
+    return from(this.http.delete(`${environment.baseUrl}${environment.RESOURCE_DELETE_DOCUMENT_INFO_BY_ID}/${id}/${uid}`))
+      .pipe(
+        map((res: any) => {
+          return res;
+        }),
+        catchError(errorRes => {
+          this.townCrier.error(errorRes.error);
+          return this.restErrorsHandlerService.handleRequestError(errorRes);
+        }));
+  }
+
 }
