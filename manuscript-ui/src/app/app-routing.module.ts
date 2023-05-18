@@ -9,6 +9,7 @@ import {AuthGuard} from "./shared/guards/auth.guard";
 import {RegisterComponent} from "./components/pages/account/register/register.component";
 import {AlgorithmSubmissionFormComponent} from "./components/pages/algorithm-submission-form/algorithm-submission-form.component";
 import {InvitationsComponent} from "./components/pages/invitations/invitations.component";
+import {LayoutDocumentsComponent} from "./components/pages/layout-documents/layout-documents.component";
 
 const routes: Routes = [
   {
@@ -18,8 +19,10 @@ const routes: Routes = [
       {path: RouterEnum.Dashboard, component: DashboardComponent},
       {path: 'InvitationRequests', component: InvitationsComponent},
 
+      // {path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId,
+      //   component: DocumentDetailsComponent,},
       {path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId,
-        component: DocumentDetailsComponent,},
+        component: LayoutDocumentsComponent,},
 
       {path: RouterEnum.AlgorithmSubmissionForm, component: AlgorithmSubmissionFormComponent},
     ]

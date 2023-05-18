@@ -9,12 +9,17 @@ import {CryptoService} from "../../services/crypto.service";
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit {
+  displayName: string;
+  email: string;
   sidenavWidth = 18;
   public role?: string;
   sidenavStatus = true;
 
 
-  constructor(private authService: AuthService, public cryptoService:CryptoService) { }
+  constructor(private authService: AuthService, public cryptoService:CryptoService) {
+    this.displayName = localStorage.getItem('displayName')!;
+    this.email = localStorage.getItem('email')!;
+  }
 
   ngOnInit(): void {
     this.role = this.cryptoService.decrypt(localStorage.getItem('role')!);
@@ -41,7 +46,7 @@ export class MainComponent implements OnInit {
     this.sidenavWidth = 4;
   }
 
-  signout() {
+  signOut() {
     this.authService.logout();
   }
 

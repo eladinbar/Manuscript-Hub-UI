@@ -103,7 +103,10 @@ export class AuthService {
       photoUrl: user.photoURL
     };
     localStorage.setItem('user', JSON.stringify(u));
+    localStorage.setItem('displayName', user.displayName);
     localStorage.setItem('uid', user.uid);
+    localStorage.setItem('email', user.email);
+    localStorage.setItem('pinnedStations', JSON.stringify(result.pinnedStations));
     localStorage.setItem('token', result.token);
     localStorage.setItem('lang', this.lang);
     localStorage.setItem('direction', this.lang == 'en' ? 'ltr' : 'rtl');

@@ -76,3 +76,35 @@ mat-sidenav-content{
   min-height: 100vh;
   overflow: hidden;
 }
+
+.xxx-text {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+.yyy-text {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.welcome-text {
+  font-size: 16px;
+}
+
+.gmail-email-container {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.gmail-icon.smaller-icon {
+  font-size: 24px;
+  margin-right: 6px;
+}
+
+.email-text {
+  align-items: center;
+  font-size: 14px;
+}
+

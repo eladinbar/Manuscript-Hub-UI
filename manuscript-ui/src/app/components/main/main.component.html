@@ -2,7 +2,15 @@
   <div fxFill fxLayout="row" fxLayoutAlign="space-between center">
     <div>
       <mat-icon (click)="toggleSidenav()" class="button-pointer">menu</mat-icon>
-      <span routerLink="/" class="text-pointer">Manuscript </span>
+      <span routerLink="/" class="text-pointer">Manuscript</span>
+    </div>
+    <div>
+
+      <!--   Display user email   -->
+      <div class="yyy-text">
+        <mat-icon class="gmail-icon smaller-icon">email</mat-icon>
+        <span class="email-text">{{ email }}</span>
+      </div>
     </div>
   </div>
 </mat-toolbar>
@@ -59,7 +67,7 @@
 
     <!--  Logout  -->
     <mat-nav-list>
-      <mat-list-item (click)="signout()" routerLinkActive="active">
+      <mat-list-item (click)="signOut()" routerLinkActive="active">
         <mat-icon class="material-icons text-white" mat-list-icon>logout</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
