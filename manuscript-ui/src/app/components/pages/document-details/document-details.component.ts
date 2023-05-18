@@ -19,6 +19,7 @@ export class DocumentDetailsComponent implements OnInit {
 
   @Input() uid = '';
   @Input() documentId = '';
+  @Input() title = '';
 
   coordinates: AnnotationCoordinatesModel[] = [];
   annotations: AnnotationModel[] = [];

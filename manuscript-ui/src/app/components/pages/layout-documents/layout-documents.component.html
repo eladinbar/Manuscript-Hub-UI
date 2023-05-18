@@ -1,26 +1,26 @@
 <div class="add-button-container">
-<!--  <button (click)="showMenu = !showMenu" class="add-button">+</button>-->
-  <button mat-icon-button [matMenuTriggerFor]="showMenu"
-          aria-label="Example icon-button with a menu">
+  <button mat-icon-button [matMenuTriggerFor]="showMenu" aria-label="Example icon-button with a menu">
     <mat-icon>add</mat-icon>
   </button>
   <mat-menu #showMenu="matMenu">
     <div *ngIf="showMenu" class="menu">
       <ul>
-        <li *ngFor="let doc of addedDocs; let i = index" (click)="addImage(i, doc)">{{ doc.fileName }}</li>
+        <li *ngFor="let doc of addedDocs; let i = index" (click)="addImage(i, doc)" class="no-bullet">{{ doc.fileName }}</li>
       </ul>
     </div>
   </mat-menu>
 </div>
 
+
 <div class="grid-container">
   <div class="grid-item item1">
-    <app-document-details [documentId]="documentId" [uid]="uid"></app-document-details>
+    <app-document-details [documentId]="documentId" [uid]="uid" [title]="firstTitle"></app-document-details>
   </div>
 
   <div class="grid-item" *ngFor="let addedDocId of addedDocIds; let i = index" [ngClass]="'item' + (i+2)" >
-    <app-document-details [documentId]="addedDocId!" [uid]="uid"></app-document-details>
+    <app-document-details [documentId]="addedDocId!" [uid]="uid" [title]="addedDocTitles[i]"></app-document-details>
   </div>
+
 </div>
 
 
