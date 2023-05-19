@@ -1,4 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import Swal from 'sweetalert2';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatSort} from '@angular/material/sort';
+import {MatPaginator} from '@angular/material/paginator';
+import {AlgorithmRequestTable} from "../../../models/AlgorithmRequestTable";
+import {AlgorithmService} from "../../../services/algorithm.service";
+import {AccountService} from "../../../services/auth/account.service";
+import {AlgorithmModel} from "../../../models/AlgorithmModel";
+import {UserModel} from "../../../models/UserModel";
+import {AlgorithmStatusEnum} from "../../../enums/AlgorithmStatusEnum";
+
 
 @Component({
   selector: 'app-algorithm-requests',
@@ -6,10 +17,98 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./algorithm-requests.component.css']
 })
 export class AlgorithmRequestsComponent implements OnInit {
+  tableAlgorithmRequests: AlgorithmRequestTable[] = [];
+  algorithmModels: AlgorithmModel[] = [];
+  dataSource: MatTableDataSource<AlgorithmRequestTable> = new MatTableDataSource<AlgorithmRequestTable>();
+  @ViewChild(MatSort, {static: false}) sort!: MatSort;
+  @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
+  tableCols = ['email', 'title', 'description', 'modelType', 'repository', 'status', 'edit'];
+  @ViewChild('assignAlgorithmModal') assignModal?: ElementRef;
+  message = '';
+  uid!: string;
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(private algorithmService: AlgorithmService, private accountService: AccountService) {
   }
 
+  ngOnInit(): void {
+    this.uid = localStorage.getItem('uid')!;
+    this.fetchTableData();
+  }
+
+  fetchTableData(): void {
+    this.algorithmService.getAllAlgorithms().subscribe((algorithms: AlgorithmModel[]) => {
+      this.algorithmModels = algorithms;
+      for (let algorithmRequest of this.algorithmModels) {
+        this.accountService.getUserByUid(algorithmRequest.uid).subscribe((user: UserModel) => {
+          this.tableAlgorithmRequests.push({
+            email: user.email,
+            title: algorithmRequest.title,
+            description: algorithmRequest.description,
+            modelType: algorithmRequest.modelType,
+            repository: algorithmRequest.url,
+            status: algorithmRequest.status!,
+          });
+          this.initDataSource();
+        });
+      }
+    });
+  }
+
+  private initDataSource(): void {
+    this.dataSource = new MatTableDataSource<AlgorithmRequestTable>(this.tableAlgorithmRequests);
+    this.dataSource.sort = this.sort!;
+    this.dataSource.paginator = this.paginator;
+  }
+
+  approveRequest(algorithmRequest: AlgorithmRequestTable): void {
+    Swal.fire({
+      title: 'Accept Algorithm Request',
+      text: `The algorithm request will be approved.`,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Approve',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#051390'
+    }).then((result) => {
+      if (result.value) {
+        const algorithm: AlgorithmModel = {
+          uid: this.uid,
+          title: algorithmRequest.title,
+          description: algorithmRequest.description,
+          modelType: algorithmRequest.modelType,
+          url: algorithmRequest.repository,
+          status: AlgorithmStatusEnum.Approved,
+        }
+        this.algorithmService.updateAlgorithm(algorithm).subscribe(() => {
+          algorithmRequest.status = AlgorithmStatusEnum.Approved;
+        });
+      }
+    });
+  }
+
+  declineRequest(algorithmRequest: AlgorithmRequestTable): void {
+    Swal.fire({
+      title: 'Deny Algorithm Request',
+      text: `The algorithm request will be declined.`,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Decline',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#f44336'
+    }).then((result) => {
+      if (result.value) {
+        const algorithm: AlgorithmModel = {
+          uid: this.uid,
+          title: algorithmRequest.title,
+          description: algorithmRequest.description,
+          modelType: algorithmRequest.modelType,
+          url: algorithmRequest.repository,
+          status: AlgorithmStatusEnum.Declined,
+        }
+        this.algorithmService.updateAlgorithm(algorithm).subscribe(() => {
+          algorithmRequest.status = AlgorithmStatusEnum.Declined;
+        });
+      }
+    });
+  }
 }
