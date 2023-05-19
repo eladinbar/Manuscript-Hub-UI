@@ -41,8 +41,8 @@ export class MainComponent implements OnInit {
     this.sidenavWidth = 4;
   }
 
-  signout() {
-    this.authService.logout();
+  signOut() {
+    this.authService.signOut();
   }
 
   protected readonly RouterEnum = RouterEnum;

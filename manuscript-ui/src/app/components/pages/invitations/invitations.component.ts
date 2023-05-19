@@ -42,30 +42,6 @@ export class InvitationsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  denyRequest(invitationRequest: InvitationRequestTable): void {
-    Swal.fire({
-      title: 'Subscribe request',
-      text: `The user will be disabled`,
-      icon: 'info',
-      showCancelButton: true,
-      confirmButtonText: 'Deny',
-      cancelButtonText: 'Cancel',
-      confirmButtonColor: '#f44336'
-    }).then((result) => {
-      if (result.value) {
-        this.invitationService
-          .denyRequest(invitationRequest.email!)
-          .subscribe(res => {
-            if (res) {
-              this.tableElements = res;
-              this.dataSource.data = res;
-            }
-          });
-      } else {
-      }
-    });
-  }
-
   approveRequest(invitationRequest: InvitationRequestTable): void {
     Swal.fire({
       title: 'Subscribe request',
@@ -77,9 +53,29 @@ export class InvitationsComponent implements OnInit {
       confirmButtonColor: '#051390'
     }).then((result) => {
       if (result.value) {
-        this.invitationService
-          .acceptRequest(invitationRequest.email!)
-          .subscribe(res => {
+        this.invitationService.acceptRequest(invitationRequest.email!).subscribe(res => {
+            if (res) {
+              this.tableElements = res;
+              this.dataSource.data = res;
+            }
+          });
+      } else {
+      }
+    });
+  }
+
+  denyRequest(invitationRequest: InvitationRequestTable): void {
+    Swal.fire({
+      title: 'Subscribe request',
+      text: `The user will be disabled`,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Deny',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#f44336'
+    }).then((result) => {
+      if (result.value) {
+        this.invitationService.denyRequest(invitationRequest.email!).subscribe(res => {
             if (res) {
               this.tableElements = res;
               this.dataSource.data = res;

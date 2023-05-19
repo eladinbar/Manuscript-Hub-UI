@@ -5,19 +5,19 @@ import {Observable} from "rxjs";
 import {map, shareReplay} from "rxjs/operators";
 import {Role} from "../../models/Role";
 import {CryptoService} from "../crypto.service";
+import {UserModel} from "../../models/UserModel";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  controller = 'api/invitation';
-  private roleReuslt$: Observable<any> | undefined;
+  invitationUrl = 'api/invitation';
+  userApiUrl = 'api/user';
+  private roleResult$: Observable<any> | undefined;
 
-  constructor(private http: HttpClient,public cryptoService: CryptoService) {
-  }
+  constructor(private http: HttpClient, public cryptoService: CryptoService) { }
 
   registerNewUser(email: string, uid: string, name: string, phoneNumber: string, role: string): Observable<any> {
-
     const data = {
       email,
       uid,
@@ -27,8 +27,7 @@ export class AccountService {
     };
 
     // return this.http.post(`${environment.baseUrl}/${this.controller}/register`, data);
-    return this.http.post(`${environment.baseUrl}/${this.controller}/createInvitation`, data);
-
+    return this.http.post(`${environment.baseUrl}/${this.invitationUrl}/createInvitation`, data);
   }
 
   authenticateUser(uid: string, email: string, name: string, token: string): Observable<any> {
@@ -51,8 +50,16 @@ export class AccountService {
     }));
   }
 
+  getUserById(id: string) {
+    return this.http.get<UserModel>(`${environment.baseUrl}/${this.userApiUrl}/getUserById/${id}`);
+  }
+
+  getUserByUid(uid: string) {
+    return this.http.get<UserModel>(`${environment.baseUrl}/${this.userApiUrl}/getUserByUid/${uid}`);
+  }
+
   getUserAuthRole(): Observable<string> {
-    return this.http.get<string>(`${environment.baseUrl}/${this.controller}/getRole`);
+    return this.http.get<string>(`${environment.baseUrl}/${this.invitationUrl}/getRole`);
   }
 
   public getSession(): Promise<boolean> {
@@ -66,16 +73,16 @@ export class AccountService {
     });
   }
 
-  public getUserRoless(): Observable<any> {
-    if (!this.roleReuslt$) {
-      this.roleReuslt$ = this.http
+  public getUserRoles(): Observable<any> {
+    if (!this.roleResult$) {
+      this.roleResult$ = this.http
         .get(`${environment.baseUrl}/api/user/getRole`)
         .pipe(map((res: any) => {
           res.push(Role.GUEST);
           return res;
         }), shareReplay(1));
     }
-    return this.roleReuslt$;
+    return this.roleResult$;
   }
 
   public areUserRolesAllowed(userRoles: string[], allowedUserRoles: Role[]): boolean {

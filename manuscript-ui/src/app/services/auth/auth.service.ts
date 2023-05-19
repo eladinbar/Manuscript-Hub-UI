@@ -31,19 +31,49 @@ export class AuthService {
       });
     })()
     let tokenIntervalId = setInterval(this.refreshToken, 20000);
-
   }
-  refreshToken(){
 
-    if(this.userData) {
+  signIn(email: string, password: string): Promise<any> {
+    return this.afAuth
+      .signInWithEmailAndPassword(email, password)
+      .then((result) => {
+        console.log(result)
+        this.setUserData(result.user).then();
+        this.updateLocalStorage(result, result.user);
+        return result;
+
+      })
+      .catch((error) => {
+        window.alert(error.message);
+        return null;
+      });
+  }
+
+  setUserData(user: any) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+      `users/${user.uid}`
+    );
+    const userData: { uid: any; photoURL: any; emailVerified: any; displayName: any; email: any } = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      emailVerified: user.emailVerified,
+    };
+    return userRef.set(userData, {
+      merge: true,
+    });
+  }
+
+  refreshToken() {
+    if (this.userData) {
       this.userData.getIdToken().then((token: any) => {
         localStorage.setItem('token', token);
       });
     }
   }
 
-
-  logout() {
+  signOut() {
     this.afAuth.signOut();
     localStorage.clear();
     this.router.navigate(['/login']);
@@ -64,39 +94,6 @@ export class AuthService {
     }
   }
 
-  signIn(email: string, password: string): Promise<any> {
-    return this.afAuth
-      .signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        console.log(result)
-        this.SetUserData(result.user).then();
-        this.updateLocalStorage(result, result.user);
-        return result;
-
-      })
-      .catch((error) => {
-        window.alert(error.message);
-        return null;
-      });
-  }
-
-  SetUserData(user: any) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-      `users/${user.uid}`
-    );
-    const userData: { uid: any; photoURL: any; emailVerified: any; displayName: any; email: any } = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-      emailVerified: user.emailVerified,
-    };
-    return userRef.set(userData, {
-      merge: true,
-    });
-  }
-
-
   updateLocalStorage(result: any, user: any): void {
     const u = {
       displayName: user.displayName,
@@ -107,15 +104,10 @@ export class AuthService {
     localStorage.setItem('token', result.token);
     localStorage.setItem('lang', this.lang);
     localStorage.setItem('direction', this.lang == 'en' ? 'ltr' : 'rtl');
-
-
   }
 
   async googleLogin(): Promise<UserCredential> {
-
-
-    const provider = new GoogleAuthProvider();
-
+    const provider: GoogleAuthProvider = new GoogleAuthProvider();
     return await this.afAuth.signInWithPopup(provider);
   }
 
