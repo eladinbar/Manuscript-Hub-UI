@@ -191,6 +191,7 @@ export class DocumentDetailsComponent implements OnInit {
   openDialog(text: string = "") {
     return this.dialog.open(DialogComponent, {
       width: '250px',
+      maxHeight: '80vh',
       data: {text}
     });
   }

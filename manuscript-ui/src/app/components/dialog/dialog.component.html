@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Enter Annotation Value</h2>
 <mat-dialog-content>
   <mat-form-field>
-    <input matInput placeholder="Text" [(ngModel)]="text">
+    <textarea matInput placeholder="Text" [ngClass]="{ 'auto-resize': true }" [(ngModel)]="data.text" (input)="adjustTextareaHeight($event.target)" wrap="soft"></textarea>
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>

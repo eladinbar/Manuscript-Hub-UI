@@ -36,4 +36,9 @@ export class DialogComponent {
       this.dialogRef.close();
     });
   }
+
+  adjustTextareaHeight(textarea: any) {
+    textarea.style.height = 'auto';
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  }
 }

@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {DashboardComponent} from "./components/pages/dashboard/dashboard.component";
 import {RouterEnum} from "./enums/RouterEnum";
-import {DocumentDetailsComponent} from "./components/pages/document-details/document-details.component";
 import {LoginComponent} from "./components/pages/account/login/login.component";
 import {MainComponent} from "./components/main/main.component";
 import {AuthGuard} from "./shared/guards/auth.guard";
@@ -18,12 +17,12 @@ const routes: Routes = [
 
     children: [
       {path: RouterEnum.Dashboard, component: DashboardComponent},
-      {path: 'InvitationRequests', component: InvitationsComponent},
 
       {path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId, component: LayoutDocumentsComponent},
 
       {path: RouterEnum.AlgorithmSubmissionForm, component: AlgorithmSubmissionFormComponent},
       {path: RouterEnum.AlgorithmRequests, component: AlgorithmRequestsComponent},
+
       {path: RouterEnum.InvitationRequests, component: InvitationsComponent},
     ]
   },
