@@ -54,6 +54,17 @@
       </mat-list-item>
     </mat-nav-list>
 
+    <!--  Algorithm Requests  -->
+    <mat-nav-list>
+      <mat-list-item *ngIf="role == 'Admin' || role == 'Developer'" [routerLink]="'/' + RouterEnum.AlgorithmRequests" routerLinkActive="active">
+        <mat-icon class="text-white">supervised_user_circle</mat-icon>
+        <div fxFlex="10"></div>
+        <div *ngIf="sidenavWidth > 6" class="sidenav-item">
+          <div class="menu-item" i18n>Algorithm Requests</div>
+        </div>
+      </mat-list-item>
+    </mat-nav-list>
+
     <!--  Invitation Requests  -->
     <mat-nav-list>
       <mat-list-item *ngIf="role == 'Admin'" [routerLink]="'/' + RouterEnum.InvitationRequests" routerLinkActive="active">

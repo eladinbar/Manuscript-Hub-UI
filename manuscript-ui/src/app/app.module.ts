@@ -47,6 +47,7 @@ import {FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome
 import {faQuestionCircle, faTimes} from "@fortawesome/free-solid-svg-icons";
 import { InvitationsComponent } from './components/pages/invitations/invitations.component';
 import { LayoutDocumentsComponent } from './components/pages/layout-documents/layout-documents.component';
+import { AlgorithmRequestsComponent } from './components/pages/algorithm-requests/algorithm-requests.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { LayoutDocumentsComponent } from './components/pages/layout-documents/la
     AlgorithmSubmissionFormComponent,
     InvitationsComponent,
     LayoutDocumentsComponent,
+    AlgorithmRequestsComponent,
   ],
     imports: [
         BrowserModule,

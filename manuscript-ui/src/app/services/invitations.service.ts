@@ -30,7 +30,7 @@ export class InvitationsService {
   }
 
   acceptRequest(email: string) {
-    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_ACCEPT_REQUEST_INVITATIONS}${email}`))
+    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_APPROVE_INVITATION_REQUEST}${email}`))
       .pipe(
         map((res: any) => {
           return res;
@@ -42,7 +42,7 @@ export class InvitationsService {
   }
 
   denyRequest(email: string) {
-    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_DENY_REQUEST_INVITATIONS}${email}`))
+    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_DENY_INVITATION_REQUEST}${email}`))
       .pipe(
         map((res: any) => {
           return res;

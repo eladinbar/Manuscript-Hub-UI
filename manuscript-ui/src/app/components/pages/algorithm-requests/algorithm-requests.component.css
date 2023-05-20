@@ -1,0 +1,9 @@
+table {
+  overflow: auto;
+  width: 100%;
+}
+
+.alert {
+  background-color: #e1622e;
+  color: white;
+}

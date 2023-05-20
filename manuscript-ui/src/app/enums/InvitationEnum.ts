@@ -1,5 +1,5 @@
 export enum InvitationEnum {
-  pending = 'pending',
-  approved = 'approved',
-  disapprove = 'disapprove',
+  Pending = 'Pending',
+  Approved = 'Approved',
+  Denied = 'Denied',
 }

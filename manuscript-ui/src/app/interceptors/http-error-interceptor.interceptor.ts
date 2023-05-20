@@ -20,7 +20,7 @@ export class HttpErrorInterceptorService implements HttpInterceptor {
     (
       catchError((err:HttpErrorResponse)=>{
         if(err?.status===HttpStatusCode.Unauthorized){
-          this.authService.logout()
+          this.authService.signOut()
         }
         return throwError(err)
       })

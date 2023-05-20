@@ -14,7 +14,7 @@ export class RegisterComponent {
   public formGroup: FormGroup;
   public inputType: string = "password";
   hide = true;
-  roles = ['Developer', 'User', 'Guest'];
+  roles = ['Developer', 'User'];
 
 
   constructor(private auth: AngularFireAuth, private formBuilder: FormBuilder, private accountService: AccountService, public router: Router, public townCrier: TownCrierService) {

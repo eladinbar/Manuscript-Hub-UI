@@ -47,7 +47,7 @@ export class MainComponent implements OnInit {
   }
 
   signOut() {
-    this.authService.logout();
+    this.authService.signOut();
   }
 
   protected readonly RouterEnum = RouterEnum;

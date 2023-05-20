@@ -1,14 +1,14 @@
 import {Status} from "../enums/Status";
-import {Role} from "./Role";
+import {RoleEnum} from "../enums/RoleEnum";
 
 export class UserModel {
   public id?: string;
   public uid?: string;
   public createdTime?: Date;
   public updatedTime?: Date;
-  public email?: string;
+  public email!: string;
   public name?: string;
-  public Role?: Role;
+  public Role?: RoleEnum;
   public Status?: Status;
 
 

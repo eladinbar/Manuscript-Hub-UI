@@ -10,6 +10,7 @@ import {RegisterComponent} from "./components/pages/account/register/register.co
 import {AlgorithmSubmissionFormComponent} from "./components/pages/algorithm-submission-form/algorithm-submission-form.component";
 import {InvitationsComponent} from "./components/pages/invitations/invitations.component";
 import {LayoutDocumentsComponent} from "./components/pages/layout-documents/layout-documents.component";
+import {AlgorithmRequestsComponent} from "./components/pages/algorithm-requests/algorithm-requests.component";
 
 const routes: Routes = [
   {
@@ -19,18 +20,17 @@ const routes: Routes = [
       {path: RouterEnum.Dashboard, component: DashboardComponent},
       {path: 'InvitationRequests', component: InvitationsComponent},
 
-      // {path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId,
-      //   component: DocumentDetailsComponent,},
-      {path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId,
-        component: LayoutDocumentsComponent,},
+      {path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId, component: LayoutDocumentsComponent},
 
       {path: RouterEnum.AlgorithmSubmissionForm, component: AlgorithmSubmissionFormComponent},
+      {path: RouterEnum.AlgorithmRequests, component: AlgorithmRequestsComponent},
+      {path: RouterEnum.InvitationRequests, component: InvitationsComponent},
     ]
   },
 
-  {path: 'login', component: LoginComponent},
+  {path: RouterEnum.Login, component: LoginComponent},
 
-  {path: 'register', component: RegisterComponent},
+  {path: RouterEnum.Register, component: RegisterComponent},
 
   {path: RouterEnum.Home, component: MainComponent},
 
