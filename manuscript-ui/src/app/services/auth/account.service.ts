@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
 import {map, shareReplay} from "rxjs/operators";
-import {Role} from "../../models/Role";
+import {RoleEnum} from "../../enums/RoleEnum";
 import {CryptoService} from "../crypto.service";
 import {UserModel} from "../../models/UserModel";
 
@@ -78,14 +78,14 @@ export class AccountService {
       this.roleResult$ = this.http
         .get(`${environment.baseUrl}/api/user/getRole`)
         .pipe(map((res: any) => {
-          res.push(Role.GUEST);
+          // res.push(RoleEnum.Guest);
           return res;
         }), shareReplay(1));
     }
     return this.roleResult$;
   }
 
-  public areUserRolesAllowed(userRoles: string[], allowedUserRoles: Role[]): boolean {
+  public areUserRolesAllowed(userRoles: string[], allowedUserRoles: RoleEnum[]): boolean {
     for (const role of userRoles) {
       for (const allowedRole of allowedUserRoles) {
         if (role.toLowerCase() === allowedRole.toLowerCase()) {

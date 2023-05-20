@@ -50,14 +50,29 @@
           <td mat-cell *matCellDef="let algorithmRequest"> {{algorithmRequest.status}} </td>
         </ng-container>
 
-        <!--  Button column  -->
+        <!-- Button column -->
         <ng-container matColumnDef="edit">
           <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header></th>
           <td mat-cell *matCellDef="let algorithmRequest">
-            <button mat-raised-button color="primary" *ngIf="algorithmRequest.status != 'Approved'"
+            <button mat-raised-button color="primary" *ngIf="algorithmRequest.status === 'Declined' || algorithmRequest.status === 'Pending' && role == 'Admin'"
                     (click)="approveRequest(algorithmRequest)">Approve
             </button>
-            <button mat-raised-button color="warn" *ngIf="algorithmRequest.status != 'Declined'"
+            <button mat-raised-button color="primary" *ngIf="algorithmRequest.status === 'Approved'  && role == 'Admin'"
+                    (click)="approveRequest(algorithmRequest)">Cloud Staging
+            </button>
+            <button mat-raised-button color="primary" *ngIf="algorithmRequest.status === 'CloudStaging'  && role == 'Admin'"
+                    (click)="approveRequest(algorithmRequest)">Trial
+            </button>
+            <button mat-raised-button color="primary" *ngIf="algorithmRequest.status === 'Trial' && role == 'Admin'"
+                    (click)="approveRequest(algorithmRequest)">Production
+            </button>
+            <button mat-raised-button color="primary" *ngIf="algorithmRequest.status === 'Inactive'"
+                    (click)="approveRequest(algorithmRequest)">Production
+            </button>
+            <button mat-raised-button class="alert" *ngIf="algorithmRequest.status === 'Production'"
+                    (click)="disableAlgorithm(algorithmRequest)">Disable
+            </button>
+            <button mat-raised-button color="warn" *ngIf="algorithmRequest.status !== 'Declined' && role == 'Admin'"
                     (click)="declineRequest(algorithmRequest)">Decline
             </button>
           </td>

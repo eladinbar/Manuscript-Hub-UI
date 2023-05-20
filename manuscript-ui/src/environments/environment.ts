@@ -16,6 +16,7 @@ export const environment = {
   RESOURCE_UPDATE_ALGORITHM: "/api/algorithm/updateAlgorithm",
   RESOURCE_GET_ALGORITHM_BY_ID: "/api/algorithm/getAlgorithmById",
   RESOURCE_GET_ALGORITHM_BY_URL: "/api/algorithm/getAlgorithmByUrl",
+  RESOURCE_GET_ALL_ALGORITHMS_BY_UID: "/api/algorithm/getAllAlgorithmsByUid",
   RESOURCE_GET_ALL_ALGORITHMS: "/api/algorithm/getAllAlgorithms",
   RESOURCE_DELETE_ALGORITHM_BY_ID: "/api/algorithm/deleteAlgorithmById",
   RESOURCE_DELETE_ALGORITHM_BY_URL: "/api/algorithm/deleteAlgorithmByUrl",

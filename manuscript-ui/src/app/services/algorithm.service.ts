@@ -23,12 +23,12 @@ export class AlgorithmService {
     return from(this.http.post(`${environment.baseUrl}${environment.RESOURCE_SUBMIT_ALGORITHM}`, algorithmModel, {headers: headers}))
       .pipe(
         map((res: any) => {
-          this.townCrier.info("Algorithm submitted successfully.")
+          this.townCrier.info("Algorithm submitted successfully.");
           this.router.navigate(['/' + RouterEnum.Dashboard]);
           return res;
         }),
         catchError((errorRes: HttpErrorResponse) => {
-          this.townCrier.error(errorRes.error.message);
+          this.townCrier.error(errorRes.error);
           return this.restErrorsHandlerService.handleRequestError(errorRes);
         }));
   }
@@ -40,7 +40,7 @@ export class AlgorithmService {
           return res;
         }),
         catchError((errorRes: HttpErrorResponse) => {
-          this.townCrier.error(errorRes.error.message);
+          this.townCrier.error(errorRes.error);
           return this.restErrorsHandlerService.handleRequestError(errorRes);
         }));
   }
@@ -52,19 +52,35 @@ export class AlgorithmService {
           return res;
         }),
         catchError((errorRes: HttpErrorResponse) => {
-          this.townCrier.error(errorRes.error.message);
+          this.townCrier.error(errorRes.error);
           return this.restErrorsHandlerService.handleRequestError(errorRes);
         }));
   }
 
-  getAllAlgorithms() {
-    return from(this.http.get<AlgorithmModel[]>(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_ALGORITHMS}`))
+  getAllAlgorithms(uid: string) {
+    this.townCrier.info("Please wait while all algorithms are being retrieved...");
+    return from(this.http.get<AlgorithmModel[]>(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_ALGORITHMS}/${uid}`))
       .pipe(
         map((res: any) => {
+          this.townCrier.info("All algorithms retrieved successfully.");
           return res;
         }),
         catchError((errorRes: HttpErrorResponse) => {
-          this.townCrier.error(errorRes.error.message);
+          this.townCrier.error(errorRes.error);
+          return this.restErrorsHandlerService.handleRequestError(errorRes);
+        }));
+  }
+
+  getAllAlgorithmsByUid(uid: string) {
+    this.townCrier.info("Please wait while all algorithms are being retrieved...");
+    return from(this.http.get<AlgorithmModel[]>(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_ALGORITHMS_BY_UID}/${uid}`))
+      .pipe(
+        map((res: any) => {
+          this.townCrier.info("All algorithms retrieved successfully.");
+          return res;
+        }),
+        catchError((errorRes: HttpErrorResponse) => {
+          this.townCrier.error(errorRes.error);
           return this.restErrorsHandlerService.handleRequestError(errorRes);
         }));
   }

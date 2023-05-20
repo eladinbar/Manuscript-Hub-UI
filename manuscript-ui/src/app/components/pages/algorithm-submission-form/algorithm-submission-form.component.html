@@ -24,7 +24,7 @@
   <div class="form-group">
     <select class="form-control" id="modelType" formControlName="modelType" name="modelType" (change)="showExpectedLines()">
       <option value="OCR" data-expected-input="Expected Input for OCR" data-expected-output="Expected Output for OCR" i18n>OCR</option>
-      <option value="Line Extraction" data-expected-input="Expected Input for Line Extraction" data-expected-output="Expected Output for Line Extraction" i18n>Line Extraction</option>
+      <option value="LineExtraction" data-expected-input="Expected Input for Line Extraction" data-expected-output="Expected Output for Line Extraction" i18n>Line Extraction</option>
     </select>
   </div>
   <div *ngIf="expectedLinesVisible" class="expected-lines">
