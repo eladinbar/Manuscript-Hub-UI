@@ -28,6 +28,8 @@ export class DocumentDetailsComponent implements OnInit {
 
   @ViewChild('canvas', {static: true}) canvas?: ElementRef;
   ctx?: CanvasRenderingContext2D;
+  annIsHovered: boolean = false;
+  infoIsHovered: boolean = false;
 
   constructor(private documentService: DocumentService, private annotationService: AnnotationService,
               private route: ActivatedRoute, private sanitizer: DomSanitizer, private dialog: MatDialog) {
@@ -301,5 +303,13 @@ export class DocumentDetailsComponent implements OnInit {
   redrawImage() {
     const canvas = this.canvas?.nativeElement;
     this.ctx?.drawImage(this.image, 0, 0, this.image.width, this.image.height, 0, 0, canvas!.width, canvas!.height);
+  }
+
+  anotherFunction() {
+
+  }
+  selectAlgorithm(algorithm: string) {
+    // Perform any desired actions based on the selected algorithm
+    console.log(`Selected algorithm: ${algorithm}`);
   }
 }

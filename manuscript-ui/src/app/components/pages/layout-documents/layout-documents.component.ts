@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {RouterEnum} from "../../../enums/RouterEnum";
 import {ActivatedRoute} from "@angular/router";
 import {DocumentService} from "../../../services/document.service";
 import {DocumentInfoTableModel} from "../../../models/DocumentInfoTableModel";
 import {TownCrierService} from "../../../services/town-crier.service";
+import { MatMenuTrigger } from '@angular/material/menu';
+
 
 @Component({
   selector: 'app-layout-documents',
@@ -23,7 +25,7 @@ export class LayoutDocumentsComponent implements OnInit {
   documentTitles: string[] = [];
   curTitle: string | undefined = '';
   addedDocTitles: string[] = []
-
+  // Access the MatMenuTrigger using ViewChild
 
 
 
@@ -37,6 +39,11 @@ export class LayoutDocumentsComponent implements OnInit {
     this.loadUploadedImageUrl(); // Call this function to load the uploaded image
     this.getAllDocIds();
   }
+
+  @ViewChild('showMenu') showMenuTrigger!: MatMenuTrigger;
+
+
+
 
   loadUploadedImageUrl(): void {
     this.townCrier.info('Loading image...');
@@ -67,11 +74,22 @@ export class LayoutDocumentsComponent implements OnInit {
       this.addedDocTitles.push(this.curTitle);
       this.photosCounter += 1;
       this.imageCount = Math.min(this.photosCounter, 4);
+      this.showMenuTrigger.closeMenu();
     } else {
       this.townCrier.info('Can not open more than 4 photos');
     }
   }
 
+
+  public openSearch() {
+  }
+
+
+  handleSearch(event: Event) {
+    const inputValue = (event.target as HTMLInputElement).value;
+    // Handle the search input value
+    console.log('Search Text:', inputValue);
+  }
 
 
 }
