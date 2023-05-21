@@ -37,14 +37,22 @@ export class AnnotationService {
   }
 
   getAnnotationsByDocumentId(documentId: string, uid: string): Observable<AnnotationModel[]> {
-    return this.http.get<AnnotationModel[]>(`${this.apiUrl}/getAnnotationsByDocumentId/${documentId}/${uid}`);
+    return this.http.get<AnnotationModel[]>(`${this.apiUrl}/getAllAnnotationsByDocumentId/${documentId}/${uid}`);
   }
 
-  deleteAnnotation(annotationId: string, documentId: string, uid: string): Observable<AnnotationModel> {
-    return this.http.delete<AnnotationModel>(`${this.apiUrl}/deleteAnnotation/${annotationId}/${documentId}/${uid}`);
+  deleteAnnotation(annotationId: string) {
+    const headers = new HttpHeaders();
+    headers.set('Content-Type', 'application/json');
+    return from(this.http.delete(`${environment.baseUrl}${environment.RESOURCE_DELETE_ANNOTATION}/${annotationId}`, {headers: headers, responseType:"text"}))
+      .pipe(
+        map((res: string) => {
+          this.townCrier.info(res);
+          return res;
+        }),
+        catchError(errorRes => {
+          this.townCrier.error(errorRes.error);
+          return this.restErrorsHandlerService.handleRequestError(errorRes);
+        }));
   }
 
-  deleteAllAnnotationsByDocumentId() {
-
-  }
 }

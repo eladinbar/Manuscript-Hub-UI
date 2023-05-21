@@ -16,6 +16,7 @@ import {DocumentInfoModel} from "../../../models/DocumentInfoModel";
 import {MatDialog} from "@angular/material/dialog";
 import {PrivacyDialogComponent} from "../../dialogs/privacy-dialog/privacy-dialog.component";
 import {ConfirmationDialogComponent} from "../../dialogs/confirmation-dialog/confirmation-dialog.component";
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-dashboard',
@@ -136,9 +137,11 @@ export class DashboardComponent implements OnInit {
     this.documentService
       .deleteDocumentInfoById(documentInfo.id!, this.uid!)
       .subscribe({
-        next: () => {
-          this.documentInfoTableModels = this.documentInfoTableModels.filter(doc => doc.id !== documentInfo.id);
-          this.dataSource.data = this.documentInfoTableModels; // Update the data source
+        next: (res) => {
+          if (res instanceof HttpResponse) {
+            this.documentInfoTableModels = this.documentInfoTableModels.filter(doc => doc.id !== documentInfo.id);
+            this.dataSource.data = this.documentInfoTableModels; // Update the data source
+          }
         },
         error: (err: any) => {
         },

@@ -3,7 +3,7 @@ import {AnnotationCoordinatesModel} from "./AnnotationCoordinatesModel";
 export class AnnotationModel {
   public id?: string;
   public uid!: string;
-  public imageId!: string;
+  public imageDataId!: string;
   public algorithmId!: string;
   public content!: string;
   public startX!: number;

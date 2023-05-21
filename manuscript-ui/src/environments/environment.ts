@@ -20,6 +20,8 @@ export const environment = {
   RESOURCE_GET_ALL_SHARED_DOCUMENT_INFOS_BY_UID: "/api/document/getAllSharedDocumentInfosByUid",
   RESOURCE_DELETE_DOCUMENT_INFO_BY_ID: "/api/document/deleteDocumentInfoById",
 
+  RESOURCE_DELETE_ANNOTATION: "/api/annotation/deleteAnnotation",
+
   SOCKET:"/ads-socket",
   firebase: {
     apiKey: "AIzaSyAabED_QgmCVo72G8PV3vPgDVBboIX2uSg",

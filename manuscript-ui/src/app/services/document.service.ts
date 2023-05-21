@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {catchError, from, map} from "rxjs";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {RestErrorsHandlerService} from "./rest-errors-handler.service";
 import {TownCrierService} from "./town-crier.service";
@@ -21,7 +21,7 @@ export class DocumentService {
       .pipe(
         map((metadataResponse: DocumentInfoModel) => {
           this.townCrier.info("Please wait until the new document is processed...");
-          this.uploadDocumentData(data, metadataResponse.id!).subscribe();
+          this.uploadDocumentData(data, metadataResponse.id!, documentInfo.uid).subscribe();
           return metadataResponse;
         }),
         catchError(errorRes => {
@@ -30,11 +30,11 @@ export class DocumentService {
         }));
   }
 
-  private uploadDocumentData(data: FormData, id: string) {
+  private uploadDocumentData(data: FormData, id: string, uid:string) {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
 
-    return from(this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_DOCUMENT_DATA}/${id}`, data, {headers: headers}))
+    return from(this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_DOCUMENT_DATA}/${id}/${uid}`, data, {headers: headers}))
       .pipe(
         map((res: any) => {
           this.townCrier.info("Uploading document data...");
@@ -113,9 +113,12 @@ export class DocumentService {
   }
 
   deleteDocumentInfoById(id: string, uid: string) {
-    return from(this.http.delete(`${environment.baseUrl}${environment.RESOURCE_DELETE_DOCUMENT_INFO_BY_ID}/${id}/${uid}`))
+    const headers = new HttpHeaders();
+    headers.set('Content-Type', 'application/json');
+    return from(this.http.delete(`${environment.baseUrl}${environment.RESOURCE_DELETE_DOCUMENT_INFO_BY_ID}/${id}/${uid}`, {headers: headers, responseType:"text"}))
       .pipe(
-        map((res: any) => {
+        map((res: string) => {
+          this.townCrier.info(res);
           return res;
         }),
         catchError(errorRes => {

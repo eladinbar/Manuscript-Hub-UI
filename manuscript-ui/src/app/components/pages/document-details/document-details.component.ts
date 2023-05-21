@@ -8,6 +8,7 @@ import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {AnnotationDialogComponent} from "../../dialogs/annotation-dialog/annotation-dialog.component";
 import {AnnotationCoordinatesModel} from "../../../models/AnnotationCoordinatesModel";
 import {AnnotationService} from "../../../services/annotation.service";
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-document-details',
@@ -200,7 +201,7 @@ export class DocumentDetailsComponent implements OnInit {
     if (!this.coordinates.includes(annotationCoordinates)) {
       let annotation: AnnotationModel = {
         uid: this.uid,
-        imageId: this.documentId,
+        imageDataId: this.documentId,
         algorithmId: algorithmId,
         content: content,
         startX: annotationCoordinates.startX,
@@ -259,14 +260,14 @@ export class DocumentDetailsComponent implements OnInit {
   }
 
   deleteAnnotation(annotation: AnnotationModel) {
-    this.annotationService.deleteAnnotation(annotation.id!, annotation.imageId, annotation.uid).subscribe({
-      next: () => {
-        console.log('HTTP DELETE request successful: ', annotation);
-        this.annotations = this.annotations.filter(a => a.id !== annotation.id);
-        this.drawAnnotations();
+    this.annotationService.deleteAnnotation(annotation.id!).subscribe({
+      next: (res) => {
+        if (res instanceof HttpResponse) {
+          this.annotations = this.annotations.filter(a => a.id !== annotation.id);
+          this.drawAnnotations();
+        }
       },
       error: (err: any) => {
-        console.error('HTTP DELETE request error: ', err);
       },
     });
   }
