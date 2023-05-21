@@ -1,64 +1,60 @@
 <div class="title-element" fxLayoutAlign="space-between center">
   <mat-card-title>Document Dashboard</mat-card-title>
 
+  <!-- Upload New Document -->
   <form [formGroup]="formGroup" class="form">
-    <input  formControlName="uploadFile"  class="form-element"
-            #uploadFile
-            type="file"
-            id="uploadFile"
-            hidden
-            accept="*/*"
-            (change)="uploadFileService($event)"
-    />
-
-    <mat-button-toggle class="fileUpload" (click)="uploadFile.click()">
-      Upload New Document </mat-button-toggle>
+    <mat-button-toggle class="fileUpload" (click)="uploadFileService()">Upload New Document</mat-button-toggle>
   </form>
 </div>
 
 <div *ngIf="dataSource; else emptyTable" class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" matSort matTableResponsive (matSortChange)="announceSortChange($event)">
-    <ng-container matColumnDef="status">
-      <th  mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Status">Status</th>
-      <td *matCellDef="let element" mat-cell> {{textService.toTitleCase(element.status)}} </td>
+    <!--  Privacy column  -->
+    <ng-container matColumnDef="Privacy">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Privacy">Privacy</th>
+      <td *matCellDef="let documentMetadata" mat-cell> {{textService.toTitleCase(documentMetadata.privacy)}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="fileName">
-      <th *matHeaderCellDef mat-header-cell>FileName</th>
-      <td *matCellDef="let element" mat-cell> {{element.fileName}} </td>
+    <!--  Title column  -->
+    <ng-container matColumnDef="Title">
+      <th *matHeaderCellDef mat-header-cell>Title</th>
+      <td *matCellDef="let documentMetadata" mat-cell> {{documentMetadata.title}} </td>
     </ng-container>
+
+    <!--  Created Time column  -->
     <ng-container [matColumnDef]="time">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time">Created Time</th>
-      <td *matCellDef="let element" mat-cell> {{dateService.toFormattedDate(element.createdTime)}} </td>
+      <td *matCellDef="let document" mat-cell> {{dateService.toFormattedDate(document.createdTime)}} </td>
     </ng-container>
+
+    <!--  Actions column  -->
     <ng-container matColumnDef="Actions">
       <th *matHeaderCellDef mat-header-cell>Actions</th>
-      <td *matCellDef="let element" class="action-link" mat-cell>
-        <button (click)="clickedRow(element)" color="primary" mat-raised-button>Open</button>
+      <td *matCellDef="let document" class="action-link" mat-cell>
+        <button (click)="onDocumentOpen(document)" color="primary" mat-raised-button>Open</button>
 
         <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
           <mat-icon>more_vert</mat-icon>
         </button>
+        <!--  Actions options  -->
         <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="onDocumentDelete(document)">Delete</button>
+          <button mat-menu-item (click)="onDocumentChangePrivacy(document)">Change Privacy</button>
           <!-- Existing menu items -->
           <button mat-menu-item (click)="openSearch()">Search</button>
           <button mat-menu-item (click)="doSomething()">Image info</button>
 
         </mat-menu>
+
       </td>
     </ng-container>
 
     <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight':  row.status === 'ENABLED' }"
-        mat-row
-    ></tr>
+    <tr *matRowDef="let document; columns: displayedColumns;" [ngClass]="{'highlight': document.privacy === 'Shared'}" mat-row></tr>
   </table>
 
-  <mat-paginator  #paginator [pageSizeOptions]="[10, 20, 50]"
-                  showFirstLastButtons></mat-paginator>
+  <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
 </div>
 
-<ng-template #emptyTable>
-  No Documents found
-</ng-template>
+<ng-template #emptyTable>No Documents found</ng-template>
 

@@ -4,9 +4,10 @@ import {ActivatedRoute} from "@angular/router";
 import {DomSanitizer} from "@angular/platform-browser";
 import {AnnotationModel} from "../../../models/AnnotationModel";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {DialogComponent} from "../../dialog/dialog.component";
+import {AnnotationDialogComponent} from "../../dialogs/annotation-dialog/annotation-dialog.component";
 import {AnnotationCoordinatesModel} from "../../../models/AnnotationCoordinatesModel";
 import {AnnotationService} from "../../../services/annotation.service";
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-document-details',
@@ -59,7 +60,8 @@ export class DocumentDetailsComponent implements OnInit {
   }
 
   getDocumentById() {
-    this.documentService.getDocumentById(this.documentId).subscribe(res => {
+    this.documentService.getDocumentDataById(this.documentId, this.uid!).subscribe(res => {
+      console.log(res)
       const url = URL.createObjectURL(res);
       this.loadImage();
       this.image.src = url;
@@ -149,6 +151,7 @@ export class DocumentDetailsComponent implements OnInit {
       const height = currentY - startY;
 
       // Redraw image to remove lingering boxes
+      this.clearCanvas();
       this.redrawImage();
       this.ctx!.strokeStyle = 'red';
       this.ctx?.strokeRect(startX, startY, width, height);
@@ -173,12 +176,12 @@ export class DocumentDetailsComponent implements OnInit {
         endY: currentY,
       }
 
-      let dialogRef: MatDialogRef<DialogComponent, any> = this.openDialog();
+      let dialogRef: MatDialogRef<AnnotationDialogComponent, any> = this.openDialog();
       this.handleNewManualAnnotation(dialogRef, annotationCoordinates);
     });
   }
 
-  handleNewManualAnnotation(dialogRef: MatDialogRef<DialogComponent, any>, annotationCoordinates: AnnotationCoordinatesModel) {
+  handleNewManualAnnotation(dialogRef: MatDialogRef<AnnotationDialogComponent, any>, annotationCoordinates: AnnotationCoordinatesModel) {
     dialogRef.afterClosed().subscribe(content => {
       console.debug(`Dialog result: ${content}`);
 
@@ -191,7 +194,7 @@ export class DocumentDetailsComponent implements OnInit {
   }
 
   openDialog(text: string = "") {
-    return this.dialog.open(DialogComponent, {
+    return this.dialog.open(AnnotationDialogComponent, {
       width: '250px',
       maxHeight: '80vh',
       data: {text}
@@ -202,7 +205,7 @@ export class DocumentDetailsComponent implements OnInit {
     if (!this.coordinates.includes(annotationCoordinates)) {
       let annotation: AnnotationModel = {
         uid: this.uid,
-        imageId: this.documentId,
+        imageDataId: this.documentId,
         algorithmId: algorithmId,
         content: content,
         startX: annotationCoordinates.startX,
@@ -261,20 +264,21 @@ export class DocumentDetailsComponent implements OnInit {
   }
 
   deleteAnnotation(annotation: AnnotationModel) {
-    this.annotationService.deleteAnnotation(annotation.id!, annotation.imageId, annotation.uid).subscribe({
-      next: () => {
-        console.log('HTTP DELETE request successful: ', annotation);
-        this.annotations = this.annotations.filter(a => a.id !== annotation.id);
-        this.drawAnnotations();
+    this.annotationService.deleteAnnotation(annotation.id!).subscribe({
+      next: (res) => {
+        if (res instanceof HttpResponse) {
+          this.annotations = this.annotations.filter(a => a.id !== annotation.id);
+          this.drawAnnotations();
+        }
       },
       error: (err: any) => {
-        console.error('HTTP DELETE request error: ', err);
       },
     });
   }
 
   drawAnnotations() {
     // Redraw image to remove lingering boxes
+    this.clearCanvas();
     this.redrawImage();
 
     for (let i = 0; i < this.annotations.length; i++) {
@@ -299,6 +303,11 @@ export class DocumentDetailsComponent implements OnInit {
         this.ctx.fillText(text, textX, textY);
       }
     }
+  }
+
+  clearCanvas() {
+    const canvas = this.canvas?.nativeElement;
+    this.ctx?.clearRect(0, 0, canvas!.width, canvas!.height);
   }
 
   redrawImage() {

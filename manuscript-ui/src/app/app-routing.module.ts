@@ -6,6 +6,7 @@ import {LoginComponent} from "./components/pages/account/login/login.component";
 import {MainComponent} from "./components/main/main.component";
 import {AuthGuard} from "./shared/guards/auth.guard";
 import {RegisterComponent} from "./components/pages/account/register/register.component";
+import {DocumentUploadFormComponent} from "./components/pages/document-upload-form/document-upload-form.component";
 import {AlgorithmSubmissionFormComponent} from "./components/pages/algorithm-submission-form/algorithm-submission-form.component";
 import {InvitationsComponent} from "./components/pages/invitations/invitations.component";
 import {LayoutDocumentsComponent} from "./components/pages/layout-documents/layout-documents.component";
@@ -19,11 +20,14 @@ const routes: Routes = [
       {path: RouterEnum.Dashboard, component: DashboardComponent},
 
       {path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId, component: LayoutDocumentsComponent},
+      {path: RouterEnum.DocumentUpload, component: DocumentUploadFormComponent}
+
 
       {path: RouterEnum.AlgorithmSubmissionForm, component: AlgorithmSubmissionFormComponent},
       {path: RouterEnum.AlgorithmRequests, component: AlgorithmRequestsComponent},
 
       {path: RouterEnum.InvitationRequests, component: InvitationsComponent},
+
     ]
   },
 

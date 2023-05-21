@@ -13,7 +13,7 @@ export class RestErrorsHandlerService {
     if (errorRes.error !== undefined) {
       this.showError(errorRes.error);
     } else {
-      this.showError("Something went wrong, Connection lost with the server");
+      this.showError("Something went wrong, the connection with the server was lost.");
     }
     return of(errorRes);
   }

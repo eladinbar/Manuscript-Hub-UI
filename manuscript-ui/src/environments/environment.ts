@@ -6,10 +6,24 @@ export const environment = {
   production: false,
   baseUrl: 'http://localhost:8080',
 
-  // Document
-  RESOURCE_UPLOAD_FILE: "/api/document/uploadInputDocument",
-  RESOURCE_GET_DOCUMENT_BY_ID: "/api/document/getDocumentById/",
-  RESOURCE_GET_All_DOCUMENTS_BY_UID: "/api/document/getAllDocumentsByUid/",
+  // Document Data
+  RESOURCE_UPLOAD_DOCUMENT_DATA: "/api/document/uploadDocumentData",
+  RESOURCE_UPDATE_DOCUMENT_DATA: "/api/document/updateDocumentData",
+  RESOURCE_GET_DOCUMENT_DATA_BY_ID: "/api/document/getDocumentDataById",
+  RESOURCE_GET_DOCUMENT_DATAS_BY_DOCUMENT_INFO_ID: "/api/document/getDocumentDatasByDocumentInfoId",
+  RESOURCE_DELETE_DOCUMENT_DATA_BY_ID: "/api/document/deleteDocumentDataById",
+
+  // Document Info
+  RESOURCE_UPLOAD_DOCUMENT_INFO: "/api/document/uploadDocumentInfo",
+  RESOURCE_UPDATE_DOCUMENT_INFO: "/api/document/updateDocumentInfo",
+  RESOURCE_GET_DOCUMENT_INFO_BY_ID: "/api/document/getDocumentInfoById",
+  RESOURCE_GET_ALL_DOCUMENT_INFOS_BY_UID: "/api/document/getAllDocumentInfosByUid",
+  RESOURCE_GET_ALL_PUBLIC_DOCUMENT_INFOS: "/api/document/getAllPublicDocumentInfos",
+  RESOURCE_GET_ALL_SHARED_DOCUMENT_INFOS_BY_UID: "/api/document/getAllSharedDocumentInfosByUid",
+  RESOURCE_DELETE_DOCUMENT_INFO_BY_ID: "/api/document/deleteDocumentInfoById",
+
+  // Annotation
+  RESOURCE_DELETE_ANNOTATION: "/api/annotation/deleteAnnotation",
 
   // Algorithm
   RESOURCE_SUBMIT_ALGORITHM: "/api/algorithm/uploadAlgorithm",
@@ -25,6 +39,7 @@ export const environment = {
   RESOURCE_APPROVE_INVITATION_REQUEST: "/api/invitation/approveInvitationRequest/",
   RESOURCE_DENY_INVITATION_REQUEST: "/api/invitation/denyInvitationRequest/",
   RESOURCE_GET_ALL_INVITATIONS: "/api/invitation/getAllInvitations/",
+
 
   SOCKET:"/ads-socket",
   firebase: {
