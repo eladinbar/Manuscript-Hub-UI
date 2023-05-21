@@ -191,5 +191,11 @@ export class DashboardComponent implements OnInit {
     })
   }
 
+  public doSomething() {
+  }
 
+
+  public openSearch() {
+
+  }
 }

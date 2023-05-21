@@ -73,6 +73,19 @@
 }
 
 
+.add-button-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.search-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 15px;
+}
+
 
 
 

@@ -32,21 +32,22 @@
       <td *matCellDef="let element" mat-cell> {{dateService.toFormattedDate(element.createdTime)}} </td>
     </ng-container>
     <ng-container matColumnDef="Actions">
-      <th *matHeaderCellDef mat-header-cell> Actions</th>
+      <th *matHeaderCellDef mat-header-cell>Actions</th>
       <td *matCellDef="let element" class="action-link" mat-cell>
-        <button (click)="clickedRow(element)"
-                color="primary" mat-raised-button>Open
-        </button>
+        <button (click)="clickedRow(element)" color="primary" mat-raised-button>Open</button>
 
-        <button mat-icon-button [matMenuTriggerFor]="menu"
-                aria-label="Example icon-button with a menu">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
+          <!-- Existing menu items -->
+          <button mat-menu-item (click)="openSearch()">Search</button>
+          <button mat-menu-item (click)="doSomething()">Image info</button>
 
         </mat-menu>
       </td>
     </ng-container>
+
     <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
     <tr *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight':  row.status === 'ENABLED' }"
         mat-row
