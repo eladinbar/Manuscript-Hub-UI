@@ -266,7 +266,7 @@ export class DocumentDetailsComponent implements OnInit {
   deleteAnnotation(annotation: AnnotationModel) {
     this.annotationService.deleteAnnotation(annotation.id!).subscribe({
       next: (res) => {
-        if (res instanceof HttpResponse) {
+        if (res) {
           this.annotations = this.annotations.filter(a => a.id !== annotation.id);
           this.drawAnnotations();
         }

@@ -17,6 +17,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {PrivacyDialogComponent} from "../../dialogs/privacy-dialog/privacy-dialog.component";
 import {ConfirmationDialogComponent} from "../../dialogs/confirmation-dialog/confirmation-dialog.component";
 import {HttpResponse} from "@angular/common/http";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-dashboard',
@@ -45,8 +46,12 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.uid = localStorage.getItem("uid")!;
     this.documentService.getAllDocumentInfosByUid(this.uid!).subscribe(res => {
-      this.setDataToTable(res);
-      this.announceSortChange({active: this.time, direction: 'asc'})
+      let privateDocuments : Array<DocumentInfoModel> = res;
+      this.documentService.getAllPublicDocumentInfos().subscribe(res => {
+        let publicDocuments : Array<DocumentInfoModel> = res;
+        this.setDataToTable(privateDocuments.concat(publicDocuments));
+        this.announceSortChange({active: this.time, direction: 'asc'})
+      })
     });
   }
 
@@ -138,7 +143,7 @@ export class DashboardComponent implements OnInit {
       .deleteDocumentInfoById(documentInfo.id!, this.uid!)
       .subscribe({
         next: (res) => {
-          if (res instanceof HttpResponse) {
+          if (res) {
             this.documentInfoTableModels = this.documentInfoTableModels.filter(doc => doc.id !== documentInfo.id);
             this.dataSource.data = this.documentInfoTableModels; // Update the data source
           }

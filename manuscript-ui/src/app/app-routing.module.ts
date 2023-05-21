@@ -20,7 +20,7 @@ const routes: Routes = [
       {path: RouterEnum.Dashboard, component: DashboardComponent},
 
       {path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId, component: LayoutDocumentsComponent},
-      {path: RouterEnum.DocumentUpload, component: DocumentUploadFormComponent}
+      {path: RouterEnum.DocumentUpload, component: DocumentUploadFormComponent},
 
 
       {path: RouterEnum.AlgorithmSubmissionForm, component: AlgorithmSubmissionFormComponent},

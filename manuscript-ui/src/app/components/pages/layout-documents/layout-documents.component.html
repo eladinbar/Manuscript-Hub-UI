@@ -6,7 +6,7 @@
     <mat-menu #showMenu="matMenu">
       <div *ngIf="showMenu" class="menu" (click)="$event.stopPropagation()">
         <ul>
-          <li *ngFor="let doc of addedDocs; let i = index" (click)="addImage(i, doc); showMenuTrigger.closeMenu()" class="no-bullet">{{ doc.fileName }}</li>
+          <li *ngFor="let doc of addedDocs; let i = index" (click)="addImage(i, doc); showMenuTrigger.closeMenu()" class="no-bullet">{{ doc.title }}</li>
         </ul>
       </div>
       <div class="search-container">

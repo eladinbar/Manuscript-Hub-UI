@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {RouterEnum} from "../../../enums/RouterEnum";
 import {ActivatedRoute} from "@angular/router";
 import {DocumentService} from "../../../services/document.service";
-import {DocumentInfoTableModel} from "../../../models/DocumentInfoTableModel";
+import {DocumentInfoModel} from "../../../models/DocumentInfoModel";
 import {TownCrierService} from "../../../services/town-crier.service";
 import { MatMenuTrigger } from '@angular/material/menu';
 
@@ -19,7 +19,7 @@ export class LayoutDocumentsComponent implements OnInit {
   uploadedImageUrl!: string;
   addedDocIds: string[] = []
   firstTitle: string = '';
-  addedDocs: DocumentInfoTableModel[] = []
+  addedDocs: DocumentInfoModel[] = []
   photosCounter: number = 0;
   imageCount: number = 1;
   documentTitles: string[] = [];
@@ -52,11 +52,11 @@ export class LayoutDocumentsComponent implements OnInit {
   }
 
   getAllDocIds() {
-      this.docService.getAllDocumentsByUid(this.uid).subscribe({
-        next: (documentTableModels: DocumentInfoTableModel[]) => {
+      this.docService.getAllDocumentInfosByUid(this.uid).subscribe({
+        next: (documentTableModels: DocumentInfoModel[]) => {
           console.log('HTTP GET Annotation retrieval request successful: ', documentTableModels);
           // building the lists without the opened image, so user cant open it twice
-          documentTableModels.forEach((doc) => {if (this.documentId != doc.documentId) this.addedDocs.push(doc);else {this.firstTitle = doc.fileName!}});
+          documentTableModels.forEach((doc) => {if (this.documentId != doc.id) this.addedDocs.push(doc);else {this.firstTitle = doc.title!}});
         },
         error: (err: any) => {
           console.error('HTTP GET Annotation retrieval request error: ', err);
@@ -64,12 +64,12 @@ export class LayoutDocumentsComponent implements OnInit {
       });
   }
 
-  addImage(index: number, nextDoc: DocumentInfoTableModel): void {
+  addImage(index: number, nextDoc: DocumentInfoModel): void {
     if (this.photosCounter < 4) {
       this.townCrier.info('Loading image...');
-      this.addedDocIds.push(nextDoc.documentId!);
+      this.addedDocIds.push(nextDoc.id!);
       // Update the title for this document only
-      this.curTitle = nextDoc.fileName!;
+      this.curTitle = nextDoc.title!;
       // Add the title to the list of added document titles
       this.addedDocTitles.push(this.curTitle);
       this.photosCounter += 1;

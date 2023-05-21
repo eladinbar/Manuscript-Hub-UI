@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {catchError, from, map, Observable} from 'rxjs';
+import {catchError, from, map, Observable, of} from 'rxjs';
 import {Router} from "@angular/router";
 import {RestErrorsHandlerService} from "./rest-errors-handler.service";
 import {TownCrierService} from "./town-crier.service";
@@ -47,11 +47,12 @@ export class AnnotationService {
       .pipe(
         map((res: string) => {
           this.townCrier.info(res);
-          return res;
+          return of(true);
         }),
         catchError(errorRes => {
           this.townCrier.error(errorRes.error);
-          return this.restErrorsHandlerService.handleRequestError(errorRes);
+          this.restErrorsHandlerService.handleRequestError(errorRes);
+          return of(false);
         }));
   }
 

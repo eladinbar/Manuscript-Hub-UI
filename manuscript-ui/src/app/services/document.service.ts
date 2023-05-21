@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {catchError, from, map} from "rxjs";
+import {catchError, from, map, of} from "rxjs";
 import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {RestErrorsHandlerService} from "./rest-errors-handler.service";
@@ -88,6 +88,18 @@ export class DocumentService {
         }));
   }
 
+  getAllPublicDocumentInfos() {
+    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_PUBLIC_DOCUMENT_INFOS}`))
+      .pipe(
+        map((res: any) => {
+          return res;
+        }),
+        catchError(errorRes => {
+          this.townCrier.error(errorRes.error);
+          return this.restErrorsHandlerService.handleRequestError(errorRes);
+        }));
+  }
+
   getDocumentDatasByDocumentInfoId(documentInfoId: string, uid: string) {
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_DATAS_BY_DOCUMENT_INFO_ID}/${documentInfoId}/${uid}`))
       .pipe(
@@ -119,11 +131,12 @@ export class DocumentService {
       .pipe(
         map((res: string) => {
           this.townCrier.info(res);
-          return res;
+          return of(true);
         }),
         catchError(errorRes => {
           this.townCrier.error(errorRes.error);
-          return this.restErrorsHandlerService.handleRequestError(errorRes);
+          this.restErrorsHandlerService.handleRequestError(errorRes);
+          return of(false);
         }));
   }
 
