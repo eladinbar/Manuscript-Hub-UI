@@ -15,6 +15,7 @@ import {PrivacyEnum} from "../../../enums/PrivacyEnum";
 import {DocumentInfoModel} from "../../../models/DocumentInfoModel";
 import {MatDialog} from "@angular/material/dialog";
 import {PrivacyDialogComponent} from "../../dialogs/privacy-dialog/privacy-dialog.component";
+import {ConfirmationDialogComponent} from "../../dialogs/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -119,7 +120,29 @@ export class DashboardComponent implements OnInit {
   }
 
   onDocumentDelete(documentInfo: DocumentInfoModel) {
-    this.documentService.deleteDocumentInfoById(documentInfo.id!, this.uid!).subscribe();
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: { message: "Are you sure you want to delete this document?" },
+      width: "350px",
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.deleteDocument(documentInfo);
+      }
+    });
+  }
+
+  private deleteDocument(documentInfo: DocumentInfoModel) {
+    this.documentService
+      .deleteDocumentInfoById(documentInfo.id!, this.uid!)
+      .subscribe({
+        next: () => {
+          this.documentInfoTableModels = this.documentInfoTableModels.filter(doc => doc.id !== documentInfo.id);
+          this.dataSource.data = this.documentInfoTableModels; // Update the data source
+        },
+        error: (err: any) => {
+        },
+      });
   }
 
   onDocumentChangePrivacy(documentInfo: DocumentInfoModel) {

@@ -4,15 +4,15 @@ import {AnnotationModel} from "../../../models/AnnotationModel";
 
 @Component({
   selector: 'app-dialog',
-  templateUrl: './dialog.component.html',
-  styleUrls: ['./dialog.component.css']
+  templateUrl: './annotation-dialog.component.html',
+  styleUrls: ['./annotation-dialog.component.css']
 })
-export class DialogComponent {
+export class AnnotationDialogComponent {
   text?: string;
   @ViewChild('confirmationDialog') confirmationDialog?: TemplateRef<any>;
   @Output() onDelete: EventEmitter<AnnotationModel> = new EventEmitter();
 
-  constructor(public dialogRef: MatDialogRef<DialogComponent>, public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(public dialogRef: MatDialogRef<AnnotationDialogComponent>, public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any) {
     if (data && data.text) {
       this.text = data.text;
     }

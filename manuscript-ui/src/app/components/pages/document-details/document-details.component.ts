@@ -5,7 +5,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {AnnotationModel} from "../../../models/AnnotationModel";
 import {RouterEnum} from "../../../enums/RouterEnum";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {DialogComponent} from "../../dialogs/dialog/dialog.component";
+import {AnnotationDialogComponent} from "../../dialogs/annotation-dialog/annotation-dialog.component";
 import {AnnotationCoordinatesModel} from "../../../models/AnnotationCoordinatesModel";
 import {AnnotationService} from "../../../services/annotation.service";
 
@@ -147,6 +147,7 @@ export class DocumentDetailsComponent implements OnInit {
       const height = currentY - startY;
 
       // Redraw image to remove lingering boxes
+      this.clearCanvas();
       this.redrawImage();
       this.ctx!.strokeStyle = 'red';
       this.ctx?.strokeRect(startX, startY, width, height);
@@ -171,12 +172,12 @@ export class DocumentDetailsComponent implements OnInit {
         endY: currentY,
       }
 
-      let dialogRef: MatDialogRef<DialogComponent, any> = this.openDialog();
+      let dialogRef: MatDialogRef<AnnotationDialogComponent, any> = this.openDialog();
       this.handleNewManualAnnotation(dialogRef, annotationCoordinates);
     });
   }
 
-  handleNewManualAnnotation(dialogRef: MatDialogRef<DialogComponent, any>, annotationCoordinates: AnnotationCoordinatesModel) {
+  handleNewManualAnnotation(dialogRef: MatDialogRef<AnnotationDialogComponent, any>, annotationCoordinates: AnnotationCoordinatesModel) {
     dialogRef.afterClosed().subscribe(content => {
       console.debug(`Dialog result: ${content}`);
 
@@ -189,7 +190,7 @@ export class DocumentDetailsComponent implements OnInit {
   }
 
   openDialog(text: string = "") {
-    return this.dialog.open(DialogComponent, {
+    return this.dialog.open(AnnotationDialogComponent, {
       width: '250px',
       data: {text}
     });
@@ -272,6 +273,7 @@ export class DocumentDetailsComponent implements OnInit {
 
   drawAnnotations() {
     // Redraw image to remove lingering boxes
+    this.clearCanvas();
     this.redrawImage();
 
     for (let i = 0; i < this.annotations.length; i++) {
@@ -294,6 +296,11 @@ export class DocumentDetailsComponent implements OnInit {
         this.ctx.fillText(text, textX, textY);
       }
     }
+  }
+
+  clearCanvas() {
+    const canvas = this.canvas?.nativeElement;
+    this.ctx?.clearRect(0, 0, canvas!.width, canvas!.height);
   }
 
   redrawImage() {
