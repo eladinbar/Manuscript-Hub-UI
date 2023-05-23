@@ -2,9 +2,10 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {RouterEnum} from "../../../enums/RouterEnum";
 import {ActivatedRoute} from "@angular/router";
 import {DocumentService} from "../../../services/document.service";
-import {DocumentInfoModel} from "../../../models/DocumentInfoModel";
 import {TownCrierService} from "../../../services/town-crier.service";
 import { MatMenuTrigger } from '@angular/material/menu';
+import {DocumentInfoModel} from "../../../models/DocumentInfoModel";
+import {DocumentDataModel} from "../../../models/DocumentDataModel";
 
 
 @Component({
@@ -17,15 +18,15 @@ export class LayoutDocumentsComponent implements OnInit {
   uid!: string;
   documentId!: string;
   uploadedImageUrl!: string;
-  addedDocIds: string[] = []
   firstTitle: string = '';
-  addedDocs: DocumentInfoModel[] = []
   photosCounter: number = 0;
   imageCount: number = 1;
-  documentTitles: string[] = [];
-  curTitle: string | undefined = '';
   addedDocTitles: string[] = []
-  // Access the MatMenuTrigger using ViewChild
+  addedDocIds: string[] = []
+  addedDocsData: DocumentDataModel[] = []
+  addedDocsInfo: DocumentInfoModel[] = []
+
+
 
 
 
@@ -53,10 +54,23 @@ export class LayoutDocumentsComponent implements OnInit {
 
   getAllDocIds() {
       this.docService.getAllDocumentInfosByUid(this.uid).subscribe({
-        next: (documentTableModels: DocumentInfoModel[]) => {
-          console.log('HTTP GET Annotation retrieval request successful: ', documentTableModels);
+        next: (documentInfoModels: DocumentInfoModel[]) => {
+          console.log('HTTP GET Annotation retrieval request successful: ', documentInfoModels);
           // building the lists without the opened image, so user cant open it twice
-          documentTableModels.forEach((doc) => {if (this.documentId != doc.id) this.addedDocs.push(doc);else {this.firstTitle = doc.title!}});
+          documentInfoModels.forEach((docInfo) => {
+            this.docService.getDocumentDatasByDocumentInfoId(docInfo.id!, this.uid).subscribe((docData: DocumentDataModel[]) => {
+              if (docInfo.id == docData[0].infoId){
+                if (this.documentId != docData[0].id){
+                  this.addedDocsData.push(docData[0]);
+                  this.addedDocsInfo.push(docInfo);
+                }
+                else {
+                  this.firstTitle = docInfo.title!;
+                  console.log("else Title = ", docInfo.title);
+                }
+              }
+            })
+            });
         },
         error: (err: any) => {
           console.error('HTTP GET Annotation retrieval request error: ', err);
@@ -64,17 +78,24 @@ export class LayoutDocumentsComponent implements OnInit {
       });
   }
 
-  addImage(index: number, nextDoc: DocumentInfoModel): void {
+  addImage(index: number, nextDoc: DocumentDataModel): void {
     if (this.photosCounter < 4) {
       this.townCrier.info('Loading image...');
       this.addedDocIds.push(nextDoc.id!);
-      // Update the title for this document only
-      this.curTitle = nextDoc.title!;
-      // Add the title to the list of added document titles
-      this.addedDocTitles.push(this.curTitle);
+      this.docService.getAllDocumentInfosByUid(this.uid).subscribe(
+        (documentInfoModels: DocumentInfoModel[]) => {
+          documentInfoModels.forEach((docInfo) => {
+          if (docInfo.id == nextDoc.infoId) {
+            // Add the title to the list of added document titles
+            this.addedDocTitles.push(docInfo.title);
+          }
+        },
+        (err: any) => {
+          console.error('HTTP GET Annotation retrieval request error: ', err);
+        }
+        );})
       this.photosCounter += 1;
       this.imageCount = Math.min(this.photosCounter, 4);
-      this.showMenuTrigger.closeMenu();
     } else {
       this.townCrier.info('Can not open more than 4 photos');
     }

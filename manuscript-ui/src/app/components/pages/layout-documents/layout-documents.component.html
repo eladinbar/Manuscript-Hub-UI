@@ -6,7 +6,7 @@
     <mat-menu #showMenu="matMenu">
       <div *ngIf="showMenu" class="menu" (click)="$event.stopPropagation()">
         <ul>
-          <li *ngFor="let doc of addedDocs; let i = index" (click)="addImage(i, doc); showMenuTrigger.closeMenu()" class="no-bullet">{{ doc.title }}</li>
+          <li *ngFor="let doc of addedDocsData; let i = index" (click)="addImage(i, doc); showMenuTrigger.closeMenu()" class="no-bullet">{{ doc.infoId == addedDocsInfo[i].id ? addedDocsInfo[i].title : doc.fileName }}</li>
         </ul>
       </div>
       <div class="search-container">
@@ -22,37 +22,13 @@
 
 
 
-
-
-
-
-
-
-
 <div class="grid-container">
   <div class="grid-item item1">
     <app-document-details [documentId]="documentId" [uid]="uid" [title]="firstTitle"></app-document-details>
   </div>
 
   <div class="grid-item" *ngFor="let addedDocId of addedDocIds; let i = index" [ngClass]="'item' + (i+2)" >
-    <app-document-details [documentId]="addedDocId!" [uid]="uid" [title]="addedDocTitles[i]"></app-document-details>
+    <app-document-details [documentId]="addedDocId!" [uid]="uid" [title]="this.addedDocTitles[i]"></app-document-details>
   </div>
-
 </div>
 
-
-<!--<div class="grid-container">-->
-<!--  <div class="grid-item item1">-->
-<!--    <app-document-details [documentId]="documentId" [uid]="uid"></app-document-details>-->
-<!--    <button (click)="showMenu = !showMenu" class="add-button">+</button>-->
-<!--    <div *ngIf="showMenu" class="menu">-->
-<!--      <ul>-->
-<!--        <li *ngFor="let doc of addedDocs; let i = index" (click)="addImage(i, doc)">{{ doc.fileName }}</li>-->
-<!--      </ul>-->
-<!--    </div>-->
-<!--  </div>-->
-
-<!--  <div class="grid-item" *ngFor="let addedDocId of addedDocIds; let i = index" [ngClass]="'item' + (i+2)" >-->
-<!--    <app-document-details [documentId]="addedDocId!" [uid]="uid"></app-document-details>-->
-<!--  </div>-->
-<!--</div>-->
