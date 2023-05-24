@@ -12,5 +12,4 @@ export class DocumentInfoDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-  // Add any additional methods or logic as needed
 }

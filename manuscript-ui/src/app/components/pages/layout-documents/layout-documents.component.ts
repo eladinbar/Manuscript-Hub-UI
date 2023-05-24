@@ -25,6 +25,8 @@ export class LayoutDocumentsComponent implements OnInit {
   addedDocIds: string[] = []
   addedDocsData: DocumentDataModel[] = []
   addedDocsInfo: DocumentInfoModel[] = []
+  filteredDocsData: any[] = this.addedDocsData;
+
 
 
 
@@ -106,11 +108,23 @@ export class LayoutDocumentsComponent implements OnInit {
   }
 
 
-  handleSearch(event: Event) {
-    const inputValue = (event.target as HTMLInputElement).value;
-    // Handle the search input value
-    console.log('Search Text:', inputValue);
+  handleSearch(event: any) {
+    const searchTerm = event.target.value.toLowerCase().trim();
+
+    // Filter addedDocsData based on the search term
+    this.filteredDocsData = this.addedDocsData.filter((doc: any, index: number) => {
+      const title = this.addedDocsInfo[index].title.toLowerCase();
+      return title.includes(searchTerm) || title.startsWith(searchTerm);
+    });
   }
+
+
+
+
+
+
+
+
 
 
 }

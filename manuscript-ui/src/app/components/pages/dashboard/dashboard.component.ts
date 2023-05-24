@@ -18,6 +18,7 @@ import {PrivacyDialogComponent} from "../../dialogs/privacy-dialog/privacy-dialo
 import {ConfirmationDialogComponent} from "../../dialogs/confirmation-dialog/confirmation-dialog.component";
 import {HttpResponse} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {DocumentInfoDialogComponent} from "../../dialogs/document-info-dialog/document-info-dialog.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -177,4 +178,23 @@ export class DashboardComponent implements OnInit {
   public openSearch() {
 
   }
+
+  openDocumentInfoDialog(documentInfo: DocumentInfoModel) {
+    const dialogRef = this.dialog.open(DocumentInfoDialogComponent, {
+      width: '350px',
+      data: {
+        title: documentInfo.title,
+        description: documentInfo.description,
+        author: documentInfo.author,
+        privacy: documentInfo.privacy,
+        publicationDate: documentInfo.publicationDate,
+        tags: documentInfo.tags
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+    });
+  }
+
+
 }
