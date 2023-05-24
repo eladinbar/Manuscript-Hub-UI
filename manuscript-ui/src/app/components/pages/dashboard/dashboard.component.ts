@@ -172,12 +172,6 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/' + RouterEnum.DocumentUpload]);
   }
 
-  public doSomething() {
-  }
-
-  public openSearch() {
-
-  }
 
   openDocumentInfoDialog(documentInfo: DocumentInfoModel) {
     const dialogRef = this.dialog.open(DocumentInfoDialogComponent, {
@@ -194,6 +188,22 @@ export class DashboardComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
     });
+  }
+
+
+  applyFilter(event: any) {
+    const searchTerm = event.target.value.toLowerCase().trim();
+
+    // Filter the data source based on the search term
+    this.dataSource.filter = searchTerm;
+
+    // Show only the rows that match the filter criteria
+    this.dataSource.filterPredicate = (data: DocumentInfoModel, filter: string) => {
+      const title = data.title.toLowerCase();
+
+      // Check if the title starts with or includes the search term
+      return title.startsWith(filter) || title.includes(filter);
+    };
   }
 
 

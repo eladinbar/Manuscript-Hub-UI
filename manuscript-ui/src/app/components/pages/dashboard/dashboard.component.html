@@ -1,11 +1,23 @@
-<div class="title-element" fxLayoutAlign="space-between center">
+<div class="title-element" fxLayoutAlign="center start">
   <mat-card-title>Document Dashboard</mat-card-title>
-
-  <!-- Upload New Document -->
-  <form [formGroup]="formGroup" class="form">
-    <mat-button-toggle class="fileUpload" (click)="uploadFileService()">Upload New Document</mat-button-toggle>
-  </form>
 </div>
+
+<div class="action-container">
+  <div class="search-container">
+    <mat-form-field appearance="outline">
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput placeholder="Search..." (input)="applyFilter($event)" />
+    </mat-form-field>
+  </div>
+
+  <div class="upload-button-container">
+    <form [formGroup]="formGroup" class="form">
+      <mat-button-toggle class="fileUpload" (click)="uploadFileService()">Upload New Document</mat-button-toggle>
+    </form>
+  </div>
+</div>
+
+
 
 <div *ngIf="dataSource; else emptyTable" class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" matSort matTableResponsive (matSortChange)="announceSortChange($event)">
@@ -40,9 +52,8 @@
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="onDocumentDelete(document)">Delete</button>
           <button mat-menu-item (click)="onDocumentChangePrivacy(document)">Change Privacy</button>
-          <!-- Existing menu items -->
-          <button mat-menu-item (click)="openSearch()">Search</button>
           <button mat-menu-item (click)="openDocumentInfoDialog(document)">Image info</button>
+
 
         </mat-menu>
 

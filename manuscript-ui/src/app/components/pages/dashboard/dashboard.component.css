@@ -43,3 +43,23 @@ mat-paginator {
   margin-top: 10px;
 }
 
+.title-element {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+}
+
+.action-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.search-container {
+
+}
+
+.upload-button-container {
+  margin-left: 16px;
+}
