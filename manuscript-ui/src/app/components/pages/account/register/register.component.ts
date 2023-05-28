@@ -33,7 +33,6 @@ export class RegisterComponent {
     const name = this.formGroup.controls['name'].value;
     const phoneNumber = this.formGroup.controls['phoneNumber'].value;
     const role = this.formGroup.controls['role'].value;
-    debugger;
     if (email != null && password != null) {
       this.auth.createUserWithEmailAndPassword(email, password)
         .then(user => {

@@ -8,6 +8,7 @@ import {MainComponent} from "./components/main/main.component";
 import {AuthGuard} from "./shared/guards/auth.guard";
 import {RegisterComponent} from "./components/pages/account/register/register.component";
 import {InvitationsComponent} from "./components/invitations/invitations.component";
+import {RolesGuard} from "./shared/guards/roles.guard";
 
 const routes: Routes = [
   {
@@ -15,7 +16,7 @@ const routes: Routes = [
 
     children: [
       {path: RouterEnum.Dashboard, component: DashboardComponent},
-      {path: 'InvitationRequests', component: InvitationsComponent},
+      {path: 'InvitationRequests', component: InvitationsComponent, canActivate: [RolesGuard]},
 
       {path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId,
         component: DocumentDetailsComponent,}

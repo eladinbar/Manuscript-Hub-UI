@@ -76,9 +76,9 @@ export class InvitationsComponent implements OnInit {
       text: `The request will be accepted`,
       icon: 'info',
       showCancelButton: true,
-      confirmButtonText: 'Delete',
+      confirmButtonText: 'Accept',
       cancelButtonText: 'Cancel',
-      confirmButtonColor: '#ff4500'
+      confirmButtonColor: 'blue'
     }).then((result) => {
       if (result.value) {
         this.invitationService
