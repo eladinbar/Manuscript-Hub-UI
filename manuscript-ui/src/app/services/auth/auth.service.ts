@@ -4,10 +4,10 @@ import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {GoogleAuthProvider} from "firebase/auth";
 
 import {AngularFirestore, AngularFirestoreDocument} from "@angular/fire/compat/firestore";
-import UserCredential = firebase.auth.UserCredential;
-import User = firebase.User;
 import {Router} from "@angular/router";
 import {CryptoService} from "../crypto.service";
+import UserCredential = firebase.auth.UserCredential;
+import User = firebase.User;
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class AuthService {
   private lang = 'heb';
   userData: any; // Save logged in user data
 
-  constructor(public afAuth: AngularFireAuth, public afs: AngularFirestore, private router: Router,  public cryptoService: CryptoService) {
+  constructor(public afAuth: AngularFireAuth, public afs: AngularFirestore, private router: Router, public cryptoService: CryptoService) {
     (async () => {
       this.afAuth.authState.subscribe(user => {
         if (user) {
@@ -34,9 +34,10 @@ export class AuthService {
     let tokenIntervalId = setInterval(this.refreshToken, 20000);
 
   }
-  refreshToken(){
 
-    if(this.userData) {
+  refreshToken() {
+
+    if (this.userData) {
       this.userData.getIdToken().then((token: any) => {
         localStorage.setItem('token', token);
       });
@@ -52,13 +53,11 @@ export class AuthService {
 
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
-    console.log(user)
     return true //&& user.emailVerified !== false;
   }
 
   get isAdmin(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
-    console.log(user.role)
     return this.cryptoService.decrypt(user.role) === 'Admin';
   }
 
@@ -75,7 +74,6 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        console.log(email)
         this.SetUserData(result.user).then();
         this.updateLocalStorage(result, result.user);
         return result;
