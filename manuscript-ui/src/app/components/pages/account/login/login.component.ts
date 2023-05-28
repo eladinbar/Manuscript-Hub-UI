@@ -61,7 +61,6 @@ export class LoginComponent {
             .authenticateUser(res.user.uid, res.user.email, res.user.displayName, token)
             .subscribe({
               next: result => {
-                debugger
                 if (result.status) {
                   result.token = token;
 

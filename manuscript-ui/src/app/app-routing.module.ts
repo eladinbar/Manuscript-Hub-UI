@@ -11,6 +11,7 @@ import {AlgorithmSubmissionFormComponent} from "./components/pages/algorithm-sub
 import {InvitationsComponent} from "./components/pages/invitations/invitations.component";
 import {LayoutDocumentsComponent} from "./components/pages/layout-documents/layout-documents.component";
 import {AlgorithmRequestsComponent} from "./components/pages/algorithm-requests/algorithm-requests.component";
+import {RolesGuard} from "./shared/guards/roles.guard";
 
 const routes: Routes = [
   {
@@ -22,12 +23,10 @@ const routes: Routes = [
       {path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId, component: LayoutDocumentsComponent},
       {path: RouterEnum.DocumentUpload, component: DocumentUploadFormComponent},
 
-
       {path: RouterEnum.AlgorithmSubmissionForm, component: AlgorithmSubmissionFormComponent},
       {path: RouterEnum.AlgorithmRequests, component: AlgorithmRequestsComponent},
 
-      {path: RouterEnum.InvitationRequests, component: InvitationsComponent},
-
+      {path: RouterEnum.InvitationRequests, component: InvitationsComponent, canActivate: [RolesGuard]},
     ]
   },
 
