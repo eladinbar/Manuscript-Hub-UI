@@ -1,17 +1,19 @@
 <mat-toolbar class="sidenav mat-elevation-z6 zindex2">
   <div fxFill fxLayout="row" fxLayoutAlign="space-between center">
+    <!--  Side navigator toggle  -->
     <div>
       <mat-icon (click)="toggleSidenav()" class="button-pointer">menu</mat-icon>
       <span routerLink="/" class="text-pointer">Manuscript</span>
     </div>
-    <div>
 
-      <!--   Display user email   -->
+    <!--   Display user email   -->
+    <div>
       <div class="yyy-text">
         <mat-icon class="gmail-icon smaller-icon">email</mat-icon>
         <span class="email-text">{{ email }}</span>
       </div>
     </div>
+
   </div>
 </mat-toolbar>
 
@@ -44,8 +46,8 @@
     </mat-nav-list>
 
     <!--  Algorithm upload  -->
-    <mat-nav-list>
-      <mat-list-item *ngIf="role == 'Admin' || role == 'Developer'" [routerLink]="'/' + RouterEnum.AlgorithmSubmissionForm" routerLinkActive="active">
+    <mat-nav-list *ngIf="role == 'Admin' || role == 'Developer'">
+      <mat-list-item [routerLink]="'/' + RouterEnum.AlgorithmSubmissionForm" routerLinkActive="active">
         <mat-icon class="text-white">models</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
@@ -55,8 +57,8 @@
     </mat-nav-list>
 
     <!--  Algorithm Requests  -->
-    <mat-nav-list>
-      <mat-list-item *ngIf="role == 'Admin' || role == 'Developer'" [routerLink]="'/' + RouterEnum.AlgorithmRequests" routerLinkActive="active">
+    <mat-nav-list *ngIf="role == 'Admin' || role == 'Developer'">
+      <mat-list-item [routerLink]="'/' + RouterEnum.AlgorithmRequests" routerLinkActive="active">
         <mat-icon class="text-white">supervised_user_circle</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
@@ -66,8 +68,8 @@
     </mat-nav-list>
 
     <!--  Invitation Requests  -->
-    <mat-nav-list>
-      <mat-list-item *ngIf="role == 'Admin'" [routerLink]="'/' + RouterEnum.InvitationRequests" routerLinkActive="active">
+    <mat-nav-list *ngIf="role == 'Admin'">
+      <mat-list-item [routerLink]="'/' + RouterEnum.InvitationRequests" routerLinkActive="active">
         <mat-icon class="text-white">supervised_user_circle</mat-icon>
         <div fxFlex="10"></div>
         <div *ngIf="sidenavWidth > 6" class="sidenav-item">
@@ -87,9 +89,10 @@
       </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
+
+  <!-- Content -->
   <mat-sidenav-content class="sidenav-content">
-
     <router-outlet class="full-width"></router-outlet>
-
   </mat-sidenav-content>
+
 </mat-sidenav-container>

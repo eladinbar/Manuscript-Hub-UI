@@ -19,7 +19,11 @@ export const environment = {
   RESOURCE_DELETE_DOCUMENT_INFO_BY_ID: "/api/document/deleteDocumentInfoById",
 
   // Annotation
-  RESOURCE_DELETE_ANNOTATION: "/api/annotation/deleteAnnotation",
+  RESOURCE_ADD_ANNOTATION: "/api/annotation/addAnnotation",
+  RESOURCE_UPDATE_ANNOTATION: "/api/annotation/updateAnnotation",
+  RESOURCE_GET_ALL_ANNOTATIONS_BY_DOCUMENT_DATA_ID: "/api/annotation/getAllAnnotationsByDocumentDataId",
+  RESOURCE_DELETE_ANNOTATION: "/api/annotation/deleteAnnotationById",
+  RESOURCE_DELETE_ALL_ANNOTATIONS_BY_DOCUMENT_DATA_ID: "/api/annotation/deleteAllAnnotationsByDocumentDataId",
 
   // Algorithm
   RESOURCE_SUBMIT_ALGORITHM: "/api/algorithm/uploadAlgorithm",

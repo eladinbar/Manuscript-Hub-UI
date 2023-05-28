@@ -47,21 +47,16 @@ export class DocumentDetailsComponent implements OnInit {
   }
 
   getAllAnnotations() {
-    this.annotationService.getAnnotationsByDocumentId(this.documentId, this.uid).subscribe({
+    this.annotationService.getAllAnnotationsByDocumentDataId(this.documentId, this.uid).subscribe({
       next: (annotationModels: AnnotationModel[]) => {
-        console.log('HTTP GET Annotation retrieval request successful: ', annotationModels);
         this.annotations = annotationModels;
         this.drawAnnotations();
-      },
-      error: (err: any) => {
-        console.error('HTTP GET Annotation retrieval request error: ', err);
       },
     });
   }
 
   getDocumentById() {
     this.documentService.getDocumentDataById(this.documentId, this.uid!).subscribe(res => {
-      console.log(res)
       const url = URL.createObjectURL(res);
       this.loadImage();
       this.image.src = url;
@@ -216,14 +211,10 @@ export class DocumentDetailsComponent implements OnInit {
 
       this.annotationService.addAnnotation(annotation).subscribe({
         next: (annotationModel: AnnotationModel) => {
-          console.log('HTTP POST request successful: ', annotationModel);
           annotation = annotationModel;
           this.coordinates.push(annotationCoordinates);
           this.annotations.push(annotation);
           this.drawAnnotations();
-        },
-        error: (err: any) => {
-          console.error('HTTP POST request error: ', err);
         },
       });
     }
@@ -238,7 +229,7 @@ export class DocumentDetailsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(content => {
       console.debug(`Dialog result: ${content}`);
 
-      if (content) {
+      if (content && content != annotation.content) {
         //TODO pass algorithmId?
         // OK
         this.updateAnnotation(annotation, content);
@@ -259,7 +250,7 @@ export class DocumentDetailsComponent implements OnInit {
 
   updateAnnotation(annotation: AnnotationModel, newContent: string) {
     annotation.content = newContent;
-    this.annotationService.updateAnnotation(annotation);
+    this.annotationService.updateAnnotation(annotation).subscribe();
     this.drawAnnotations();
   }
 
@@ -270,8 +261,6 @@ export class DocumentDetailsComponent implements OnInit {
           this.annotations = this.annotations.filter(a => a.id !== annotation.id);
           this.drawAnnotations();
         }
-      },
-      error: (err: any) => {
       },
     });
   }
