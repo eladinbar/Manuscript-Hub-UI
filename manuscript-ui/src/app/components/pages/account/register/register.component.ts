@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AccountService} from "../../../../services/auth/account.service";
 import {Router} from "@angular/router";
 import {TownCrierService} from "../../../../services/town-crier.service";
+import {RouterEnum} from "../../../../enums/RouterEnum";
 
 @Component({
   selector: 'app-register',
@@ -13,9 +14,8 @@ import {TownCrierService} from "../../../../services/town-crier.service";
 export class RegisterComponent {
   public formGroup: FormGroup;
   public inputType: string = "password";
-  hide = true;
+  hidePassword = true;
   roles = ['Developer', 'User'];
-
 
   constructor(private auth: AngularFireAuth, private formBuilder: FormBuilder, private accountService: AccountService, public router: Router, public townCrier: TownCrierService) {
     this.formGroup = this.formBuilder.group({
@@ -33,7 +33,7 @@ export class RegisterComponent {
     const name = this.formGroup.controls['name'].value;
     const phoneNumber = this.formGroup.controls['phoneNumber'].value;
     const role = this.formGroup.controls['role'].value;
-    if (email != null && password != null) {
+    if (email && password && role && name) {
       this.auth.createUserWithEmailAndPassword(email, password)
         .then(user => {
           this.sendEmail();
@@ -43,41 +43,39 @@ export class RegisterComponent {
             if (result) {
               this.townCrier.info('Registration successful!');
               setInterval(() => {
-                this.router.navigate(['/login']);
-              }, 5000);
+                this.router.navigate(['/' + RouterEnum.Login]);
+              }, 1000);
             } else {
               //TODO: need to delete it from firebase
               this.townCrier.error('Registration failed!');
-
             }
           })
         })
         .catch(error => {
-          this.townCrier.error('Registration failed ! ' +  error);
+          this.townCrier.error('Registration failed ! ' + error);
         });
     } else {
-      this.townCrier.error("Make sure that fill all fields");
+      this.townCrier.error("Make sure that all fields are filled before submitting.");
     }
   }
 
   showPassword() {
+    this.hidePassword = !this.hidePassword;
     if (this.inputType === 'password') {
       this.inputType = 'text';
-      this.hide = true;
     } else {
       this.inputType = 'password'
-      this.hide = false;
-
     }
   }
+
   sendEmail() {
     this.auth.currentUser.then((u) => {
       //If a user is successfully created with an appropriate email
-      if (u != null){
+      if (u != null) {
         u?.sendEmailVerification();
       }
     }).catch(error => {
-      this.townCrier.error('could not send email verification ' +  error);
+      this.townCrier.error('Could not send email verification ' + error);
     });
   }
 }

@@ -15,36 +15,41 @@
     </div>
 
     <div class="form-container">
-
       <form class="center" [formGroup]="formGroup">
         <div>
+          <!--   Username/E-mail input   -->
           <div class="center bottom-padding">
             <input class="inputs" type="text" i18n placeholder='Username/E-mail Address' formControlName="username">
           </div>
-          <div class="center bottom-padding  input-icons">
+
+          <!--   Password input   -->
+          <div class="center bottom-padding input-icons">
             <div class="input-icons">
-                           <span class="p-viewer">
-                             <i class="fa fa-eye icon" (click)="showPassword()"></i></span>
+               <span class="p-viewer" (click)="showPassword()">
+                 <i [class]="hidePassword ? 'fa fa-eye-slash icon' : 'fa fa-eye icon'"></i>
+               </span>
               <input class="input-field inputs" type="{{inputType}}" i18n placeholder='Password' formControlName="password">
             </div>
           </div>
 
+          <!--   Sign In input   -->
           <div class="center bottom-padding ">
             <input class="input-button" type="button" i18n value="Sign In" (click)="login(formGroup.value)">
           </div>
 
           <div class="center  divider">
-
             <mat-divider></mat-divider>
           </div>
 
-
-
+          <!--   Login With Google button   -->
           <div class="center bottom-padding ">
-            <button type="button" class="input-button-provider login-with-google-btn"  (click)="googleLoginAction()" i18n>
+            <button type="button" class="input-button-provider login-with-google-btn" (click)="googleLoginAction()"
+                    i18n>
               Login with Google
             </button>
           </div>
+
+          <!--   Register button   -->
           <div class="center bottom-padding ">
             <button type="button" class="input-button-provider" (click)="redirectToRegister()" i18n>
               Sign Up

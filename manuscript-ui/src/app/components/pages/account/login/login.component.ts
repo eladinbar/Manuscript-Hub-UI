@@ -4,6 +4,7 @@ import {AccountService} from '../../../../services/auth/account.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {RouterEnum} from "../../../../enums/RouterEnum";
 
 @Component({
   selector: 'dhv-login',
@@ -13,8 +14,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class LoginComponent {
   public formGroup: FormGroup;
   public inputType: string = "password";
-  hide = true;
-
+  hidePassword = true;
 
   constructor(private authService: AuthService, private accountService: AccountService, public router: Router,
               private formBuilder: FormBuilder) {
@@ -38,7 +38,6 @@ export class LoginComponent {
           Swal.fire('Important Notice', 'You have to verify your mail before singing in ', 'error');
         }
       }
-
     })
   }
 
@@ -46,10 +45,9 @@ export class LoginComponent {
     this.authService.googleLogin().then(this.authUser).catch(this.error);
   }
 
-
   error = (err: any) => {
     Swal.fire('Canceled', 'Operation was Canceled', 'error');
-    this.router.navigate(['/login']);
+    this.router.navigate(['/' + RouterEnum.Login]);
   }
 
   authUser = (res: any) => {
@@ -63,18 +61,15 @@ export class LoginComponent {
               next: result => {
                 if (result.status) {
                   result.token = token;
-
-                  this.authService.updateLocalStorage(result, user, );
+                  this.authService.updateLocalStorage(result, user);
                   this.reload();
-
                 } else {
                   Swal.fire('Credentials Error'
                     , 'An error occurred while authenticating your credentials, Try again in a moment'
                     , 'error');
                   this.authService.deleteUser();
                 }
-              },
-              error: err => {
+              }, error: err => {
                 Swal.fire('Error occured while saving user', 'Try again in a few moments', 'error');
                 this.authService.deleteUser();
               }
@@ -89,14 +84,12 @@ export class LoginComponent {
                   value.token = token;
                   this.authService.updateLocalStorage(value, user);
                   this.reload();
-
                 } else {
                   Swal.fire('Credentials Error'
                     , 'An error occurred while authenticating your credentials, Try again in a moment'
                     , 'error');
                 }
-              },
-              error: err => {
+              }, error: err => {
                 Swal.fire('Credentials Error'
                   , 'An error occurred while authenticating your credentials, Try again in a moment'
                   , 'error');
@@ -106,22 +99,16 @@ export class LoginComponent {
       });
   }
 
-
   showPassword() {
+    this.hidePassword = !this.hidePassword;
     if (this.inputType === 'password') {
       this.inputType = 'text';
-      this.hide = true;
     } else {
       this.inputType = 'password'
-      this.hide = false;
-
     }
-
   }
 
-
   redirectToRegister() {
-    this.router.navigate(['/register']);
-
+    this.router.navigate(['/' + RouterEnum.Register]);
   }
 }
