@@ -77,9 +77,7 @@ export class DocumentUploadFormComponent implements OnInit {
         });
 
         formData.append('file', this.fileToUpload, this.fileToUpload.name);
-        this.documentService.uploadDocument(documentInfo, formData)
-          .subscribe(res => {
-          });
+        this.documentService.uploadDocument(documentInfo, formData).subscribe();
       }
     }
   }

@@ -19,29 +19,29 @@ export class DocumentService {
   uploadDocument(documentInfo: DocumentInfoModel, data: FormData) {
     return from(this.http.post<DocumentInfoModel>(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_DOCUMENT_INFO}`, documentInfo))
       .pipe(map((documentInfo: DocumentInfoModel) => {
-          this.townCrier.info("Please wait while the new document is being processed...");
-          this.uploadDocumentData(data, documentInfo.id!, documentInfo.uid).subscribe();
-          return documentInfo;
-        }), catchError(errorRes => {
-          this.townCrier.error(errorRes.error);
-          return this.restErrorsHandlerService.handleRequestError(errorRes);
-        }));
+        this.townCrier.info("Please wait while the new document is being processed...");
+        this.uploadDocumentData(data, documentInfo.id!, documentInfo.uid).subscribe();
+        return documentInfo;
+      }), catchError(errorRes => {
+        this.townCrier.error(errorRes.error);
+        return this.restErrorsHandlerService.handleRequestError(errorRes);
+      }));
   }
 
-  private uploadDocumentData(data: FormData, id: string, uid:string) {
+  private uploadDocumentData(data: FormData, id: string, uid: string) {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
 
-    return from(this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_DOCUMENT_DATA}/${id}/${uid}`, data, {headers: headers}))
+    return from(this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_DOCUMENT_DATA}/${id}/${uid}`, data, {headers: headers, responseType: "text"}))
       .pipe(map((res: any) => {
-          this.townCrier.info(res);
-          this.router.navigate(['/' + RouterEnum.Dashboard]);
-          return of(true);
-        }), catchError(errorRes => {
-          this.townCrier.error(errorRes.error);
-          this.restErrorsHandlerService.handleRequestError(errorRes);
-          return of(false);
-        }));
+        this.townCrier.info(res);
+        this.router.navigate(['/' + RouterEnum.Dashboard]);
+        return of(true);
+      }), catchError(errorRes => {
+        this.townCrier.error(errorRes.error);
+        this.restErrorsHandlerService.handleRequestError(errorRes);
+        return of(false);
+      }));
   }
 
   updateDocumentInfo(documentInfo: DocumentInfoModel) {
@@ -50,80 +50,91 @@ export class DocumentService {
 
     return from(this.http.patch(`${environment.baseUrl}${environment.RESOURCE_UPDATE_DOCUMENT_INFO}`, documentInfo, {headers: headers}))
       .pipe(map((res: any) => {
-          this.townCrier.info("The document's info has been updated.")
-          return res;
-        }), catchError(errorRes => {
-          this.townCrier.error(errorRes.error);
-          return this.restErrorsHandlerService.handleRequestError(errorRes);
-        }));
+        this.townCrier.info("The document's info has been updated.")
+        return res;
+      }), catchError(errorRes => {
+        this.townCrier.error(errorRes.error);
+        return this.restErrorsHandlerService.handleRequestError(errorRes);
+      }));
   }
 
   getDocumentDataById(id: string, uid: string) {
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_DATA_BY_ID}/${id}/${uid}`, {responseType: 'blob'}))
       .pipe(map((res: any) => {
         this.townCrier.info("The document has been loaded successfully.")
-          return res;
-        }), catchError(errorRes => {
-          this.townCrier.error(errorRes.error);
-          this.router.navigate(['/' + RouterEnum.Dashboard]);
-          return this.restErrorsHandlerService.handleRequestError(errorRes);
-        }));
+        return res;
+      }), catchError(errorRes => {
+        this.townCrier.error(errorRes.error);
+        this.router.navigate(['/' + RouterEnum.Dashboard]);
+        return this.restErrorsHandlerService.handleRequestError(errorRes);
+      }));
   }
 
   getAllDocumentInfosByUid(uid: string) {
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_DOCUMENT_INFOS_BY_UID}/${uid}`))
       .pipe(map((res: any) => {
-          return res;
-        }), catchError(errorRes => {
-          this.townCrier.error(errorRes.error);
-          return this.restErrorsHandlerService.handleRequestError(errorRes);
-        }));
+        this.townCrier.info("All documents retrieved successfully.");
+        return res;
+      }), catchError(errorRes => {
+        this.townCrier.error(errorRes.error);
+        return this.restErrorsHandlerService.handleRequestError(errorRes);
+      }));
   }
 
   getAllPublicDocumentInfos() {
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_PUBLIC_DOCUMENT_INFOS}`))
       .pipe(map((res: any) => {
-          return res;
-        }), catchError(errorRes => {
-          this.townCrier.error(errorRes.error);
-          return this.restErrorsHandlerService.handleRequestError(errorRes);
-        }));
+        this.townCrier.info("All documents retrieved successfully.");
+        return res;
+      }), catchError(errorRes => {
+        this.townCrier.error(errorRes.error);
+        return this.restErrorsHandlerService.handleRequestError(errorRes);
+      }));
   }
 
   getDocumentDatasByDocumentInfoId(documentInfoId: string, uid: string) {
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_DATAS_BY_DOCUMENT_INFO_ID}/${documentInfoId}/${uid}`))
       .pipe(map((res: any) => {
-          return res;
-        }), catchError(errorRes => {
-          this.townCrier.error(errorRes.error);
-          return this.restErrorsHandlerService.handleRequestError(errorRes);
-        }));
+        return res;
+      }), catchError(errorRes => {
+        this.townCrier.error(errorRes.error);
+        return this.restErrorsHandlerService.handleRequestError(errorRes);
+      }));
   }
 
   deleteDocumentDataById(id: string, uid: string) {
-    return from(this.http.delete(`${environment.baseUrl}${environment.RESOURCE_DELETE_DOCUMENT_DATA_BY_ID}/${id}/${uid}`))
+    const headers = new HttpHeaders();
+    headers.set('Content-Type', 'application/json');
+
+    return from(this.http.delete(`${environment.baseUrl}${environment.RESOURCE_DELETE_DOCUMENT_DATA_BY_ID}/${id}/${uid}`, {
+      headers: headers,
+      responseType: "text"
+    }))
       .pipe(map((res: any) => {
-          this.townCrier.info(res);
-          return of(true);
-        }), catchError(errorRes => {
-          this.townCrier.error(errorRes.error);
-          this.restErrorsHandlerService.handleRequestError(errorRes);
-          return of(false);
-        }));
+        this.townCrier.info(res);
+        return of(true);
+      }), catchError(errorRes => {
+        this.townCrier.error(errorRes.error);
+        this.restErrorsHandlerService.handleRequestError(errorRes);
+        return of(false);
+      }));
   }
 
   deleteDocumentInfoById(id: string, uid: string) {
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json');
 
-    return from(this.http.delete(`${environment.baseUrl}${environment.RESOURCE_DELETE_DOCUMENT_INFO_BY_ID}/${id}/${uid}`, {headers: headers, responseType:"text"}))
+    return from(this.http.delete(`${environment.baseUrl}${environment.RESOURCE_DELETE_DOCUMENT_INFO_BY_ID}/${id}/${uid}`, {
+      headers: headers,
+      responseType: "text"
+    }))
       .pipe(map((res: string) => {
-          this.townCrier.info(res);
-          return of(true);
-        }), catchError(errorRes => {
-          this.townCrier.error(errorRes.error);
-          this.restErrorsHandlerService.handleRequestError(errorRes);
-          return of(false);
-        }));
+        this.townCrier.info(res);
+        return of(true);
+      }), catchError(errorRes => {
+        this.townCrier.error(errorRes.error);
+        this.restErrorsHandlerService.handleRequestError(errorRes);
+        return of(false);
+      }));
   }
 }

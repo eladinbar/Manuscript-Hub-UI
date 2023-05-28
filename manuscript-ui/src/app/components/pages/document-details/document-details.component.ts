@@ -178,8 +178,6 @@ export class DocumentDetailsComponent implements OnInit {
 
   handleNewManualAnnotation(dialogRef: MatDialogRef<AnnotationDialogComponent, any>, annotationCoordinates: AnnotationCoordinatesModel) {
     dialogRef.afterClosed().subscribe(content => {
-      console.debug(`Dialog result: ${content}`);
-
       if (content) {
         this.addAnnotation(annotationCoordinates, content, this.NIL);
       } else {
@@ -221,14 +219,11 @@ export class DocumentDetailsComponent implements OnInit {
   }
 
   selectAnnotation(annotation: AnnotationModel, oldStartX: number, oldStartY: number, oldEndX: number, oldEndY: number) {
-    console.debug("onSelect: " + annotation.content);
     this.ctx!.strokeStyle = 'blue';
     this.ctx?.strokeRect(annotation.startX, annotation.startY, annotation.endX - annotation.startX, annotation.endY - annotation.startY);
 
     let dialogRef = this.openDialog(annotation.content);
     dialogRef.afterClosed().subscribe(content => {
-      console.debug(`Dialog result: ${content}`);
-
       if (content && content != annotation.content) {
         //TODO pass algorithmId?
         // OK
