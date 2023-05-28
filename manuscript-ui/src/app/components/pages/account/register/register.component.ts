@@ -5,6 +5,7 @@ import {AccountService} from "../../../../services/auth/account.service";
 import {Router} from "@angular/router";
 import {TownCrierService} from "../../../../services/town-crier.service";
 import {RouterEnum} from "../../../../enums/RouterEnum";
+import firebase from "firebase/compat";
 
 @Component({
   selector: 'app-register',
@@ -14,8 +15,8 @@ import {RouterEnum} from "../../../../enums/RouterEnum";
 export class RegisterComponent {
   public formGroup: FormGroup;
   public inputType: string = "password";
-  hidePassword = true;
-  roles = ['Developer', 'User'];
+  hidePassword: boolean = true;
+  roles: string[] = ['Developer', 'User'];
 
   constructor(private auth: AngularFireAuth, private formBuilder: FormBuilder, private accountService: AccountService, public router: Router, public townCrier: TownCrierService) {
     this.formGroup = this.formBuilder.group({
@@ -35,23 +36,23 @@ export class RegisterComponent {
     const role = this.formGroup.controls['role'].value;
     if (email && password && role && name) {
       this.auth.createUserWithEmailAndPassword(email, password)
-        .then(user => {
-          this.sendEmail();
-
-          this.accountService.registerNewUser(user.user?.email!, user.user?.uid!, name, phoneNumber, role).subscribe(result => {
-            console.log("result: ", result);
-            if (result) {
-              this.townCrier.info('Registration successful!');
-              setInterval(() => {
+        .then(userCredential => {
+          const user: firebase.User | null = userCredential.user;
+          user?.updateProfile({
+            displayName: name
+          }).then(() => {
+            this.sendEmail();
+            this.accountService.registerNewUser(user?.email!, user?.uid!, name, phoneNumber, role).subscribe(result => {
+              if (result) {
+                this.townCrier.info('Registration successful!');
                 this.router.navigate(['/' + RouterEnum.Login]);
-              }, 1000);
-            } else {
-              //TODO: need to delete it from firebase
-              this.townCrier.error('Registration failed!');
-            }
-          })
-        })
-        .catch(error => {
+              } else {
+                //TODO: need to delete it from firebase
+                this.townCrier.error('Registration failed!');
+              }
+            });
+          });
+        }).catch(error => {
           this.townCrier.error('Registration failed ! ' + error);
         });
     } else {

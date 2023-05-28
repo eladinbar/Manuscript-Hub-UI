@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import firebase from 'firebase/compat/app';
 import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {GoogleAuthProvider} from "firebase/auth";
-
 import {AngularFirestore, AngularFirestoreDocument} from "@angular/fire/compat/firestore";
 import {Router} from "@angular/router";
 import {CryptoService} from "../crypto.service";
@@ -39,7 +38,6 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        console.log(email)
         this.setUserData(result.user).then();
         this.updateLocalStorage(result, result.user);
         return result;
