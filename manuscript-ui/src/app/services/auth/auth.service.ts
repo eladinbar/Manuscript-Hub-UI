@@ -8,6 +8,7 @@ import {Router} from "@angular/router";
 import {CryptoService} from "../crypto.service";
 import UserCredential = firebase.auth.UserCredential;
 import User = firebase.User;
+import {RouterEnum} from "../../enums/RouterEnum";
 
 @Injectable({
   providedIn: 'root'
@@ -77,19 +78,22 @@ export class AuthService {
   signOut() {
     this.afAuth.signOut();
     localStorage.clear();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/' + RouterEnum.Login]);
   }
 
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
-    console.log(user)
-    return true //&& user.emailVerified !== false;
+    return !!user;
+  }
+
+  get isDeveloper(): boolean {
+    const role = localStorage.getItem('role')!;
+    return this.cryptoService.decrypt(role) === 'Developer' || this.cryptoService.decrypt(role) === 'Admin';
   }
 
   get isAdmin(): boolean {
-    const user = JSON.parse(localStorage.getItem('user')!);
-    console.log(user.role)
-    return this.cryptoService.decrypt(user.role) === 'Admin';
+    const role = localStorage.getItem('role')!;
+    return this.cryptoService.decrypt(role) === 'Admin';
   }
 
   checkLogin(): boolean {

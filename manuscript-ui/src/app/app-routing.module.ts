@@ -11,7 +11,9 @@ import {AlgorithmSubmissionFormComponent} from "./components/pages/algorithm-sub
 import {InvitationsComponent} from "./components/pages/invitations/invitations.component";
 import {LayoutDocumentsComponent} from "./components/pages/layout-documents/layout-documents.component";
 import {AlgorithmRequestsComponent} from "./components/pages/algorithm-requests/algorithm-requests.component";
-import {RolesGuard} from "./shared/guards/roles.guard";
+import {AdminGuard} from "./shared/guards/admin.guard";
+import {DeveloperGuard} from "./shared/guards/developer.guard";
+import {GuestGuard} from "./shared/guards/guest.guard";
 
 const routes: Routes = [
   {
@@ -23,20 +25,20 @@ const routes: Routes = [
       {path: RouterEnum.DocumentDetail + '/:' + RouterEnum.DocumentId, component: LayoutDocumentsComponent},
       {path: RouterEnum.DocumentUpload, component: DocumentUploadFormComponent},
 
-      {path: RouterEnum.AlgorithmSubmissionForm, component: AlgorithmSubmissionFormComponent},
-      {path: RouterEnum.AlgorithmRequests, component: AlgorithmRequestsComponent},
+      {path: RouterEnum.AlgorithmSubmissionForm, component: AlgorithmSubmissionFormComponent, canActivate: [DeveloperGuard]},
+      {path: RouterEnum.AlgorithmRequests, component: AlgorithmRequestsComponent, canActivate: [DeveloperGuard]},
 
-      {path: RouterEnum.InvitationRequests, component: InvitationsComponent, canActivate: [RolesGuard]},
+      {path: RouterEnum.InvitationRequests, component: InvitationsComponent, canActivate: [AdminGuard]},
     ]
   },
 
-  {path: RouterEnum.Login, component: LoginComponent},
+  {path: RouterEnum.Login, component: LoginComponent, canActivate: [GuestGuard]},
 
-  {path: RouterEnum.Register, component: RegisterComponent},
+  {path: RouterEnum.Register, component: RegisterComponent, canActivate: [GuestGuard]},
 
   {path: RouterEnum.Home, component: MainComponent},
 
-  {path: '**', component: MainComponent},
+  {path: '**', component: MainComponent, redirectTo: ''},
 ];
 
 @NgModule({
