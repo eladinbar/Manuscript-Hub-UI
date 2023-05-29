@@ -6,9 +6,11 @@
   <div class="search-container">
     <mat-form-field appearance="outline">
       <mat-icon matPrefix>search</mat-icon>
-      <input matInput placeholder="Search..." (input)="applyFilter($event)" />
+      <input matInput placeholder="Search..." (input)="applyFilter($event)" class="white-search-box" />
     </mat-form-field>
   </div>
+
+
 
   <div class="upload-button-container">
     <form [formGroup]="formGroup" class="form">
@@ -23,25 +25,33 @@
   <table mat-table [dataSource]="dataSource" matSort matTableResponsive (matSortChange)="announceSortChange($event)">
     <!--  Privacy column  -->
     <ng-container matColumnDef="Privacy">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Privacy">Privacy</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Privacy" class="column-header">
+        Privacy
+      </th>
       <td *matCellDef="let documentMetadata" mat-cell> {{textService.toTitleCase(documentMetadata.privacy)}} </td>
     </ng-container>
 
-    <!--  Title column  -->
+    <!-- Title column -->
     <ng-container matColumnDef="Title">
-      <th *matHeaderCellDef mat-header-cell>Title</th>
+      <th *matHeaderCellDef mat-header-cell class="column-header">
+        Title
+      </th>
       <td *matCellDef="let documentMetadata" mat-cell> {{documentMetadata.title}} </td>
     </ng-container>
 
-    <!--  Created Time column  -->
+    <!-- Created Time column -->
     <ng-container [matColumnDef]="time">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time">Created Time</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time" class="column-header">
+        Created Time
+      </th>
       <td *matCellDef="let document" mat-cell> {{dateService.toFormattedDate(document.createdTime)}} </td>
     </ng-container>
 
-    <!--  Actions column  -->
+    <!-- Actions column -->
     <ng-container matColumnDef="Actions">
-      <th *matHeaderCellDef mat-header-cell>Actions</th>
+      <th *matHeaderCellDef mat-header-cell class="column-header">
+        Actions
+      </th>
       <td *matCellDef="let document" class="action-link" mat-cell>
         <button (click)="onDocumentOpen(document)" color="primary" mat-raised-button>Open</button>
 

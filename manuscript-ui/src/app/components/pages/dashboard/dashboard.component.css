@@ -7,6 +7,11 @@ table {
   padding-top: 1em;
   padding-bottom: 1em;
 }
+.title-element mat-card-title {
+  font-size: 36px;
+  font-weight: bold;
+}
+
 
 mat-button-toggle {
   background-color: #0747A6;
@@ -41,6 +46,7 @@ mat-paginator {
   justify-content: flex-start;
   align-items: flex-start;
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .title-element {
@@ -50,16 +56,69 @@ mat-paginator {
 }
 
 .action-container {
+  background-color: transparent;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 16px;
 }
 
 .search-container {
-
+  padding: 0;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  background-color: transparent;
 }
+
+.search-container mat-form-field {
+  flex: 1;
+  margin-left: 8px;
+  margin-bottom: -20px;
+}
+
+.search-container input {
+  background-color: transparent;
+  border: none;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+
 
 .upload-button-container {
   margin-left: 16px;
 }
+
+.upload-button-container mat-button-toggle {
+  font-size: 18px;
+  padding: 10px 20px;
+}
+
+
+.white-search-box {
+  color: black;
+  border: black;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 20px;
+}
+.search-container mat-icon {
+  font-size: 30px;
+  line-height: 25px;
+  vertical-align: middle;
+}
+
+.mat-cell,
+.mat-header-cell {
+  font-size: 16px; /* Adjust the font size to your desired value */
+}
+.column-header {
+  /*font-weight: bold;*/
+  font-size: 20px;
+  color: black;
+}
+
+
+
+
