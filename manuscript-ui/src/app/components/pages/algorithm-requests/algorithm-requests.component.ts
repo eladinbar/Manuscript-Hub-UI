@@ -23,9 +23,9 @@ export class AlgorithmRequestsComponent implements OnInit {
   dataSource: MatTableDataSource<AlgorithmRequestTable> = new MatTableDataSource<AlgorithmRequestTable>();
   @ViewChild(MatSort, {static: false}) sort!: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
-  tableCols = ['email', 'title', 'description', 'modelType', 'repository', 'status', 'edit'];
+  tableCols: string[] = ['email', 'title', 'description', 'modelType', 'repository', 'status', 'edit'];
   @ViewChild('assignAlgorithmModal') assignModal?: ElementRef;
-  message = '';
+  message: string = '';
   uid!: string;
   role!: string;
 

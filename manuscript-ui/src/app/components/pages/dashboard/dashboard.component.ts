@@ -16,8 +16,6 @@ import {DocumentInfoModel} from "../../../models/DocumentInfoModel";
 import {MatDialog} from "@angular/material/dialog";
 import {PrivacyDialogComponent} from "../../dialogs/privacy-dialog/privacy-dialog.component";
 import {ConfirmationDialogComponent} from "../../dialogs/confirmation-dialog/confirmation-dialog.component";
-import {HttpResponse} from "@angular/common/http";
-import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-dashboard',
@@ -30,7 +28,7 @@ export class DashboardComponent implements OnInit {
   dataSource: MatTableDataSource<DocumentInfoModel> = new MatTableDataSource<DocumentInfoModel>([]);
   public formGroup: FormGroup;
   time: string = "Created Time";
-  sort?: MatSort;
+  @ViewChild(MatSort, {static: false}) sort!: MatSort;
   uid?: string;
   @ViewChild('paginator') paginator?: MatPaginator;
 
@@ -45,18 +43,21 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.uid = localStorage.getItem("uid")!;
-    this.documentService.getAllDocumentInfosByUid(this.uid!).subscribe(res => {
-      let privateDocuments : Array<DocumentInfoModel> = res;
-      this.documentService.getAllPublicDocumentInfos().subscribe(res => {
-        let publicDocuments : Array<DocumentInfoModel> = res;
-        this.setDataToTable(privateDocuments.concat(publicDocuments));
-        this.announceSortChange({active: this.time, direction: 'asc'})
-      })
-    });
+    this.fetchTableData();
   }
 
   @ViewChild(MatSort) set x(mat: MatSort) {
     this.sort = mat;
+  }
+
+  fetchTableData(): void {
+    this.documentService.getAllDocumentInfosByUid(this.uid!).subscribe((docs: Array<DocumentInfoModel>) => {
+      let privateDocuments: Array<DocumentInfoModel> = docs;
+      this.documentService.getAllPublicDocumentInfos().subscribe((docs: Array<DocumentInfoModel>) => {
+        let publicDocuments: Array<DocumentInfoModel> = docs.filter(doc => doc.uid !== this.uid);
+        this.setDataToTable(privateDocuments.concat(publicDocuments));
+      })
+    });
   }
 
   private setDataToTable(res: any) {
@@ -67,7 +68,7 @@ export class DashboardComponent implements OnInit {
     if (this.paginator) {
       this.dataSource.paginator = this.paginator;
     }
-    this.announceSortChange({active: this.time, direction: 'asc'});
+    this.dataSource.sort = this.sort!;
   }
 
   announceSortChange(sortState: Sort) {

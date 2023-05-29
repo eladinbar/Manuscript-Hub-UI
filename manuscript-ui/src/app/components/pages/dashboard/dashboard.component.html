@@ -7,24 +7,24 @@
   </form>
 </div>
 
-<div *ngIf="dataSource; else emptyTable" class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" matSort matTableResponsive (matSortChange)="announceSortChange($event)">
+<div *ngIf="dataSource; else emptyTable" class="modal-body">
+  <table [dataSource]="dataSource" class="mat-elevation-z8 col-12" mat-table matSort matTableResponsive (matSortChange)="announceSortChange($event)">
     <!--  Privacy column  -->
     <ng-container matColumnDef="Privacy">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Privacy">Privacy</th>
-      <td *matCellDef="let documentMetadata" mat-cell> {{textService.toTitleCase(documentMetadata.privacy)}} </td>
+      <td mat-cell *matCellDef="let documentMetadata"> {{textService.toTitleCase(documentMetadata.privacy)}} </td>
     </ng-container>
 
     <!--  Title column  -->
     <ng-container matColumnDef="Title">
-      <th *matHeaderCellDef mat-header-cell>Title</th>
-      <td *matCellDef="let documentMetadata" mat-cell> {{documentMetadata.title}} </td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+      <td mat-cell *matCellDef="let documentMetadata"> {{documentMetadata.title}} </td>
     </ng-container>
 
     <!--  Created Time column  -->
     <ng-container [matColumnDef]="time">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time">Created Time</th>
-      <td *matCellDef="let document" mat-cell> {{dateService.toFormattedDate(document.createdTime)}} </td>
+      <td mat-cell *matCellDef="let document"> {{dateService.toFormattedDate(document.createdTime)}} </td>
     </ng-container>
 
     <!--  Actions column  -->
@@ -43,9 +43,7 @@
           <!-- Existing menu items -->
           <button mat-menu-item (click)="openSearch()">Search</button>
           <button mat-menu-item (click)="doSomething()">Image info</button>
-
         </mat-menu>
-
       </td>
     </ng-container>
 

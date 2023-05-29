@@ -80,9 +80,7 @@
 
         <!--  Item display count row  -->
         <tr *matHeaderRowDef="tableCols; sticky: true" mat-header-row></tr>
-        <tr *matRowDef="let row; columns: tableCols;" [ngClass]="{'highlight': row.status === 'Approved'}"
-            mat-row>
-        </tr>
+        <tr *matRowDef="let row; columns: tableCols;" [ngClass]="{'highlight': row.status === 'Approved'}" mat-row></tr>
       </table>
       <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
