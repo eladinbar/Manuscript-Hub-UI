@@ -25,6 +25,7 @@ export class LayoutDocumentsComponent implements OnInit {
   addedDocIds: string[] = []
   addedDocsData: DocumentDataModel[] = []
   addedDocsInfo: DocumentInfoModel[] = []
+  isHovered: boolean[] = [];
   filteredDocsData: any[] = this.addedDocsData;
 
 
@@ -106,6 +107,12 @@ export class LayoutDocumentsComponent implements OnInit {
 
   public openSearch() {
   }
+
+  checkIdMatch(infoId: string): boolean {
+    return this.addedDocsInfo.some((addedDoc) => addedDoc.id === infoId);
+  }
+
+
 
 
   handleSearch(event: any) {
