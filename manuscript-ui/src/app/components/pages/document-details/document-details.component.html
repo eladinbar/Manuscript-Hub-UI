@@ -6,7 +6,7 @@
       <span [ngClass]="{'show-text': annIsHovered}">Annotate using an algorithm</span>
     </button>
 
-    <button mat-icon-button (click)="anotherFunction()" (mouseenter)="infoIsHovered = true" (mouseleave)="infoIsHovered = false">
+    <button mat-icon-button (click)="openDocumentInfoDialog()" (mouseenter)="infoIsHovered = true" (mouseleave)="infoIsHovered = false">
       <mat-icon>information</mat-icon>
       <span [ngClass]="{'show-text': infoIsHovered}">Image info</span>
     </button>

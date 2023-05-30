@@ -16,6 +16,9 @@ import {DocumentInfoModel} from "../../../models/DocumentInfoModel";
 import {MatDialog} from "@angular/material/dialog";
 import {PrivacyDialogComponent} from "../../dialogs/privacy-dialog/privacy-dialog.component";
 import {ConfirmationDialogComponent} from "../../dialogs/confirmation-dialog/confirmation-dialog.component";
+import {HttpResponse} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {DocumentInfoDialogComponent} from "../../dialogs/document-info-dialog/document-info-dialog.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -28,7 +31,7 @@ export class DashboardComponent implements OnInit {
   dataSource: MatTableDataSource<DocumentInfoModel> = new MatTableDataSource<DocumentInfoModel>([]);
   public formGroup: FormGroup;
   time: string = "Created Time";
-  @ViewChild(MatSort, {static: false}) sort!: MatSort;
+  sort?: MatSort;
   uid?: string;
   @ViewChild('paginator') paginator?: MatPaginator;
 
@@ -43,21 +46,18 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.uid = localStorage.getItem("uid")!;
-    this.fetchTableData();
+    this.documentService.getAllDocumentInfosByUid(this.uid!).subscribe(res => {
+      let privateDocuments : Array<DocumentInfoModel> = res;
+      this.documentService.getAllPublicDocumentInfos().subscribe(res => {
+        let publicDocuments : Array<DocumentInfoModel> = res;
+        this.setDataToTable(privateDocuments.concat(publicDocuments));
+        this.announceSortChange({active: this.time, direction: 'asc'})
+      })
+    });
   }
 
   @ViewChild(MatSort) set x(mat: MatSort) {
     this.sort = mat;
-  }
-
-  fetchTableData(): void {
-    this.documentService.getAllDocumentInfosByUid(this.uid!).subscribe((docs: Array<DocumentInfoModel>) => {
-      let privateDocuments: Array<DocumentInfoModel> = docs;
-      this.documentService.getAllPublicDocumentInfos().subscribe((docs: Array<DocumentInfoModel>) => {
-        let publicDocuments: Array<DocumentInfoModel> = docs.filter(doc => doc.uid !== this.uid);
-        this.setDataToTable(privateDocuments.concat(publicDocuments));
-      })
-    });
   }
 
   private setDataToTable(res: any) {
@@ -68,7 +68,7 @@ export class DashboardComponent implements OnInit {
     if (this.paginator) {
       this.dataSource.paginator = this.paginator;
     }
-    this.dataSource.sort = this.sort!;
+    this.announceSortChange({active: this.time, direction: 'asc'});
   }
 
   announceSortChange(sortState: Sort) {
@@ -172,10 +172,39 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/' + RouterEnum.DocumentUpload]);
   }
 
-  public doSomething() {
+
+  openDocumentInfoDialog(documentInfo: DocumentInfoModel) {
+    const dialogRef = this.dialog.open(DocumentInfoDialogComponent, {
+      width: '350px',
+      data: {
+        title: documentInfo.title,
+        description: documentInfo.description,
+        author: documentInfo.author,
+        privacy: documentInfo.privacy,
+        publicationDate: documentInfo.publicationDate,
+        tags: documentInfo.tags
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+    });
   }
 
-  public openSearch() {
 
+  applyFilter(event: any) {
+    const searchTerm = event.target.value.toLowerCase().trim();
+
+    // Filter the data source based on the search term
+    this.dataSource.filter = searchTerm;
+
+    // Show only the rows that match the filter criteria
+    this.dataSource.filterPredicate = (data: DocumentInfoModel, filter: string) => {
+      const title = data.title.toLowerCase();
+
+      // Check if the title starts with or includes the search term
+      return title.startsWith(filter) || title.includes(filter);
+    };
   }
+
+
 }

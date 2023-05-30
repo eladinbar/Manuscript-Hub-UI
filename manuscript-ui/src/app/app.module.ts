@@ -51,6 +51,7 @@ import {faQuestionCircle, faTimes} from "@fortawesome/free-solid-svg-icons";
 import { InvitationsComponent } from './components/pages/invitations/invitations.component';
 import { LayoutDocumentsComponent } from './components/pages/layout-documents/layout-documents.component';
 import { AlgorithmRequestsComponent } from './components/pages/algorithm-requests/algorithm-requests.component';
+import {DocumentInfoDialogComponent} from "./components/dialogs/document-info-dialog/document-info-dialog.component";
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { AlgorithmRequestsComponent } from './components/pages/algorithm-request
     MainComponent,
     DashboardComponent,
     DocumentDetailsComponent,
+    DocumentInfoDialogComponent,
     LoginComponent,
     RegisterComponent,
     AnnotationDialogComponent,

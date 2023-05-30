@@ -5,19 +5,31 @@
     </button>
     <mat-menu #showMenu="matMenu">
       <div *ngIf="showMenu" class="menu" (click)="$event.stopPropagation()">
+        <div class="search-container">
+          <input type="text" placeholder="Search..." (input)="handleSearch($event)" (click)="$event.stopPropagation()">
+          <button mat-icon-button (click)="openSearch(); $event.stopPropagation()">
+            <mat-icon>search</mat-icon>
+          </button>
+        </div>
         <ul>
-          <li *ngFor="let doc of addedDocsData; let i = index" (click)="addImage(i, doc); showMenuTrigger.closeMenu()" class="no-bullet">{{ doc.infoId == addedDocsInfo[i].id ? addedDocsInfo[i].title : doc.fileName }}</li>
+          <li *ngFor="let doc of filteredDocsData; let i = index" (click)="addImage(i, doc); showMenuTrigger.closeMenu()" class="no-bullet">
+            <ng-container *ngIf="checkIdMatch(doc.infoId)">
+              <span class="title" [class.bold]="isHovered[i]" (mouseover)="isHovered[i] = true" (mouseout)="isHovered[i] = false">
+                {{ addedDocsInfo[i].title }}
+              </span>
+            </ng-container>
+          </li>
         </ul>
-      </div>
-      <div class="search-container">
-        <button mat-icon-button (click)="openSearch(); $event.stopPropagation()">
-          <mat-icon>search</mat-icon>
-        </button>
-        <input type="text" placeholder="Search..." (input)="handleSearch($event)" (click)="$event.stopPropagation()">
       </div>
     </mat-menu>
   </div>
 </mat-toolbar>
+
+
+
+
+
+
 
 
 

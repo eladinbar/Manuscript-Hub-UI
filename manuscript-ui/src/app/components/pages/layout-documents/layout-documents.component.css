@@ -44,13 +44,9 @@
   list-style-type: none;
 }
 
-.doc-list {
-  list-style-type: none;
-  padding: 0;
-}
 
 .doc-list-item {
-  padding: 10px;
+  padding: -50px;
   border-bottom: 1px solid #ccc;
   cursor: pointer;
 }
@@ -79,15 +75,52 @@
   align-items: center;
 }
 
+
+.menu li:hover {
+  background-color: lightblue;
+  cursor: pointer;
+}
+
+.menu li:hover .title {
+  background-color: transparent;
+  color: #000;
+}
+
+.menu {
+  font-size: 16px;
+  width: 250px;
+  padding-left: 0; /* Remove the left padding */
+}
+
+.menu li {
+  padding-left: 0; /* Remove the left padding for each menu item */
+}
+
+.mat-menu-panel {
+  right: 100px; /* Reset the right property */
+  left: -100px; /* Adjust this value to move the menu more to the left */
+}
+
 .search-container {
   display: flex;
-  justify-content: flex-end;
   align-items: center;
-  font-size: 15px;
+  justify-content: flex-start;
+  font-size: 14px;
+  padding-left: 20px; /* Adjust this value to control the padding from the left */
+
+}
+
+.search-container input[type="text"] {
+  padding-right: 30px; /* Adjust this value to control the width of the input */
+  text-align: left; /* Add this line to align the text to the right */
+  width: calc(100% - 80px); /* Add this line to calculate the width */
 }
 
 
-
+.search-container button {
+  position: absolute;
+  right: 5px;
+}
 
 
 

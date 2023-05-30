@@ -1,13 +1,15 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild, Inject} from '@angular/core';
 import {DocumentService} from "../../../services/document.service";
 import {ActivatedRoute} from "@angular/router";
 import {DomSanitizer} from "@angular/platform-browser";
 import {AnnotationModel} from "../../../models/AnnotationModel";
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import {AnnotationDialogComponent} from "../../dialogs/annotation-dialog/annotation-dialog.component";
 import {AnnotationCoordinatesModel} from "../../../models/AnnotationCoordinatesModel";
 import {AnnotationService} from "../../../services/annotation.service";
 import {HttpResponse} from "@angular/common/http";
+import {DocumentInfoModel} from "../../../models/DocumentInfoModel";
+import {DocumentInfoDialogComponent} from "../../dialogs/document-info-dialog/document-info-dialog.component";
 
 @Component({
   selector: 'app-document-details',
@@ -299,11 +301,39 @@ export class DocumentDetailsComponent implements OnInit {
     this.ctx?.drawImage(this.image, 0, 0, this.image.width, this.image.height, 0, 0, canvas!.width, canvas!.height);
   }
 
-  anotherFunction() {
-
-  }
   selectAlgorithm(algorithm: string) {
     // Perform any desired actions based on the selected algorithm
     console.log(`Selected algorithm: ${algorithm}`);
   }
+
+  openDocumentInfoDialog() {
+    this.documentService.getAllDocumentInfosByUid(this.uid).subscribe(
+      (documentInfoModels: DocumentInfoModel[]) => {
+        documentInfoModels.forEach((docInfo) => {
+            if (docInfo.title == this.title) {
+              console.log("tags: " , docInfo.tags);
+              const dialogRef = this.dialog.open(DocumentInfoDialogComponent, {
+                width: '400px',
+                data: {
+                  title: docInfo.title,
+                  description: docInfo.description,
+                  author: docInfo.author,
+                  privacy: docInfo.privacy,
+                  publicationDate: docInfo.publicationDate,
+                  tags: docInfo.tags
+                }
+              });
+
+              dialogRef.afterClosed().subscribe(result => {
+                console.log('The dialog was closed');
+                // Perform any necessary actions after the dialog is closed
+              });            }
+          },
+          (err: any) => {
+            console.error('HTTP GET Annotation retrieval request error: ', err);
+          }
+        );})
+
+  }
+
 }
