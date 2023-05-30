@@ -5,8 +5,10 @@
 <div class="action-container">
   <div class="search-container">
     <mat-form-field appearance="outline">
-      <mat-icon matPrefix>search</mat-icon>
-      <input matInput placeholder="Search..." (input)="applyFilter($event)" class="white-search-box" />
+      <div class="search-wrapper">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput placeholder="Search..." (input)="applyFilter($event)" class="white-search-box" />
+      </div>
     </mat-form-field>
   </div>
 

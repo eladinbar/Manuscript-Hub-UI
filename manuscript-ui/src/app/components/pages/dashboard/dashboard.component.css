@@ -60,53 +60,39 @@ mat-paginator {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  padding: 16px;
+  padding: 10px;
 }
 
 .search-container {
-  padding: 0;
-  border-radius: 4px;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  background-color: transparent;
-}
-
-.search-container mat-form-field {
-  flex: 1;
-  margin-left: 8px;
+  margin-top: 20px;
   margin-bottom: -20px;
 }
 
-.search-container input {
-  background-color: transparent;
-  border: none;
-  padding: 4px;
-  border-radius: 4px;
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 
-
-.upload-button-container {
-  margin-left: 16px;
-}
 
 .upload-button-container mat-button-toggle {
-  font-size: 18px;
-  padding: 10px 20px;
+  font-size: 14px;
 }
 
 
 .white-search-box {
-  color: black;
-  border: black;
-  padding: 8px;
-  border-radius: 4px;
-  font-size: 20px;
+  border: #0747A6;
+  font-size: 14px;
 }
+
 .search-container mat-icon {
-  font-size: 30px;
-  line-height: 25px;
+  font-size: 20px;
   vertical-align: middle;
+  horiz-align: center;
 }
 
 .mat-cell,
