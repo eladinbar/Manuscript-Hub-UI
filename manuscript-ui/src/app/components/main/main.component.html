@@ -34,17 +34,6 @@
       </mat-list-item>
     </mat-nav-list>
 
-    <!--  Models  -->
-    <mat-nav-list>
-      <mat-list-item [routerLink]="'/' + RouterEnum.Dashboard" routerLinkActive="active">
-        <mat-icon class="text-white" mat-list-icon>Models</mat-icon>
-        <div fxFlex="10"></div>
-        <div *ngIf="sidenavWidth > 6" class="sidenav-item">
-          <div class="menu-item" i18n>Models</div>
-        </div>
-      </mat-list-item>
-    </mat-nav-list>
-
     <!--  Algorithm upload  -->
     <mat-nav-list *ngIf="role == 'Admin' || role == 'Developer'">
       <mat-list-item [routerLink]="'/' + RouterEnum.AlgorithmSubmissionForm" routerLinkActive="active">
