@@ -39,7 +39,7 @@ export class AccountService {
       email,
       name
     };
-    return this.http.post(`${environment.baseUrl}/api/accountController/login`, userData, {
+    return this.http.post<UserModel>(`${environment.baseUrl}${environment.RESOURCE_LOGIN}`, userData, {
       headers: {
         Authorization: 'Bearer ' + token,
         skip: 'true'

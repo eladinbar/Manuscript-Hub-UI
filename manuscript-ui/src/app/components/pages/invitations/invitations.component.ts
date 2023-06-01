@@ -28,9 +28,7 @@ export class InvitationsComponent implements OnInit {
   }
 
   fetchTableData(): void {
-    this.invitationService
-      .getAllInvitations()
-      .subscribe(res => {
+    this.invitationService.getAllInvitations().subscribe(res => {
         this.tableElements = res;
         this.initDataSource(res);
       });
@@ -53,7 +51,7 @@ export class InvitationsComponent implements OnInit {
       confirmButtonColor: '#051390'
     }).then((result) => {
       if (result.value) {
-        this.invitationService.acceptRequest(invitationRequest.email!).subscribe(res => {
+        this.invitationService.approveRequest(invitationRequest.email!).subscribe(res => {
             if (res) {
               this.tableElements = res;
               this.dataSource.data = res;

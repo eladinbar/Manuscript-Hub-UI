@@ -7,6 +7,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RouterEnum} from "../../../../enums/RouterEnum";
 import firebase from "firebase/compat";
 import UserCredential = firebase.auth.UserCredential;
+import {UserModel} from "../../../../models/UserModel";
 
 @Component({
   selector: 'dhv-login',
@@ -28,6 +29,27 @@ export class LoginComponent {
 
   reload(): void {
     document.location.href = '/';
+  }
+
+  googleLoginAction(): void {
+    // Sign in with username and password
+    this.authService.googleLogin().then((credential: UserCredential | null) => {
+      // Check if credentials are valid
+      if(credential) {
+        const user: firebase.User | null = credential.user;
+        if(user?.emailVerified) {
+          // Get user authentication from the backend
+          this.authUser(credential)?.then((verified: boolean): void => {
+            if (verified) {
+              // Set user data in local storage
+              this.authService.setUserData(user!);
+            }
+          });
+        } else {
+          Swal.fire('Important Notice', 'You have to verify your email before signing in.', 'error');
+        }
+      }
+    });
   }
 
   login(value: any): void {
@@ -53,10 +75,6 @@ export class LoginComponent {
     });
   }
 
-  googleLoginAction(): void {
-    this.authService.googleLogin().then(this.authUser).catch(this.error);
-  }
-
   error = (): void => {
     Swal.fire('Canceled', 'Operation was canceled.', 'error');
     this.router.navigate(['/' + RouterEnum.Login]);
@@ -68,8 +86,8 @@ export class LoginComponent {
       if (credential.additionalUserInfo?.isNewUser) {
         return new Promise<boolean>((resolve, reject): void => {
           this.accountService.authenticateUser(user!.uid, user!.email!, user!.displayName!, token).subscribe({
-              next: (result) => {
-                if (result.status) {
+              next: (userModel: UserModel) => {
+                if (userModel.status) {
                   this.reload();
                   resolve(true);
                 } else {
@@ -94,9 +112,8 @@ export class LoginComponent {
       } else {
         return new Promise<boolean>((resolve, reject): void => {
           this.accountService.authenticateUser(user!.uid, user!.email!, user!.displayName!, token).subscribe({
-              next: (value) => {
-                console.log(value);
-                if (value.status) {
+              next: (userModel: UserModel) => {
+                if (userModel.status) {
                   this.reload();
                   resolve(true);
                 } else {

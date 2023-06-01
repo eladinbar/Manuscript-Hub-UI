@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {RestErrorsHandlerService} from "./rest-errors-handler.service";
@@ -11,16 +11,16 @@ import {catchError, from, map} from "rxjs";
 })
 export class InvitationsService {
 
-  constructor(private http: HttpClient,
-              private router: Router,
-              private restErrorsHandlerService: RestErrorsHandlerService,
-              private townCrier: TownCrierService) {}
-
+  constructor(private http: HttpClient, private router: Router,
+              private restErrorsHandlerService: RestErrorsHandlerService, private townCrier: TownCrierService) {
+  }
 
   getAllInvitations() {
+    this.townCrier.info("Please wait while all invitation requests are being retrieved...");
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_INVITATIONS}`))
       .pipe(
         map((res: any) => {
+          this.townCrier.info("All invitation requests retrieved successfully.");
           return res;
         }),
         catchError(errorRes => {
@@ -29,10 +29,11 @@ export class InvitationsService {
         }));
   }
 
-  acceptRequest(email: string) {
+  approveRequest(email: string) {
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_APPROVE_INVITATION_REQUEST}${email}`))
       .pipe(
         map((res: any) => {
+          this.townCrier.info("User has been approved successfully.");
           return res;
         }),
         catchError(errorRes => {
@@ -45,6 +46,7 @@ export class InvitationsService {
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_DENY_INVITATION_REQUEST}${email}`))
       .pipe(
         map((res: any) => {
+          this.townCrier.info("User has been denied successfully.");
           return res;
         }),
         catchError(errorRes => {
