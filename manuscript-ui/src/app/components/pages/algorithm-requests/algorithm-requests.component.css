@@ -7,3 +7,13 @@ table {
   background-color: #e1622e;
   color: white;
 }
+
+.title-element {
+  padding-top: 2em;
+  padding-bottom: 5em;
+}
+.title-element mat-card-title {
+  font-size: 36px;
+  font-weight: bold;
+}
+
