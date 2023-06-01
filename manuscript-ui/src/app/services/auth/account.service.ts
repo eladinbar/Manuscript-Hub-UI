@@ -17,29 +17,29 @@ export class AccountService {
 
   constructor(private http: HttpClient, public cryptoService: CryptoService) { }
 
-  registerNewUser(email: string, uid: string, name: string, phoneNumber: string, role: string): Observable<any> {
-    const data = {
-      email,
-      uid,
-      name,
-      phoneNumber,
-      role
+  registerNewUser(email: string, uid: string, name: string, phoneNumber: string, role: RoleEnum): Observable<any> {
+    const user: UserModel = {
+      email: email,
+      uid: uid,
+      name: name,
+      phoneNumber: phoneNumber,
+      role: role
     };
 
     // return this.http.post(`${environment.baseUrl}/${this.controller}/register`, data);
-    return this.http.post(`${environment.baseUrl}/${this.invitationUrl}/createInvitation`, data);
+    return this.http.post(`${environment.baseUrl}/${this.invitationUrl}/createInvitation`, user);
   }
 
   authenticateUser(uid: string, email: string, name: string, token: string): Observable<any> {
     if (!name) {
       name = email;
     }
-    const data = {
+    const userData = {
       uid,
       email,
       name
     };
-    return this.http.post(`${environment.baseUrl}/api/accountController/login`, data, {
+    return this.http.post(`${environment.baseUrl}/api/accountController/login`, userData, {
       headers: {
         Authorization: 'Bearer ' + token,
         skip: 'true'
