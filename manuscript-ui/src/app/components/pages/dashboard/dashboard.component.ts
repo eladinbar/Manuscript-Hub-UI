@@ -25,10 +25,12 @@ import {DocumentInfoDialogComponent} from "../../dialogs/document-info-dialog/do
 })
 export class DashboardComponent implements OnInit {
   documentInfoTableModels: Array<DocumentInfoModel> = [];
-  displayedColumns: string[] = [DocumentTableEnum.Privacy, DocumentTableEnum.CreatedTime, DocumentTableEnum.Title, DocumentTableEnum.Actions];
+  title: string = 'Title';
+  displayedColumns: string[] = [DocumentTableEnum.Privacy, DocumentTableEnum.CreatedTime, DocumentTableEnum.UpdatedTime, this.title, DocumentTableEnum.Actions];
   dataSource: MatTableDataSource<DocumentInfoModel> = new MatTableDataSource<DocumentInfoModel>([]);
   public formGroup: FormGroup;
   time: string = "Created Time";
+
   sort?: MatSort;
   uid?: string;
   @ViewChild('paginator') paginator?: MatPaginator;
@@ -64,6 +66,8 @@ export class DashboardComponent implements OnInit {
   announceSortChange(sortState: Sort) {
     if (sortState.active === this.time) {
       this.sortByTime(sortState);
+    } else if (sortState.active === this.title) { // Handle sorting for the Title column
+      this.sortByTitle(sortState);
     } else {
       this.sortByPrivacy(sortState);
     }
@@ -171,24 +175,35 @@ export class DashboardComponent implements OnInit {
   }
 
   private sortByPrivacy(sortState: Sort) {
-    let big = 1;
-    let small = -1;
-    if (sortState.direction === 'asc') {
-      big = -1;
-      small = 1;
-    }
+    const sortDirection = sortState.direction === 'asc' ? 1 : -1;
+
+    const privacyOrder = ['Public', 'Shared', 'Private'];
+
     this.dataSource.data = this.dataSource.data.sort((a, b) => {
-      if (a.privacy && !b.privacy) {
-        return big;
-      } else if (a.privacy === b.privacy) {
-        if (a.privacy == 'Private') {
-          return -1;
-        }
-        return 1;
-      }
-      return small;
+      const aIndex = privacyOrder.indexOf(a.privacy!);
+      const bIndex = privacyOrder.indexOf(b.privacy!);
+
+      return (aIndex - bIndex) * sortDirection;
     });
   }
+
+  sortByTitle(sortState: Sort) {
+    const sortDirection = sortState.direction === 'asc' ? 1 : -1;
+
+    this.dataSource.data = this.dataSource.data.sort((a, b) => {
+      const titleA = a.title.toLowerCase();
+      const titleB = b.title.toLowerCase();
+
+      if (titleA < titleB) {
+        return -1 * sortDirection;
+      } else if (titleA > titleB) {
+        return 1 * sortDirection;
+      } else {
+        return 0;
+      }
+    });
+  }
+
 
   private deleteDocument(documentInfo: DocumentInfoModel) {
     this.documentService

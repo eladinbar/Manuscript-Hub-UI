@@ -34,12 +34,13 @@
     </ng-container>
 
     <!-- Title column -->
-    <ng-container matColumnDef="Title">
-      <th *matHeaderCellDef mat-header-cell class="column-header">
+    <ng-container matColumnDef="{{title}}">
+      <th *matHeaderCellDef mat-sort-header sortActionDescription="Sort by title" class="column-header">
         Title
       </th>
       <td *matCellDef="let documentMetadata" mat-cell> {{documentMetadata.title}} </td>
     </ng-container>
+
 
     <!-- Created Time column -->
     <ng-container [matColumnDef]="time">
@@ -48,6 +49,15 @@
       </th>
       <td *matCellDef="let document" mat-cell> {{dateService.toFormattedDate(document.createdTime)}} </td>
     </ng-container>
+
+    <!-- Updated Time column -->
+    <ng-container matColumnDef="Updated Time">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Updated Time" class="column-header">
+        Updated Time
+      </th>
+      <td *matCellDef="let document" mat-cell> {{dateService.toFormattedDate(document.updatedTime)}} </td>
+    </ng-container>
+
 
     <!-- Actions column -->
     <ng-container matColumnDef="Actions">

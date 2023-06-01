@@ -26,7 +26,8 @@ export class LayoutDocumentsComponent implements OnInit {
   addedDocsData: DocumentDataModel[] = []
   addedDocsInfo: DocumentInfoModel[] = []
   isHovered: boolean[] = [];
-  filteredDocsData: any[] = this.addedDocsData;
+  filteredDocsData: DocumentDataModel[] = [];
+
   @ViewChild('showMenu') showMenuTrigger!: MatMenuTrigger;
 
   constructor(private route: ActivatedRoute, private docService: DocumentService, public townCrier: TownCrierService) {
@@ -59,9 +60,9 @@ export class LayoutDocumentsComponent implements OnInit {
                 this.addedDocsInfo.push(docInfo);
               } else {
                 this.firstTitle = docInfo.title!;
-                console.log("else Title = ", docInfo.title);
               }
             }
+            this.filteredDocsData = this.addedDocsData;
           })
         });
       },
@@ -96,20 +97,42 @@ export class LayoutDocumentsComponent implements OnInit {
   }
 
 
-  public openSearch() {
-  }
 
   checkIdMatch(infoId: string): boolean {
-    return this.addedDocsInfo.some((addedDoc) => addedDoc.id === infoId);
+    return this.addedDocsData.some((addedDoc) => addedDoc.infoId === infoId);
   }
 
   handleSearch(event: any) {
     const searchTerm = event.target.value.toLowerCase().trim();
 
-    // Filter addedDocsData based on the search term
-    this.filteredDocsData = this.addedDocsData.filter((doc: any, index: number) => {
-      const title = this.addedDocsInfo[index].title.toLowerCase();
-      return title.includes(searchTerm) || title.startsWith(searchTerm);
+    this.filteredDocsData = this.addedDocsData.filter((docData: DocumentDataModel) => {
+      const docInfo = this.addedDocsInfo.find(info => info.id === docData.infoId);
+      if (docInfo) {
+        const title = docInfo.title.toLowerCase();
+        const include = title.includes(searchTerm);
+        const starts = title.startsWith(searchTerm);
+        return include || starts;
+      }
+      return false;
     });
+  }
+
+  getFilteredDocTitles(): string[] {
+    const filteredTitles: string[] = [];
+
+    for (const docData of this.filteredDocsData) {
+      const matchingInfo = this.addedDocsInfo.find(info => info.id === docData.infoId);
+      if (matchingInfo) {
+        filteredTitles.push(matchingInfo.title);
+      }
+    }
+
+    return filteredTitles;
+  }
+
+
+
+  openSearch() {
+
   }
 }
