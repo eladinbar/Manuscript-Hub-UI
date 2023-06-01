@@ -63,6 +63,17 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  private setDataToTable(res: any) {
+    if (res) {
+      this.documentInfoTableModels = res;
+    }
+    this.dataSource = new MatTableDataSource(this.documentInfoTableModels);
+    if (this.paginator) {
+      this.dataSource.paginator = this.paginator;
+    }
+    this.announceSortChange({active: this.time, direction: 'asc'});
+  }
+
   announceSortChange(sortState: Sort) {
     if (sortState.active === this.time) {
       this.sortByTime(sortState);
@@ -92,6 +103,21 @@ export class DashboardComponent implements OnInit {
         this.deleteDocument(documentInfo);
       }
     });
+  }
+
+  private deleteDocument(documentInfo: DocumentInfoModel) {
+    this.documentService
+      .deleteDocumentInfoById(documentInfo.id!, this.uid!)
+      .subscribe({
+        next: (res) => {
+          if (res) {
+            this.documentInfoTableModels = this.documentInfoTableModels.filter(doc => doc.id !== documentInfo.id);
+            this.dataSource.data = this.documentInfoTableModels; // Update the data source
+          }
+        },
+        error: (err: any) => {
+        },
+      });
   }
 
   onDocumentChangePrivacy(documentInfo: DocumentInfoModel) {
@@ -144,17 +170,6 @@ export class DashboardComponent implements OnInit {
     };
   }
 
-  private setDataToTable(res: any) {
-    if (res) {
-      this.documentInfoTableModels = res;
-    }
-    this.dataSource = new MatTableDataSource(this.documentInfoTableModels);
-    if (this.paginator) {
-      this.dataSource.paginator = this.paginator;
-    }
-    this.announceSortChange({active: this.time, direction: 'asc'});
-  }
-
   private sortByTime(sortState: Sort) {
     let big = 1;
     let small = -1;
@@ -202,21 +217,5 @@ export class DashboardComponent implements OnInit {
         return 0;
       }
     });
-  }
-
-
-  private deleteDocument(documentInfo: DocumentInfoModel) {
-    this.documentService
-      .deleteDocumentInfoById(documentInfo.id!, this.uid!)
-      .subscribe({
-        next: (res) => {
-          if (res) {
-            this.documentInfoTableModels = this.documentInfoTableModels.filter(doc => doc.id !== documentInfo.id);
-            this.dataSource.data = this.documentInfoTableModels; // Update the data source
-          }
-        },
-        error: (err: any) => {
-        },
-      });
   }
 }

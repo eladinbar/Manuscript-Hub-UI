@@ -5,6 +5,8 @@ import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RouterEnum} from "../../../../enums/RouterEnum";
+import firebase from "firebase/compat";
+import UserCredential = firebase.auth.UserCredential;
 
 @Component({
   selector: 'dhv-login',
@@ -28,78 +30,97 @@ export class LoginComponent {
     document.location.href = '/';
   }
 
-  login(value: any) {
-    this.authService.signIn(value.username, value.password).then(res => {
-      if (res) {
-        res.user?.reload();
-        if (res.user?.emailVerified) {
-          this.authUser(res);
+  login(value: any): void {
+    // Sign in with username and password
+    this.authService.signIn(value.username, value.password).then((credential: UserCredential | null) => {
+      // Check if credentials are valid
+      if (credential) {
+        const user: firebase.User | null = credential.user;
+        user?.reload();
+        // Check if user is email verified
+        if (user?.emailVerified) {
+          // Get user authentication from the backend
+          this.authUser(credential)?.then((verified: boolean): void => {
+            if(verified) {
+              // Set user data in local storage
+              this.authService.setUserData(user!);
+            }
+          });
         } else {
-          Swal.fire('Important Notice', 'You have to verify your mail before singing in ', 'error');
+          Swal.fire('Important Notice', 'You have to verify your email before signing in.', 'error');
         }
       }
-    })
+    });
   }
 
   googleLoginAction(): void {
     this.authService.googleLogin().then(this.authUser).catch(this.error);
   }
 
-  error = (err: any) => {
-    Swal.fire('Canceled', 'Operation was Canceled', 'error');
+  error = (): void => {
+    Swal.fire('Canceled', 'Operation was canceled.', 'error');
     this.router.navigate(['/' + RouterEnum.Login]);
   }
 
-  authUser = (res: any) => {
-    const user = res.user;
-    res.user.getIdToken(false)
-      .then((token: string) => {
-        if (res.additionalUserInfo.isNewUser) {
-          this.accountService
-            .authenticateUser(res.user.uid, res.user.email, res.user.displayName, token)
-            .subscribe({
-              next: result => {
+  authUser = (credential: UserCredential): Promise<boolean> | undefined => {
+    const user: firebase.User | null = credential.user;
+    return user?.getIdToken(false).then((token: string): Promise<boolean> => {
+      if (credential.additionalUserInfo?.isNewUser) {
+        return new Promise<boolean>((resolve, reject): void => {
+          this.accountService.authenticateUser(user!.uid, user!.email!, user!.displayName!, token).subscribe({
+              next: (result) => {
                 if (result.status) {
-                  result.token = token;
-                  this.authService.updateLocalStorage(result, user);
                   this.reload();
+                  resolve(true);
                 } else {
-                  Swal.fire('Credentials Error'
-                    , 'An error occurred while authenticating your credentials, Try again in a moment'
-                    , 'error');
+                  Swal.fire('Credentials Error',
+                    'An error occurred while authenticating your credentials, please try again in a moment.',
+                    'error'
+                  );
                   this.authService.deleteUser();
+                  resolve(false);
                 }
-              }, error: err => {
-                Swal.fire('Error occured while saving user', 'Try again in a few moments', 'error');
+              },
+              error: (err) => {
+                Swal.fire('An error occurred while attempting to save the user.',
+                  'Please try again in a few moments.',
+                  'error'
+                );
                 this.authService.deleteUser();
-              }
+                reject();
+              },
             });
-        } else {
-          this.accountService
-            .authenticateUser(user.uid, user.email, user.displayName, token)
-            .subscribe({
-              next: value => {
-                console.log(value)
+        });
+      } else {
+        return new Promise<boolean>((resolve, reject): void => {
+          this.accountService.authenticateUser(user!.uid, user!.email!, user!.displayName!, token).subscribe({
+              next: (value) => {
+                console.log(value);
                 if (value.status) {
-                  value.token = token;
-                  this.authService.updateLocalStorage(value, user);
                   this.reload();
+                  resolve(true);
                 } else {
-                  Swal.fire('Credentials Error'
-                    , 'An error occurred while authenticating your credentials, Try again in a moment'
-                    , 'error');
+                  Swal.fire('Credentials Error',
+                    'An error occurred while authenticating your credentials, please try again in a moment.',
+                    'error'
+                  );
+                  resolve(false);
                 }
-              }, error: err => {
-                Swal.fire('Credentials Error'
-                  , 'An error occurred while authenticating your credentials, Try again in a moment'
-                  , 'error');
-              }
+              },
+              error: (err) => {
+                Swal.fire('Credentials Error',
+                  'An error occurred while authenticating your credentials, please try again in a moment.',
+                  'error'
+                );
+                reject();
+              },
             });
-        }
-      });
-  }
+        });
+      }
+    });
+  };
 
-  showPassword() {
+  showPassword(): void {
     this.hidePassword = !this.hidePassword;
     if (this.inputType === 'password') {
       this.inputType = 'text';
@@ -108,7 +129,7 @@ export class LoginComponent {
     }
   }
 
-  redirectToRegister() {
+  redirectToRegister(): void {
     this.router.navigate(['/' + RouterEnum.Register]);
   }
 }

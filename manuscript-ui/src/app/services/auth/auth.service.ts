@@ -8,6 +8,7 @@ import {CryptoService} from "../crypto.service";
 import UserCredential = firebase.auth.UserCredential;
 import User = firebase.User;
 import {RouterEnum} from "../../enums/RouterEnum";
+import IdTokenResult = firebase.auth.IdTokenResult;
 
 @Injectable({
   providedIn: 'root'
@@ -16,35 +17,17 @@ export class AuthService {
   private lang: string = 'en';
   firebaseUser?: firebase.User; // Save logged in user data
 
-  constructor(public afAuth: AngularFireAuth, public afs: AngularFirestore, private router: Router, public cryptoService: CryptoService) {
-    (async () => {
-      this.afAuth.authState.subscribe(user => {
-        if (user) {
-          this.firebaseUser = user;
-          localStorage.setItem('user', JSON.stringify(this.firebaseUser));
-          user.getIdTokenResult().then(res => {
-            this.updateLocalStorage(res, user);
-          });
-        } else {
-          localStorage.setItem('user', 'null');
-        }
-      });
-    })();
-    let tokenIntervalId = setInterval(this.refreshToken, 20000);
-  }
+  constructor(public afAuth: AngularFireAuth, public afs: AngularFirestore, private router: Router, public cryptoService: CryptoService) { }
 
   async googleLogin(): Promise<UserCredential> {
     const provider: GoogleAuthProvider = new GoogleAuthProvider();
     return await this.afAuth.signInWithPopup(provider);
   }
 
-  signIn(email: string, password: string): Promise<any> {
-    return this.afAuth
-      .signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        this.setUserData(result.user!).then();
-        this.updateLocalStorage(result, result.user!);
-        return result;
+  signIn(email: string, password: string): Promise<UserCredential | null> {
+    return this.afAuth.signInWithEmailAndPassword(email, password)
+      .then((credential: UserCredential) => {
+        return credential;
       })
       .catch((error) => {
         window.alert(error.message);
@@ -67,12 +50,17 @@ export class AuthService {
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
     };
+
+    user.getIdTokenResult().then((idTokenResult: IdTokenResult): void => {
+      this.updateLocalStorage(idTokenResult, user);
+    });
+
     return userRef.set(userData, {
       merge: true,
     });
   }
 
-  updateLocalStorage(result: any, user: firebase.User): void {
+  updateLocalStorage(idTokenResult: IdTokenResult, user: firebase.User): void {
     const u = {
       displayName: user.displayName,
       photoUrl: user.photoURL
@@ -81,9 +69,9 @@ export class AuthService {
     localStorage.setItem('displayName', user.displayName!);
     localStorage.setItem('uid', user.uid);
     localStorage.setItem('email', user.email!);
-    localStorage.setItem('token', result.token);
+    localStorage.setItem('token', idTokenResult.token);
     localStorage.setItem('lang', this.lang);
-    localStorage.setItem('direction', this.lang == 'en' ? 'ltr' : 'rtl');
+    localStorage.setItem('direction', this.lang == 'en' ? 'ltr' : 'rtl'); //TODO requires generalization
   }
 
   refreshToken() {

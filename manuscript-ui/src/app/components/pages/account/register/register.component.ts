@@ -7,6 +7,7 @@ import {TownCrierService} from "../../../../services/town-crier.service";
 import {RouterEnum} from "../../../../enums/RouterEnum";
 import firebase from "firebase/compat";
 import {RoleEnum} from "../../../../enums/RoleEnum";
+import UserCredential = firebase.auth.UserCredential;
 
 @Component({
   selector: 'app-register',
@@ -38,8 +39,7 @@ export class RegisterComponent {
     const roleEnum: RoleEnum = RoleEnum[role];
 
     if (email && password && role && name) {
-      this.afAuth.createUserWithEmailAndPassword(email, password)
-        .then(userCredential => {
+      this.afAuth.createUserWithEmailAndPassword(email, password).then((userCredential: UserCredential) => {
           const user: firebase.User | null = userCredential.user;
           user?.updateProfile({
             displayName: name
