@@ -15,7 +15,7 @@
           <li *ngFor="let doc of filteredDocsData; let i = index" (click)="addImage(i, doc); showMenuTrigger.closeMenu()" class="no-bullet">
             <ng-container *ngIf="checkIdMatch(doc.infoId)">
               <span class="title" [class.bold]="isHovered[i]" (mouseover)="isHovered[i] = true" (mouseout)="isHovered[i] = false">
-                {{ addedDocsInfo[i].title }}
+                {{ getFilteredDocTitles()[i] }}
               </span>
             </ng-container>
           </li>
