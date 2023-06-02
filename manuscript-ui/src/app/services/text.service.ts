@@ -4,8 +4,7 @@ import {Injectable} from '@angular/core';
   providedIn: 'root'
 })
 export class TextService {
-
-  toTitleCase(str: string) {
+  toTitleCase(str: string): string {
     if (str == null) return "";
     return str.replace(
       /\w\S*/g,
@@ -21,7 +20,7 @@ export class TextService {
    * @param args the size of the arguments must be the same as %s entries in the passed string
    * example: stringInject("example run %s ,%s","test1","test2") will return => "example run test1 ,test2"
    */
-  stringInject(str:string,...args:string[]) {
+  stringInject(str:string,...args:string[]): string {
     let i = 0;
     return str.replace(/%s/g, () => args[i++]);
   }

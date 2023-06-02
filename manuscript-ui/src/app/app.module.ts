@@ -39,18 +39,18 @@ import {environment} from "../environments/environment";
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import {HttpErrorInterceptorService} from "./interceptors/http-error-interceptor.interceptor";
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
-import { RegisterComponent } from './components/pages/account/register/register.component';
-import { AnnotationDialogComponent } from './components/dialogs/annotation-dialog/annotation-dialog.component';
-import { DocumentItemComponent } from './components/document-item/document-item.component';
-import { DocumentUploadFormComponent } from './components/pages/document-upload-form/document-upload-form.component';
-import { PrivacyDialogComponent } from './components/dialogs/privacy-dialog/privacy-dialog.component';
-import { ConfirmationDialogComponent } from './components/dialogs/confirmation-dialog/confirmation-dialog.component'
-import { AlgorithmSubmissionFormComponent } from './components/pages/algorithm-submission-form/algorithm-submission-form.component';
+import {RegisterComponent} from './components/pages/account/register/register.component';
+import {AnnotationDialogComponent} from './components/dialogs/annotation-dialog/annotation-dialog.component';
+import {DocumentItemComponent} from './components/document-item/document-item.component';
+import {DocumentUploadFormComponent} from './components/pages/document-upload-form/document-upload-form.component';
+import {PrivacyDialogComponent} from './components/dialogs/privacy-dialog/privacy-dialog.component';
+import {ConfirmationDialogComponent} from './components/dialogs/confirmation-dialog/confirmation-dialog.component'
+import {AlgorithmSubmissionFormComponent} from './components/pages/algorithm-submission-form/algorithm-submission-form.component';
 import {FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome'
 import {faQuestionCircle, faTimes} from "@fortawesome/free-solid-svg-icons";
-import { InvitationsComponent } from './components/pages/invitations/invitations.component';
-import { LayoutDocumentsComponent } from './components/pages/layout-documents/layout-documents.component';
-import { AlgorithmRequestsComponent } from './components/pages/algorithm-requests/algorithm-requests.component';
+import {InvitationsComponent} from './components/pages/invitations/invitations.component';
+import {LayoutDocumentsComponent} from './components/pages/layout-documents/layout-documents.component';
+import {AlgorithmRequestsComponent} from './components/pages/algorithm-requests/algorithm-requests.component';
 import {DocumentInfoDialogComponent} from "./components/dialogs/document-info-dialog/document-info-dialog.component";
 
 @NgModule({
@@ -72,42 +72,42 @@ import {DocumentInfoDialogComponent} from "./components/dialogs/document-info-di
     LayoutDocumentsComponent,
     AlgorithmRequestsComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        MatSliderModule,
-        BrowserAnimationsModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatMenuModule,
-        MatSidenavModule,
-        MatListModule,
-        MatCardModule,
-        MatBadgeModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatCheckboxModule,
-        MatInputModule,
-        MatRadioModule,
-        MatSelectModule,
-        FlexLayoutModule,
-        MatTableModule,
-        MatButtonModule,
-        MatBottomSheetModule,
-        MatTreeModule,
-        MaterialModule,
-        MatButtonToggleModule,
-        MatGridListModule,
-        MatDialogModule,
-        MatProgressBarModule,
-        MatSortModule,
-        AngularFireModule.initializeApp(environment.firebase),
-        AngularFireAuthModule,
-        FormsModule,
-        FontAwesomeModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    MatSliderModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatSidenavModule,
+    MatListModule,
+    MatCardModule,
+    MatBadgeModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatInputModule,
+    MatRadioModule,
+    MatSelectModule,
+    FlexLayoutModule,
+    MatTableModule,
+    MatButtonModule,
+    MatBottomSheetModule,
+    MatTreeModule,
+    MaterialModule,
+    MatButtonToggleModule,
+    MatGridListModule,
+    MatDialogModule,
+    MatProgressBarModule,
+    MatSortModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    FormsModule,
+    FontAwesomeModule
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

@@ -26,21 +26,13 @@
 </mat-toolbar>
 
 
-
-
-
-
-
-
-
-
 <div class="grid-container">
   <div class="grid-item item1">
     <app-document-details [documentId]="documentId" [uid]="uid" [title]="firstTitle"></app-document-details>
   </div>
 
-  <div class="grid-item" *ngFor="let addedDocId of addedDocIds; let i = index" [ngClass]="'item' + (i+2)" >
-    <app-document-details [documentId]="addedDocId!" [uid]="uid" [title]="this.addedDocTitles[i]"></app-document-details>
+  <div class="grid-item" *ngFor="let addedDocId of addedDocIds; let i = index" [ngClass]="'item' + (i+2)">
+    <app-document-details [documentId]="addedDocId!" [uid]="uid"
+                          [title]="this.addedDocTitles[i]"></app-document-details>
   </div>
 </div>
-

@@ -7,7 +7,6 @@ import {MatTableDataSource} from "@angular/material/table";
 import {DocumentTableEnum} from "../../../enums/DocumentTableEnum";
 import {DocumentDataModel} from "../../../models/DocumentDataModel";
 import {DocumentService} from "../../../services/document.service";
-import {SocketService} from "../../../services/socket.service";
 import {TextService} from "../../../services/text.service";
 import {DateService} from "../../../services/date.service";
 import {RouterEnum} from "../../../enums/RouterEnum";
@@ -37,7 +36,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(public textService: TextService, public dateService: DateService,
               public router: Router, private formBuilder: FormBuilder, private dialog: MatDialog,
-              private socketService: SocketService, private documentService: DocumentService) {
+              private documentService: DocumentService) {
     this.formGroup = this.formBuilder.group({
       selectedFile: null,
       uploadFile: null

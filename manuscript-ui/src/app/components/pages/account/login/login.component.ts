@@ -98,6 +98,7 @@ export class LoginComponent {
                 Swal.fire('An error occurred while attempting to save the user.',
                   'Please try again in a few moments.',
                   'error');
+                // Doesn't actually work (requires user to have logged in)
                 this.authService.deleteUser();
                 reject();
               },
@@ -127,7 +128,7 @@ export class LoginComponent {
         });
       }
     });
-  };
+  }
 
   showPassword(): void {
     this.hidePassword = !this.hidePassword;

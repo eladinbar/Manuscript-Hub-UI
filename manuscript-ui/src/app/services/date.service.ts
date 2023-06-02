@@ -5,13 +5,13 @@ import {Injectable} from '@angular/core';
 })
 export class DateService {
 
-  toFormattedDate(timestamp: string) {
-    let date = new Date(timestamp),
-      month = this.validateDateDigits('' + (date.getMonth() + 1)),
-      day = this.validateDateDigits('' + date.getDate()),
-      year = date.getFullYear(),
-      hours = this.validateDateDigits('' + date.getHours()),
-      minutes = this.validateDateDigits('' + date.getMinutes());
+  toFormattedDate(timestamp: string): string {
+    let date: Date = new Date(timestamp),
+      month: string = this.validateDateDigits('' + (date.getMonth() + 1)),
+      day: string = this.validateDateDigits('' + date.getDate()),
+      year: number = date.getFullYear(),
+      hours: string = this.validateDateDigits('' + date.getHours()),
+      minutes: string = this.validateDateDigits('' + date.getMinutes());
     return [year, month, day].join('-') + " " + hours + ":" + minutes;
   }
 
