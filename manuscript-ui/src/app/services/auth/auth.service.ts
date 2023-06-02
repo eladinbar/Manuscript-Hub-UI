@@ -41,7 +41,7 @@ export class AuthService {
     this.router.navigate(['/' + RouterEnum.Login]);
   }
 
-  setUserData(user: firebase.User) {
+  setUserData(user: firebase.User): Promise<void> {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
     const userData: { uid: any; photoURL: any; emailVerified: any; displayName: any; email: any } = {
       uid: user.uid,
@@ -74,7 +74,7 @@ export class AuthService {
     localStorage.setItem('direction', this.lang == 'en' ? 'ltr' : 'rtl'); //TODO requires generalization
   }
 
-  refreshToken() {
+  refreshToken(): void {
     if (this.firebaseUser) {
       this.firebaseUser.getIdToken().then((token: any) => {
         localStorage.setItem('token', token);
@@ -84,7 +84,6 @@ export class AuthService {
 
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
-    console.log(!!user)
     return !!user;
   }
 

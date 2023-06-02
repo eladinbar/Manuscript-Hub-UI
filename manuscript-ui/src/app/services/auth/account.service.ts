@@ -44,9 +44,9 @@ export class AccountService {
         Authorization: 'Bearer ' + token,
         skip: 'true'
       }
-    }).pipe(map((res: any) => {
-      localStorage.setItem("role", <string>this.cryptoService.encrypt(res.role))  //todo: should be changed
-      return res;
+    }).pipe(map((userModel: UserModel) => {
+      localStorage.setItem("role", <string>this.cryptoService.encrypt(userModel.role))  //todo: should be changed
+      return userModel;
     }));
   }
 

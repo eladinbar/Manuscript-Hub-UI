@@ -60,7 +60,7 @@ export class RegisterComponent {
             });
           });
         }).catch(error => {
-          this.townCrier.error('Registration failed ! ' + error);
+          this.townCrier.error('Registration failed! ' + error);
         });
     } else {
       this.townCrier.error("Make sure that all fields are filled before submitting.");

@@ -6,8 +6,9 @@ import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RouterEnum} from "../../../../enums/RouterEnum";
 import firebase from "firebase/compat";
-import UserCredential = firebase.auth.UserCredential;
 import {UserModel} from "../../../../models/UserModel";
+import {StatusEnum} from "../../../../enums/StatusEnum";
+import UserCredential = firebase.auth.UserCredential;
 
 @Component({
   selector: 'dhv-login',
@@ -31,30 +32,25 @@ export class LoginComponent {
     document.location.href = '/';
   }
 
-  googleLoginAction(): void {
+  googleLogin(): void {
     // Sign in with username and password
-    this.authService.googleLogin().then((credential: UserCredential | null) => {
-      // Check if credentials are valid
-      if(credential) {
-        const user: firebase.User | null = credential.user;
-        if(user?.emailVerified) {
-          // Get user authentication from the backend
-          this.authUser(credential)?.then((verified: boolean): void => {
-            if (verified) {
-              // Set user data in local storage
-              this.authService.setUserData(user!);
-            }
-          });
-        } else {
-          Swal.fire('Important Notice', 'You have to verify your email before signing in.', 'error');
-        }
-      }
+    this.authService.googleLogin().then((credential: UserCredential | null): void => {
+      this.verifyCredentials(credential);
+    }).catch((error) => {
+      Swal.fire('Google authentication failed', error, 'error');
     });
   }
 
-  login(value: any): void {
+  login(authentication: any): void {
     // Sign in with username and password
-    this.authService.signIn(value.username, value.password).then((credential: UserCredential | null) => {
+    this.authService.signIn(authentication.username, authentication.password).then((credential: UserCredential | null): void => {
+      this.verifyCredentials(credential);
+    }).catch(() => {
+      Swal.fire('Invalid username or password', 'You have entered an incorrect email or password.', 'error');
+    });
+  }
+
+  verifyCredentials(credential: UserCredential | null): void {
       // Check if credentials are valid
       if (credential) {
         const user: firebase.User | null = credential.user;
@@ -71,13 +67,14 @@ export class LoginComponent {
         } else {
           Swal.fire('Important Notice', 'You have to verify your email before signing in.', 'error');
         }
+      } else {
+        Swal.fire('No Credentials Found', 'No credentials were found for the given email and password.', 'error');
       }
-    });
   }
 
   error = (): void => {
     Swal.fire('Canceled', 'Operation was canceled.', 'error');
-    this.router.navigate(['/' + RouterEnum.Login]);
+    // this.router.navigate(['/' + RouterEnum.Login]);
   }
 
   authUser = (credential: UserCredential): Promise<boolean> | undefined => {
@@ -87,14 +84,13 @@ export class LoginComponent {
         return new Promise<boolean>((resolve, reject): void => {
           this.accountService.authenticateUser(user!.uid, user!.email!, user!.displayName!, token).subscribe({
               next: (userModel: UserModel) => {
-                if (userModel.status) {
+                if (userModel.status === StatusEnum.Enabled) {
                   this.reload();
                   resolve(true);
                 } else {
-                  Swal.fire('Credentials Error',
-                    'An error occurred while authenticating your credentials, please try again in a moment.',
-                    'error'
-                  );
+                  Swal.fire('Pending Approval',
+                    'Your account request is currently being reviewed by an administrator. Please wait until it is approved.',
+                    'error');
                   this.authService.deleteUser();
                   resolve(false);
                 }
@@ -102,8 +98,7 @@ export class LoginComponent {
               error: (err) => {
                 Swal.fire('An error occurred while attempting to save the user.',
                   'Please try again in a few moments.',
-                  'error'
-                );
+                  'error');
                 this.authService.deleteUser();
                 reject();
               },
@@ -113,22 +108,20 @@ export class LoginComponent {
         return new Promise<boolean>((resolve, reject): void => {
           this.accountService.authenticateUser(user!.uid, user!.email!, user!.displayName!, token).subscribe({
               next: (userModel: UserModel) => {
-                if (userModel.status) {
+                if (userModel.status === StatusEnum.Enabled) {
                   this.reload();
                   resolve(true);
                 } else {
-                  Swal.fire('Credentials Error',
-                    'An error occurred while authenticating your credentials, please try again in a moment.',
-                    'error'
-                  );
+                  Swal.fire('Account Suspended',
+                    'Your account has been suspended by an administrator. To appeal, please contact the support team.',
+                    'error');
                   resolve(false);
                 }
               },
               error: (err) => {
-                Swal.fire('Credentials Error',
+                Swal.fire('System Error',
                   'An error occurred while authenticating your credentials, please try again in a moment.',
-                  'error'
-                );
+                  'error');
                 reject();
               },
             });
