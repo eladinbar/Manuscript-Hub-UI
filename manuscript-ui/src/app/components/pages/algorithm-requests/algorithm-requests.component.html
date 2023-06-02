@@ -8,7 +8,7 @@
       <table [dataSource]="dataSource" class="mat-elevation-z8 col-12" mat-table matSort>
         <!--  Email column  -->
         <ng-container matColumnDef="email">
-          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header>
+          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header style="font-size: 18px; color: black;">
             Email
           </th>
           <td mat-cell *matCellDef="let algorithmRequest"> {{algorithmRequest.email}} </td>
@@ -16,7 +16,7 @@
 
         <!--  Title column  -->
         <ng-container matColumnDef="title">
-          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header>
+          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header style="font-size: 18px; color: black;">
             Title
           </th>
           <td mat-cell *matCellDef="let algorithmRequest"> {{algorithmRequest.title}} </td>
@@ -24,7 +24,7 @@
 
         <!--  Description column  -->
         <ng-container matColumnDef="description">
-          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header>
+          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header style="font-size: 18px; color: black;">
             Description
           </th>
           <td mat-cell *matCellDef="let algorithmRequest"> {{algorithmRequest.description}} </td>
@@ -32,7 +32,7 @@
 
         <!--  Model Type column  -->
         <ng-container matColumnDef="modelType">
-          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header>
+          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header style="font-size: 18px; color: black;">
             Model Type
           </th>
           <td mat-cell *matCellDef="let algorithmRequest"> {{algorithmRequest.modelType}} </td>
@@ -40,7 +40,7 @@
 
         <!--  Repository column  -->
         <ng-container matColumnDef="repository">
-          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header>
+          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header style="font-size: 18px; color: black;">
             Repository
           </th>
           <td mat-cell *matCellDef="let algorithmRequest"> {{algorithmRequest.repository}} </td>
@@ -48,7 +48,7 @@
 
         <!--  Status column  -->
         <ng-container matColumnDef="status">
-          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header>
+          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header style="font-size: 18px; color: black;">
             Status
           </th>
           <td mat-cell *matCellDef="let algorithmRequest"> {{algorithmRequest.status}} </td>
