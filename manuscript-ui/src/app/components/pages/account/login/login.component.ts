@@ -91,7 +91,6 @@ export class LoginComponent {
                   Swal.fire('Pending Approval',
                     'Your account request is currently being reviewed by an administrator. Please wait until it is approved.',
                     'error');
-                  this.authService.deleteUser();
                   resolve(false);
                 }
               },
