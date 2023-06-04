@@ -3,7 +3,7 @@
   <div class="button-container">
     <button mat-icon-button [matMenuTriggerFor]="algorithmMenu" (mouseenter)="annIsHovered = true" (mouseleave)="annIsHovered = false">
       <mat-icon>create</mat-icon>
-      <span [ngClass]="{'show-text': annIsHovered}">Annotate using an algorithm</span>
+      <span [ngClass]="{'show-text': annIsHovered}">Auto annotate</span>
     </button>
 
     <button mat-icon-button (click)="openDocumentInfoDialog()" (mouseenter)="infoIsHovered = true" (mouseleave)="infoIsHovered = false">
