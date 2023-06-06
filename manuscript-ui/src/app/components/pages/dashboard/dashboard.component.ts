@@ -127,8 +127,10 @@ export class DashboardComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result && Object.values(PrivacyEnum).includes(result)) {
-        documentInfo.privacy = result;
-        this.documentService.updateDocumentInfo(documentInfo).subscribe();
+        this.documentService.updateDocumentInfo(documentInfo).subscribe((updatedDocumentInfo: DocumentInfoModel) => {
+          if(updatedDocumentInfo.privacy)
+            documentInfo.privacy = updatedDocumentInfo.privacy;
+        });
       }
     });
   }

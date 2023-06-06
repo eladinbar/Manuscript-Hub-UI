@@ -225,7 +225,7 @@ export class DocumentDetailsComponent implements OnInit {
 
     let dialogRef = this.openDialog(annotation.content);
     dialogRef.afterClosed().subscribe(content => {
-      if (content && content != annotation.content) {
+      if (content) {
         //TODO pass algorithmId?
         // OK
         this.updateAnnotation(annotation, content);

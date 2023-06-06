@@ -48,10 +48,10 @@ export class DocumentService {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
 
-    return from(this.http.patch(`${environment.baseUrl}${environment.RESOURCE_UPDATE_DOCUMENT_INFO}`, documentInfo, {headers: headers}))
-      .pipe(map((res: any) => {
+    return from(this.http.patch<DocumentInfoModel>(`${environment.baseUrl}${environment.RESOURCE_UPDATE_DOCUMENT_INFO}`, documentInfo, {headers: headers}))
+      .pipe(map((documentInfo: DocumentInfoModel) => {
         this.townCrier.info("The document's info has been updated.")
-        return res;
+        return documentInfo;
       }), catchError(errorRes => {
         this.townCrier.error(errorRes.error);
         return this.restErrorsHandlerService.handleRequestError(errorRes);

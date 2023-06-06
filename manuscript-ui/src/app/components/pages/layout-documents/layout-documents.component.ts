@@ -50,7 +50,6 @@ export class LayoutDocumentsComponent implements OnInit {
   getAllDocIds() {
     this.docService.getAllDocumentInfosByUid(this.uid).subscribe({
       next: (documentInfoModels: DocumentInfoModel[]) => {
-        console.log('HTTP GET Annotation retrieval request successful: ', documentInfoModels);
         // building the lists without the opened image, so user cant open it twice
         documentInfoModels.forEach((docInfo) => {
           this.docService.getDocumentDatasByDocumentInfoId(docInfo.id!, this.uid).subscribe((docData: DocumentDataModel[]) => {
