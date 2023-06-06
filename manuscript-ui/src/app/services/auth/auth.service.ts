@@ -9,6 +9,7 @@ import UserCredential = firebase.auth.UserCredential;
 import User = firebase.User;
 import {RouterEnum} from "../../enums/RouterEnum";
 import IdTokenResult = firebase.auth.IdTokenResult;
+import {TownCrierService} from "../town-crier.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +18,17 @@ export class AuthService {
   private lang: string = 'en';
   firebaseUser?: firebase.User; // Save logged in user data
 
-  constructor(public afAuth: AngularFireAuth, public afs: AngularFirestore, private router: Router, public cryptoService: CryptoService) { }
+  constructor(public afAuth: AngularFireAuth, public afs: AngularFirestore, private router: Router,
+              public cryptoService: CryptoService, private townCrier: TownCrierService) { }
 
   async googleLogin(): Promise<UserCredential> {
     const provider: GoogleAuthProvider = new GoogleAuthProvider();
+    this.townCrier.info("Logging in...");
     return await this.afAuth.signInWithPopup(provider);
   }
 
   signIn(email: string, password: string): Promise<UserCredential | null> {
+    this.townCrier.info("Logging in...");
     return this.afAuth.signInWithEmailAndPassword(email, password)
       .then((credential: UserCredential) => {
         return credential;
@@ -36,9 +40,11 @@ export class AuthService {
   }
 
   signOut() {
+    this.townCrier.info("Logging out...");
     this.afAuth.signOut();
     localStorage.clear();
     this.router.navigate(['/' + RouterEnum.Login]);
+    this.townCrier.info("Logged out successfully.");
   }
 
   setUserData(user: firebase.User): Promise<void> {
