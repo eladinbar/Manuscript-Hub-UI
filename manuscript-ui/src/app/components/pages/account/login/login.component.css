@@ -7,8 +7,12 @@
   font: normal normal 600 30px/26px Rubik;
 }
 
+.second-title {
+  font-size: 1.2em;
+}
+
 img {
-  padding-bottom: 4em;
+  padding-bottom: 1em;
 }
 
 html {
@@ -54,15 +58,14 @@ html {
   font-size: 1.2em;
 }
 
-.divider {
-  width: 18em;
-  display: inline-block;
-  padding-bottom: 1em;
-  padding-top: 1em;
+.input-button:hover {
+  background-color: #d2af6a; /* Change to the desired background color */
+  color: #ffffff; /* Change to the desired text color */
 }
 
-.mat-divider {
-  border-top-color: black;
+.input-button:active {
+  background-color: #c7a767; /* Change to the desired background color */
+  color: #ffffff; /* Change to the desired text color */
 }
 
 .input-button-provider {
@@ -78,6 +81,27 @@ html {
   padding-bottom: 0.5em;
   margin-top: 0.5em;
   font-size: 1.2em;
+}
+
+.input-button-provider:hover {
+  background-color: #dddddd; /* Change to the desired background color */
+  color: #000000; /* Change to the desired text color */
+}
+
+.input-button-provider:active {
+  background-color: #cccccc; /* Change to the desired background color */
+  color: #000000; /* Change to the desired text color */
+}
+
+.divider {
+  width: 18em;
+  display: inline-block;
+  padding-bottom: 1em;
+  padding-top: 1em;
+}
+
+.mat-divider {
+  border-top-color: black;
 }
 
 .login-with-google-btn {
