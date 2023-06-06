@@ -1,5 +1,3 @@
-
-
 .grid-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -19,8 +17,6 @@
   grid-column: 1 / span 1;
 }
 
-
-/* Add these styles */
 .add-image {
   display: flex;
   justify-content: center;
@@ -43,7 +39,6 @@
 .no-bullet {
   list-style-type: none;
 }
-
 
 .doc-list-item {
   padding: -50px;
@@ -68,13 +63,11 @@
   font-size: 30px; /* Adjust the size as desired */
 }
 
-
 .add-button-container {
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
-
 
 .menu li:hover {
   background-color: lightblue;
@@ -107,7 +100,6 @@
   justify-content: flex-start;
   font-size: 14px;
   padding-left: 20px; /* Adjust this value to control the padding from the left */
-
 }
 
 .search-container input[type="text"] {
@@ -116,13 +108,16 @@
   width: calc(100% - 80px); /* Add this line to calculate the width */
 }
 
-
 .search-container button {
   position: absolute;
   right: 5px;
 }
 
+.fa-asterisk {
+  color: red;
+  font-weight: bold;
+}
 
-
-
-
+.tip {
+  font-weight: bold;
+}

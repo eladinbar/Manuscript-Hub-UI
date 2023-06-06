@@ -51,25 +51,25 @@ export class LoginComponent {
   }
 
   verifyCredentials(credential: UserCredential | null): void {
-      // Check if credentials are valid
-      if (credential) {
-        const user: firebase.User | null = credential.user;
-        user?.reload();
-        // Check if user is email verified
-        if (user?.emailVerified) {
-          // Get user authentication from the backend
-          this.authUser(credential)?.then((verified: boolean): void => {
-            if(verified) {
-              // Set user data in local storage
-              this.authService.setUserData(user!);
-            }
-          });
-        } else {
-          Swal.fire('Important Notice', 'You have to verify your email before signing in.', 'error');
-        }
+    // Check if credentials are valid
+    if (credential) {
+      const user: firebase.User | null = credential.user;
+      user?.reload();
+      // Check if user is email verified
+      if (user?.emailVerified) {
+        // Get user authentication from the backend
+        this.authUser(credential)?.then((verified: boolean): void => {
+          if (verified) {
+            // Set user data in local storage
+            this.authService.setUserData(user!);
+          }
+        });
       } else {
-        Swal.fire('No Credentials Found', 'No credentials were found for the given email and password.', 'error');
+        Swal.fire('Important Notice', 'You have to verify your email before signing in.', 'error');
       }
+    } else {
+      Swal.fire('No Credentials Found', 'No credentials were found for the given email and password.', 'error');
+    }
   }
 
   error = (): void => {
@@ -83,48 +83,48 @@ export class LoginComponent {
       if (credential.additionalUserInfo?.isNewUser) {
         return new Promise<boolean>((resolve, reject): void => {
           this.accountService.authenticateUser(user!.uid, user!.email!, user!.displayName!, token).subscribe({
-              next: (userModel: UserModel) => {
-                if (userModel.status === StatusEnum.Enabled) {
-                  this.reload();
-                  resolve(true);
-                } else {
-                  Swal.fire('Pending Approval',
-                    'Your account request is currently being reviewed by an administrator. Please wait until it is approved.',
-                    'error');
-                  resolve(false);
-                }
-              },
-              error: (err) => {
-                Swal.fire('An error occurred while attempting to save the user.',
-                  'Please try again in a few moments.',
+            next: (userModel: UserModel) => {
+              if (userModel.status === StatusEnum.Enabled) {
+                this.reload();
+                resolve(true);
+              } else {
+                Swal.fire('Pending Approval',
+                  'Your account request is currently being reviewed by an administrator. Please wait until it is approved.',
                   'error');
-                // Doesn't actually work (requires user to have logged in)
-                this.authService.deleteUser();
-                reject();
-              },
-            });
+                resolve(false);
+              }
+            },
+            error: (err) => {
+              Swal.fire('An error occurred while attempting to save the user.',
+                'Please try again in a few moments.',
+                'error');
+              // Doesn't actually work (requires user to have logged in)
+              this.authService.deleteUser();
+              reject();
+            },
+          });
         });
       } else {
         return new Promise<boolean>((resolve, reject): void => {
           this.accountService.authenticateUser(user!.uid, user!.email!, user!.displayName!, token).subscribe({
-              next: (userModel: UserModel) => {
-                if (userModel.status === StatusEnum.Enabled) {
-                  this.reload();
-                  resolve(true);
-                } else {
-                  Swal.fire('Account Suspended',
-                    'Your account has been suspended by an administrator. To appeal, please contact the support team.',
-                    'error');
-                  resolve(false);
-                }
-              },
-              error: (err) => {
-                Swal.fire('System Error',
-                  'An error occurred while authenticating your credentials, please try again in a moment.',
+            next: (userModel: UserModel) => {
+              if (userModel.status === StatusEnum.Enabled) {
+                this.reload();
+                resolve(true);
+              } else {
+                Swal.fire('Account Suspended',
+                  'Your account has been suspended by an administrator. To appeal, please contact the support team.',
                   'error');
-                reject();
-              },
-            });
+                resolve(false);
+              }
+            },
+            error: (err) => {
+              Swal.fire('System Error',
+                'An error occurred while authenticating your credentials, please try again in a moment.',
+                'error');
+              reject();
+            },
+          });
         });
       }
     });
