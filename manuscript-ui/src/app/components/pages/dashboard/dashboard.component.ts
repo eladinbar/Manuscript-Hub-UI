@@ -58,7 +58,7 @@ export class DashboardComponent implements OnInit {
       this.documentService.getAllPublicDocumentInfos().subscribe((docs: Array<DocumentInfoModel>) => {
         let publicDocuments: Array<DocumentInfoModel> = docs.filter(doc => doc.uid !== this.uid);
         this.setDataToTable(privateDocuments.concat(publicDocuments));
-      })
+      });
     });
   }
 

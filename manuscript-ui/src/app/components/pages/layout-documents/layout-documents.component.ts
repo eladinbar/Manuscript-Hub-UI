@@ -30,7 +30,7 @@ export class LayoutDocumentsComponent implements OnInit {
 
   @ViewChild('showMenu') showMenuTrigger!: MatMenuTrigger;
 
-  constructor(private route: ActivatedRoute, private docService: DocumentService, public townCrier: TownCrierService) {
+  constructor(private route: ActivatedRoute, private documentService: DocumentService, public townCrier: TownCrierService) {
   }
 
   ngOnInit(): void {
@@ -48,26 +48,28 @@ export class LayoutDocumentsComponent implements OnInit {
   }
 
   getAllDocIds() {
-    this.docService.getAllDocumentInfosByUid(this.uid).subscribe({
+    this.documentService.getAllDocumentInfosByUid(this.uid).subscribe({
       next: (documentInfoModels: DocumentInfoModel[]) => {
-        // building the lists without the opened image, so user cant open it twice
-        documentInfoModels.forEach((docInfo) => {
-          this.docService.getDocumentDatasByDocumentInfoId(docInfo.id!, this.uid).subscribe((docData: DocumentDataModel[]) => {
-            if (docInfo.id == docData[0].infoId) {
-              if (this.documentId != docData[0].id) {
-                this.addedDocsData.push(docData[0]);
-                this.addedDocsInfo.push(docInfo);
-              } else {
-                this.firstTitle = docInfo.title!;
+        let privateDocuments: Array<DocumentInfoModel> = documentInfoModels;
+        this.documentService.getAllPublicDocumentInfos().subscribe((docs: Array<DocumentInfoModel>) => {
+          let publicDocuments: Array<DocumentInfoModel> = docs.filter(doc => doc.uid !== this.uid);
+          let allDocuments: Array<DocumentInfoModel> = privateDocuments.concat(publicDocuments);
+          // building the lists without the opened image, so user cant open it twice
+          allDocuments.forEach((docInfo) => {
+            this.documentService.getDocumentDatasByDocumentInfoId(docInfo.id!, this.uid).subscribe((docData: DocumentDataModel[]) => {
+              if (docInfo.id == docData[0].infoId) {
+                if (this.documentId != docData[0].id) {
+                  this.addedDocsData.push(docData[0]);
+                  this.addedDocsInfo.push(docInfo);
+                } else {
+                  this.firstTitle = docInfo.title!;
+                }
               }
-            }
-            this.filteredDocsData = this.addedDocsData;
-          })
+              this.filteredDocsData = this.addedDocsData;
+            });
+          });
         });
-      },
-      error: (err: any) => {
-        console.error('HTTP GET Annotation retrieval request error: ', err);
-      },
+      }
     });
   }
 
@@ -75,26 +77,27 @@ export class LayoutDocumentsComponent implements OnInit {
     if (this.photosCounter < 4) {
       this.townCrier.info('Loading document...');
       this.addedDocIds.push(nextDoc.id!);
-      this.docService.getAllDocumentInfosByUid(this.uid).subscribe(
-        (documentInfoModels: DocumentInfoModel[]) => {
-          documentInfoModels.forEach((docInfo) => {
-              if (docInfo.id == nextDoc.infoId) {
-                // Add the title to the list of added document titles
-                this.addedDocTitles.push(docInfo.title);
-              }
-            },
-            (err: any) => {
-              console.error('HTTP GET Annotation retrieval request error: ', err);
+
+      this.documentService.getAllDocumentInfosByUid(this.uid).subscribe((documentInfoModels: Array<DocumentInfoModel>) => {
+        let privateDocuments: Array<DocumentInfoModel> = documentInfoModels;
+        this.documentService.getAllPublicDocumentInfos().subscribe((docs: Array<DocumentInfoModel>) => {
+          let publicDocuments: Array<DocumentInfoModel> = docs.filter(doc => doc.uid !== this.uid);
+          let allDocuments: Array<DocumentInfoModel> = privateDocuments.concat(publicDocuments);
+          allDocuments.forEach((docInfo: DocumentInfoModel) => {
+            if (docInfo.id == nextDoc.infoId) {
+              // Add the title to the list of added document titles
+              this.addedDocTitles.push(docInfo.title);
             }
-          );
-        })
+          });
+        });
+      });
+
       this.photosCounter += 1;
       this.imageCount = Math.min(this.photosCounter, 4);
     } else {
-      this.townCrier.info('Can not open more than 4 photos');
+      this.townCrier.info('Can not open more than 4 photos at once.');
     }
   }
-
 
 
   checkIdMatch(infoId: string): boolean {
@@ -128,8 +131,6 @@ export class LayoutDocumentsComponent implements OnInit {
 
     return filteredTitles;
   }
-
-
 
   openSearch() {
 
