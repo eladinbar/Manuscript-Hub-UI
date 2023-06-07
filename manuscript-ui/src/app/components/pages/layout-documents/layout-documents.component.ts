@@ -26,7 +26,7 @@ export class LayoutDocumentsComponent implements OnInit {
   addedDocsData: DocumentDataModel[] = []
   addedDocsInfo: DocumentInfoModel[] = []
   isHovered: boolean[] = [];
-  filteredDocsData: DocumentDataModel[] = [];
+  filteredDocsData: Array<DocumentDataModel> = [];
 
   @ViewChild('showMenu') showMenuTrigger!: MatMenuTrigger;
 
@@ -77,6 +77,7 @@ export class LayoutDocumentsComponent implements OnInit {
     if (this.photosCounter < 4) {
       this.townCrier.info('Loading document...');
       this.addedDocIds.push(nextDoc.id!);
+      this.filteredDocsData = this.filteredDocsData.filter(doc => doc.infoId !== nextDoc.infoId);
 
       this.documentService.getAllDocumentInfosByUid(this.uid).subscribe((documentInfoModels: Array<DocumentInfoModel>) => {
         let privateDocuments: Array<DocumentInfoModel> = documentInfoModels;
