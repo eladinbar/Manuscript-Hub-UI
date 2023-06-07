@@ -93,7 +93,7 @@ export class DashboardComponent implements OnInit {
 
   onDocumentDelete(documentInfo: DocumentInfoModel) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: {message: "Are you sure you want to delete this document?"},
+      data: { title: "Delete Confirmation", message: "Are you sure you want to delete this document?"},
       width: "350px",
     });
 
@@ -105,17 +105,13 @@ export class DashboardComponent implements OnInit {
   }
 
   private deleteDocument(documentInfo: DocumentInfoModel) {
-    this.documentService
-      .deleteDocumentInfoById(documentInfo.id!, this.uid!)
-      .subscribe({
+    this.documentService.deleteDocumentInfoById(documentInfo.id!, this.uid!).subscribe({
         next: (res) => {
           if (res) {
             this.documentInfoTableModels = this.documentInfoTableModels.filter(doc => doc.id !== documentInfo.id);
             this.dataSource.data = this.documentInfoTableModels; // Update the data source
           }
-        },
-        error: (err: any) => {
-        },
+        }
       });
   }
 
@@ -125,9 +121,13 @@ export class DashboardComponent implements OnInit {
       width: '350px',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result && Object.values(PrivacyEnum).includes(result)) {
-        this.documentService.updateDocumentInfo(documentInfo).subscribe((updatedDocumentInfo: DocumentInfoModel) => {
+    let updatedDocumentInfo: DocumentInfoModel = new DocumentInfoModel(documentInfo);
+    updatedDocumentInfo.uid = this.uid!;
+
+    dialogRef.afterClosed().subscribe((newPrivacy: PrivacyEnum) => {
+      if (newPrivacy && Object.values(PrivacyEnum).includes(newPrivacy)) {
+        updatedDocumentInfo.privacy = newPrivacy;
+        this.documentService.updateDocumentInfo(updatedDocumentInfo).subscribe((updatedDocumentInfo: DocumentInfoModel) => {
           if(updatedDocumentInfo.privacy)
             documentInfo.privacy = updatedDocumentInfo.privacy;
         });

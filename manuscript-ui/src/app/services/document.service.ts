@@ -48,9 +48,10 @@ export class DocumentService {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
 
+    this.townCrier.info("Please wait while document info is being updated...");
     return from(this.http.patch<DocumentInfoModel>(`${environment.baseUrl}${environment.RESOURCE_UPDATE_DOCUMENT_INFO}`, documentInfo, {headers: headers}))
       .pipe(map((documentInfo: DocumentInfoModel) => {
-        this.townCrier.info("The document's info has been updated.")
+        this.townCrier.info("The document's info has been updated.");
         return documentInfo;
       }), catchError(errorRes => {
         this.townCrier.error(errorRes.error);
@@ -61,7 +62,7 @@ export class DocumentService {
   getDocumentDataById(id: string, uid: string) {
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_DATA_BY_ID}/${id}/${uid}`, {responseType: 'blob'}))
       .pipe(map((res: any) => {
-        this.townCrier.info("The document has been loaded successfully.")
+        this.townCrier.info("The document has been loaded successfully.");
         return res;
       }), catchError(errorRes => {
         this.townCrier.error(errorRes.error);

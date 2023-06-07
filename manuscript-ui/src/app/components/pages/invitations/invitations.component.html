@@ -26,20 +26,25 @@
           </th>
           <td mat-cell *matCellDef="let invitationRequest"> {{invitationRequest.role}} </td>
         </ng-container>
+
         <ng-container matColumnDef="invitationEnum">
           <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header style="font-size: 18px; color: black;">
             Status
           </th>
           <td mat-cell *matCellDef="let invitationRequest"> {{invitationRequest.invitationEnum}} </td>
         </ng-container>
+
         <ng-container matColumnDef="edit">
           <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header></th>
           <td mat-cell *matCellDef="let invitationRequest">
             <button mat-raised-button color="primary" *ngIf="invitationRequest.invitationEnum != 'Approved' "
                     (click)="approveRequest(invitationRequest)">Approve
             </button>
-            <button mat-raised-button color="warn" *ngIf="invitationRequest.invitationEnum != 'Denied' "
+            <button mat-raised-button color="warn" *ngIf="invitationRequest.invitationEnum == 'Pending' "
                     (click)="denyRequest(invitationRequest)">Deny
+            </button>
+            <button mat-raised-button color="warn" *ngIf="invitationRequest.invitationEnum == 'Approved' "
+                    (click)="denyRequest(invitationRequest)">Ban
             </button>
           </td>
         </ng-container>

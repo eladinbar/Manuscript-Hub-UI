@@ -6,6 +6,7 @@ import {MatPaginator} from "@angular/material/paginator";
 import {ActivatedRoute} from "@angular/router";
 import {InvitationsService} from "../../../services/invitations.service";
 import {InvitationRequestTable} from "../../../models/InvitationRequestTable";
+import {InvitationEnum} from "../../../enums/InvitationEnum";
 
 @Component({
   selector: 'app-invitations',
@@ -63,12 +64,17 @@ export class InvitationsComponent implements OnInit {
   }
 
   denyRequest(invitationRequest: InvitationRequestTable): void {
+    let newButtonText: string = 'Deny';
+
+    if(invitationRequest.invitationEnum === InvitationEnum.Approved)
+      newButtonText = "Ban";
+
     Swal.fire({
       title: 'Subscribe request',
       text: `The user will be disabled`,
       icon: 'info',
       showCancelButton: true,
-      confirmButtonText: 'Deny',
+      confirmButtonText: newButtonText,
       cancelButtonText: 'Cancel',
       confirmButtonColor: '#f44336'
     }).then((result) => {

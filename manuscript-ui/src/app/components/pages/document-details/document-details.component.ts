@@ -9,6 +9,7 @@ import {AnnotationCoordinatesModel} from "../../../models/AnnotationCoordinatesM
 import {AnnotationService} from "../../../services/annotation.service";
 import {DocumentInfoModel} from "../../../models/DocumentInfoModel";
 import {DocumentInfoDialogComponent} from "../../dialogs/document-info-dialog/document-info-dialog.component";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-document-details',
@@ -38,16 +39,12 @@ export class DocumentDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // const routeParams = this.route.snapshot.paramMap;
-    // this.uid = localStorage.getItem("uid")!;
-    // this.documentId = routeParams.get(RouterEnum.DocumentId) as string;
-
     this.getAllAnnotations();
 
     this.getDocumentById();
   }
 
-  getAllAnnotations() {
+  getAllAnnotations(): void {
     this.annotationService.getAllAnnotationsByDocumentDataId(this.documentId, this.uid).subscribe({
       next: (annotationModels: AnnotationModel[]) => {
         this.annotations = annotationModels;
@@ -56,16 +53,16 @@ export class DocumentDetailsComponent implements OnInit {
     });
   }
 
-  getDocumentById() {
+  getDocumentById(): void {
     this.documentService.getDocumentDataById(this.documentId, this.uid!).subscribe(res => {
-      const url = URL.createObjectURL(res);
+      const url: string = URL.createObjectURL(res);
       this.loadImage();
       this.image.src = url;
     });
   }
 
-  loadImage() {
-    this.image.onload = () => {
+  loadImage(): void {
+    this.image.onload = (): void => {
       const canvas = this.canvas?.nativeElement;
       this.ctx = canvas.getContext('2d');
       canvas!.width = this.image.width;
@@ -76,7 +73,7 @@ export class DocumentDetailsComponent implements OnInit {
     };
   }
 
-  addEventListener() {
+  addEventListener(): void {
     const canvas = this.canvas?.nativeElement;
 
     let startX: number;
@@ -123,8 +120,8 @@ export class DocumentDetailsComponent implements OnInit {
       currentY = e.offsetY;
 
       if (selectedAnnotation) {
-        const dx = currentX - prevX;
-        const dy = currentY - prevY;
+        const dx: number = currentX - prevX;
+        const dy: number = currentY - prevY;
         // Move the selected annotation
         selectedAnnotation.startX += dx;
         selectedAnnotation.endX += dx;
@@ -143,8 +140,8 @@ export class DocumentDetailsComponent implements OnInit {
         return;
       }
 
-      const width = currentX - startX;
-      const height = currentY - startY;
+      const width: number = currentX - startX;
+      const height: number = currentY - startY;
 
       // Redraw image to remove lingering boxes
       this.clearCanvas();
@@ -153,7 +150,7 @@ export class DocumentDetailsComponent implements OnInit {
       this.ctx?.strokeRect(startX, startY, width, height);
     });
 
-    canvas.addEventListener('mouseup', () => {
+    canvas.addEventListener('mouseup', (): void => {
       if (selectedAnnotation) {
         this.selectAnnotation(selectedAnnotation, oldStartX, oldStartY, oldEndX, oldEndY);
         selectedAnnotation = undefined;
@@ -187,7 +184,7 @@ export class DocumentDetailsComponent implements OnInit {
     });
   }
 
-  openDialog(text: string = "") {
+  openDialog(text: string = ""): MatDialogRef<AnnotationDialogComponent> {
     return this.dialog.open(AnnotationDialogComponent, {
       width: '250px',
       maxHeight: '80vh',
@@ -195,7 +192,7 @@ export class DocumentDetailsComponent implements OnInit {
     });
   }
 
-  addAnnotation(annotationCoordinates: AnnotationCoordinatesModel, content: string, algorithmId: string) {
+  addAnnotation(annotationCoordinates: AnnotationCoordinatesModel, content: string, algorithmId: string): void {
     if (!this.coordinates.includes(annotationCoordinates)) {
       let annotation: AnnotationModel = {
         uid: this.uid,
@@ -209,7 +206,7 @@ export class DocumentDetailsComponent implements OnInit {
       };
 
       this.annotationService.addAnnotation(annotation).subscribe({
-        next: (annotationModel: AnnotationModel) => {
+        next: (annotationModel: AnnotationModel): void => {
           annotation = annotationModel;
           this.coordinates.push(annotationCoordinates);
           this.annotations.push(annotation);
@@ -219,11 +216,11 @@ export class DocumentDetailsComponent implements OnInit {
     }
   }
 
-  selectAnnotation(annotation: AnnotationModel, oldStartX: number, oldStartY: number, oldEndX: number, oldEndY: number) {
+  selectAnnotation(annotation: AnnotationModel, oldStartX: number, oldStartY: number, oldEndX: number, oldEndY: number): void {
     this.ctx!.strokeStyle = 'blue';
     this.ctx?.strokeRect(annotation.startX, annotation.startY, annotation.endX - annotation.startX, annotation.endY - annotation.startY);
 
-    let dialogRef = this.openDialog(annotation.content);
+    let dialogRef: MatDialogRef<AnnotationDialogComponent> = this.openDialog(annotation.content);
     dialogRef.afterClosed().subscribe(content => {
       if (content) {
         //TODO pass algorithmId?
@@ -244,44 +241,44 @@ export class DocumentDetailsComponent implements OnInit {
     });
   }
 
-  updateAnnotation(annotation: AnnotationModel, newContent: string) {
+  updateAnnotation(annotation: AnnotationModel, newContent: string): void {
     annotation.content = newContent;
     this.annotationService.updateAnnotation(annotation).subscribe();
     this.drawAnnotations();
   }
 
-  deleteAnnotation(annotation: AnnotationModel) {
+  deleteAnnotation(annotation: AnnotationModel): void {
     this.annotationService.deleteAnnotation(annotation.id!).subscribe({
-      next: (res) => {
+      next: (res: boolean | Observable<boolean>): void => {
         if (res) {
-          this.annotations = this.annotations.filter(a => a.id !== annotation.id);
+          this.annotations = this.annotations.filter((a: AnnotationModel): boolean => a.id !== annotation.id);
           this.drawAnnotations();
         }
       },
     });
   }
 
-  drawAnnotations() {
+  drawAnnotations(): void {
     // Redraw image to remove lingering boxes
     this.clearCanvas();
     this.redrawImage();
 
     for (let i = 0; i < this.annotations.length; i++) {
-      const value = this.annotations[i].content;
+      const value: string = this.annotations[i].content;
       const coordinates: AnnotationCoordinatesModel = {
         startX: this.annotations[i].startX, startY: this.annotations[i].startY,
         endX: this.annotations[i].endX, endY: this.annotations[i].endY
       };
       const {startX, startY, endX, endY} = coordinates;
-      const width = endX - startX;
-      const height = endY - startY;
+      const width: number = endX - startX;
+      const height: number = endY - startY;
       if (this.ctx) {
         this.ctx.strokeStyle = 'red';
         this.ctx?.strokeRect(startX, startY, width, height);
         // Add text
-        const text = value;
-        const textX = startX + width / 2;
-        const textY = startY + height / 2 + 3.5;
+        const text: string = value;
+        const textX: number = startX + width / 2;
+        const textY: number = startY + height / 2 + 3.5;
         this.ctx.font = 'bold 14px Arial';
         this.ctx.fillStyle = 'red';
         this.ctx.textAlign = 'center';
@@ -290,28 +287,28 @@ export class DocumentDetailsComponent implements OnInit {
     }
   }
 
-  clearCanvas() {
+  clearCanvas(): void {
     const canvas = this.canvas?.nativeElement;
     this.ctx?.clearRect(0, 0, canvas!.width, canvas!.height);
   }
 
-  redrawImage() {
+  redrawImage(): void {
     const canvas = this.canvas?.nativeElement;
     this.ctx?.drawImage(this.image, 0, 0, this.image.width, this.image.height, 0, 0, canvas!.width, canvas!.height);
   }
 
-  selectAlgorithm(algorithm: string) {
+  selectAlgorithm(algorithm: string): void {
     // Perform any desired actions based on the selected algorithm
     console.log(`Selected algorithm: ${algorithm}`);
   }
 
-  openDocumentInfoDialog() {
+  openDocumentInfoDialog(): void {
     this.documentService.getAllDocumentInfosByUid(this.uid).subscribe(
-      (documentInfoModels: DocumentInfoModel[]) => {
-        documentInfoModels.forEach((docInfo) => {
+      (documentInfoModels: DocumentInfoModel[]): void => {
+        documentInfoModels.forEach((docInfo: DocumentInfoModel): void => {
             if (docInfo.title == this.title) {
               console.log("tags: ", docInfo.tags);
-              const dialogRef = this.dialog.open(DocumentInfoDialogComponent, {
+              const dialogRef: MatDialogRef<DocumentInfoDialogComponent> = this.dialog.open(DocumentInfoDialogComponent, {
                 width: '400px',
                 data: {
                   title: docInfo.title,
@@ -324,13 +321,9 @@ export class DocumentDetailsComponent implements OnInit {
               });
 
               dialogRef.afterClosed().subscribe(result => {
-                console.log('The dialog was closed');
                 // Perform any necessary actions after the dialog is closed
               });
             }
-          },
-          (err: any) => {
-            console.error('HTTP GET Annotation retrieval request error: ', err);
           }
         );
       });
