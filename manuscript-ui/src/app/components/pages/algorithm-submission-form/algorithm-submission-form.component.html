@@ -53,9 +53,8 @@
         </i>
       </span>
     </label>
-    <input type="text" class="form-control" id="repository" formControlName="repository" name="repository"
+    <input type="text" class="form-control invalid-field" id="repository" formControlName="repository" name="repository"
            [ngClass]="{'is-invalid': invalidLink}">
-    <div class="invalid-feedback" *ngIf="invalidLink">Please enter a valid link</div>
   </div>
   <p i18n>Note: The more detailed your repository is, the more likely your algorithm is to be accepted by a system admin.<br>
     A link to a video clip demonstrating your algorithm's performance in the README file will help us in properly assessing your work.</p>

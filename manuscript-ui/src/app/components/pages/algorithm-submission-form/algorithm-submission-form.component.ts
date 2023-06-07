@@ -29,7 +29,11 @@ export class AlgorithmSubmissionFormComponent implements OnInit {
       title: ['', Validators.required],
       modelType: ['', Validators.required],
       description: ['', Validators.required],
-      repository: ['', Validators.required],
+      repository: ['', Validators.compose([Validators.required, Validators.pattern(/^(?:(?:https?|ftp):\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]+)+$/)])],
+    });
+
+    this.form.get('repository')!.valueChanges.subscribe(() => {
+      this.invalidLink = this.form.get('repository')!.invalid;
     });
   }
 
@@ -44,12 +48,6 @@ export class AlgorithmSubmissionFormComponent implements OnInit {
       });
       this.algorithmService.submitAlgorithm(algorithmModel).subscribe();
     }
-  }
-
-  checkLinkValidity() {
-    // Here you can implement any logic you need to check the validity of the repository link
-    // For example, you can use a regular expression to check if the link is a valid URL
-    // If the link is invalid, set the invalidLink property to true so that the form displays an error message and a red border around the Repository field
   }
 
   showExpectedLines(): void {

@@ -312,6 +312,12 @@ button[type="submit"]:disabled {
   border-color: red;
 }
 
+.is-invalid {
+  color: red;
+  border: 1px solid red !important;
+  outline: 1px solid red;
+}
+
 .invalid-feedback {
   color: red;
   margin-top: 0.25rem;
