@@ -19,8 +19,8 @@ export class AccountService {
 
   registerNewUser(email: string, uid: string, name: string, phoneNumber: string, role: RoleEnum): Observable<any> {
     const user: UserModel = {
-      email: email,
       uid: uid,
+      email: email,
       name: name,
       phoneNumber: phoneNumber,
       role: role

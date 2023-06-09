@@ -91,7 +91,11 @@ export class DocumentDetailsComponent implements OnInit {
     let oldEndX: number;
     let oldEndY: number;
 
-    canvas.addEventListener('mousedown', (e: any) => {
+    canvas.addEventListener('mousedown', (e: any): void => {
+      if (e.button !== 0) {
+        return;
+      }
+
       startX = e.offsetX;
       startY = e.offsetY;
       prevX = startX;
@@ -115,7 +119,7 @@ export class DocumentDetailsComponent implements OnInit {
       isDown = true;
     });
 
-    canvas.addEventListener('mousemove', (e: any) => {
+    canvas.addEventListener('mousemove', (e: any): void => {
       currentX = e.offsetX;
       currentY = e.offsetY;
 

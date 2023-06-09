@@ -71,10 +71,11 @@ md-icon {
   height: 40%;
   width: 40%;
 }
+
 mat-sidenav-content{
   background-color: #E5E5E5;
   min-height: 100vh;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 .xxx-text {
@@ -107,4 +108,3 @@ mat-sidenav-content{
   align-items: center;
   font-size: 14px;
 }
-
