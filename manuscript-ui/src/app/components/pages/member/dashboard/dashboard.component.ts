@@ -4,18 +4,18 @@ import {Router} from "@angular/router";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort, Sort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
-import {DocumentTableEnum} from "../../../enums/DocumentTableEnum";
-import {DocumentDataModel} from "../../../models/DocumentDataModel";
-import {DocumentService} from "../../../services/document.service";
-import {TextService} from "../../../services/text.service";
-import {DateService} from "../../../services/date.service";
-import {RouterEnum} from "../../../enums/RouterEnum";
-import {PrivacyEnum} from "../../../enums/PrivacyEnum";
-import {DocumentInfoModel} from "../../../models/DocumentInfoModel";
+import {DocumentTableEnum} from "../../../../enums/DocumentTableEnum";
+import {DocumentDataModel} from "../../../../models/DocumentDataModel";
+import {DocumentService} from "../../../../services/document.service";
+import {TextService} from "../../../../services/text.service";
+import {DateService} from "../../../../services/date.service";
+import {RouterEnum} from "../../../../enums/RouterEnum";
+import {PrivacyEnum} from "../../../../enums/PrivacyEnum";
+import {DocumentInfoModel} from "../../../../models/DocumentInfoModel";
 import {MatDialog} from "@angular/material/dialog";
-import {PrivacyDialogComponent} from "../../dialogs/privacy-dialog/privacy-dialog.component";
-import {ConfirmationDialogComponent} from "../../dialogs/confirmation-dialog/confirmation-dialog.component";
-import {DocumentInfoDialogComponent} from "../../dialogs/document-info-dialog/document-info-dialog.component";
+import {PrivacyDialogComponent} from "../../../dialogs/privacy-dialog/privacy-dialog.component";
+import {ConfirmationDialogComponent} from "../../../dialogs/confirmation-dialog/confirmation-dialog.component";
+import {DocumentInfoDialogComponent} from "../../../dialogs/document-info-dialog/document-info-dialog.component";
 
 @Component({
   selector: 'app-dashboard',

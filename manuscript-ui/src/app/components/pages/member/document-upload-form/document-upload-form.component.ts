@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {faTimes, IconDefinition} from '@fortawesome/free-solid-svg-icons';
-import {DocumentService} from "../../../services/document.service";
-import {DocumentInfoModel} from "../../../models/DocumentInfoModel";
+import {DocumentService} from "../../../../services/document.service";
+import {DocumentInfoModel} from "../../../../models/DocumentInfoModel";
 
 @Component({
   selector: 'app-document-upload-form',

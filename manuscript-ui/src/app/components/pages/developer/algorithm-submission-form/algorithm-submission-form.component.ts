@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AlgorithmService} from "../../../services/algorithm.service";
-import {AlgorithmModel} from "../../../models/AlgorithmModel";
+import {AlgorithmService} from "../../../../services/algorithm.service";
+import {AlgorithmModel} from "../../../../models/AlgorithmModel";
 
 @Component({
   selector: 'app-algorithm-submission-form',

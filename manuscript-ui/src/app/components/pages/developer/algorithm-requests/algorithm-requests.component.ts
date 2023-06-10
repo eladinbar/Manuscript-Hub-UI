@@ -3,13 +3,13 @@ import Swal from 'sweetalert2';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {MatPaginator} from '@angular/material/paginator';
-import {AlgorithmRequestTable} from "../../../models/AlgorithmRequestTable";
-import {AlgorithmService} from "../../../services/algorithm.service";
-import {AccountService} from "../../../services/auth/account.service";
-import {AlgorithmModel} from "../../../models/AlgorithmModel";
-import {UserModel} from "../../../models/UserModel";
-import {AlgorithmStatusEnum} from "../../../enums/AlgorithmStatusEnum";
-import {CryptoService} from "../../../services/crypto.service";
+import {AlgorithmRequestTable} from "../../../../models/AlgorithmRequestTable";
+import {AlgorithmService} from "../../../../services/algorithm.service";
+import {AccountService} from "../../../../services/auth/account.service";
+import {AlgorithmModel} from "../../../../models/AlgorithmModel";
+import {UserModel} from "../../../../models/UserModel";
+import {AlgorithmStatusEnum} from "../../../../enums/AlgorithmStatusEnum";
+import {CryptoService} from "../../../../services/crypto.service";
 
 
 @Component({

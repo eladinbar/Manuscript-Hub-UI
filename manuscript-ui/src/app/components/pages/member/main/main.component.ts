@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from "../../services/auth/auth.service";
-import {RouterEnum} from "../../enums/RouterEnum";
-import {CryptoService} from "../../services/crypto.service";
+import {AuthService} from "../../../../services/auth/auth.service";
+import {RouterEnum} from "../../../../enums/RouterEnum";
+import {CryptoService} from "../../../../services/crypto.service";
 
 @Component({
   selector: 'app-main',

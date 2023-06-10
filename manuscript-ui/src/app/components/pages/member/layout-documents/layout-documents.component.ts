@@ -1,11 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {RouterEnum} from "../../../enums/RouterEnum";
+import {RouterEnum} from "../../../../enums/RouterEnum";
 import {ActivatedRoute} from "@angular/router";
-import {DocumentService} from "../../../services/document.service";
-import {TownCrierService} from "../../../services/town-crier.service";
+import {DocumentService} from "../../../../services/document.service";
+import {TownCrierService} from "../../../../services/town-crier.service";
 import {MatMenuTrigger} from '@angular/material/menu';
-import {DocumentInfoModel} from "../../../models/DocumentInfoModel";
-import {DocumentDataModel} from "../../../models/DocumentDataModel";
+import {DocumentInfoModel} from "../../../../models/DocumentInfoModel";
+import {DocumentDataModel} from "../../../../models/DocumentDataModel";
 
 
 @Component({
@@ -14,7 +14,6 @@ import {DocumentDataModel} from "../../../models/DocumentDataModel";
   styleUrls: ['./layout-documents.component.css']
 })
 export class LayoutDocumentsComponent implements OnInit {
-
   uid!: string;
   documentId!: string;
   uploadedImageUrl!: string;

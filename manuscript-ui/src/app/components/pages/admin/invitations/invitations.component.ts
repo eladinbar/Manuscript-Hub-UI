@@ -4,9 +4,9 @@ import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {ActivatedRoute} from "@angular/router";
-import {InvitationsService} from "../../../services/invitations.service";
-import {InvitationRequestTable} from "../../../models/InvitationRequestTable";
-import {InvitationEnum} from "../../../enums/InvitationEnum";
+import {InvitationsService} from "../../../../services/invitations.service";
+import {InvitationRequestTable} from "../../../../models/InvitationRequestTable";
+import {InvitationEnum} from "../../../../enums/InvitationEnum";
 
 @Component({
   selector: 'app-invitations',

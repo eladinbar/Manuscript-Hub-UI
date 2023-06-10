@@ -1,14 +1,14 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {DocumentService} from "../../../services/document.service";
+import {DocumentService} from "../../services/document.service";
 import {ActivatedRoute} from "@angular/router";
 import {DomSanitizer} from "@angular/platform-browser";
-import {AnnotationModel} from "../../../models/AnnotationModel";
+import {AnnotationModel} from "../../models/AnnotationModel";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {AnnotationDialogComponent} from "../../dialogs/annotation-dialog/annotation-dialog.component";
-import {AnnotationCoordinatesModel} from "../../../models/AnnotationCoordinatesModel";
-import {AnnotationService} from "../../../services/annotation.service";
-import {DocumentInfoModel} from "../../../models/DocumentInfoModel";
-import {DocumentInfoDialogComponent} from "../../dialogs/document-info-dialog/document-info-dialog.component";
+import {AnnotationDialogComponent} from "../dialogs/annotation-dialog/annotation-dialog.component";
+import {AnnotationCoordinatesModel} from "../../models/AnnotationCoordinatesModel";
+import {AnnotationService} from "../../services/annotation.service";
+import {DocumentInfoModel} from "../../models/DocumentInfoModel";
+import {DocumentInfoDialogComponent} from "../dialogs/document-info-dialog/document-info-dialog.component";
 import {Observable} from "rxjs";
 
 @Component({
@@ -300,19 +300,19 @@ export class DocumentDetailsComponent implements OnInit {
         wrappedText.forEach((item) => {
           // @ts-ignore
           this.ctx!.fillText(item[0], item[1], item[2]);
-        })
+        });
       }
     }
   }
 
-// @description: wrapText wraps HTML canvas text onto a canvas of fixed width
-// @param ctx - the context for the canvas we want to wrap text on
-// @param text - the text we want to wrap.
-// @param x - the X starting point of the text on the canvas.
-// @param y - the Y starting point of the text on the canvas.
-// @param maxWidth - the width at which we want line breaks to begin - i.e. the maximum width of the canvas.
-// @param lineHeight - the height of each line, so we can space them below each other.
-// @returns an array of [ lineText, x, y ] for all lines
+  // @description: wrapText wraps HTML canvas text onto a canvas of fixed width
+  // @param ctx - the context for the canvas we want to wrap text on
+  // @param text - the text we want to wrap.
+  // @param x - the X starting point of the text on the canvas.
+  // @param y - the Y starting point of the text on the canvas.
+  // @param maxWidth - the width at which we want line breaks to begin - i.e. the maximum width of the canvas.
+  // @param lineHeight - the height of each line, so we can space them below each other.
+  // @returns an array of [ lineText, x, y ] for all lines
   wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number) {
     // First, start by splitting all of our text into words, but splitting it into an array split by spaces
     let words: string[] = text.split(' ');
@@ -340,7 +340,7 @@ export class DocumentDetailsComponent implements OnInit {
         // If the test line is still less than the max width, then add the word to the current line
         line += `${words[n]} `;
       }
-      // If we never reach the full max width, then there is only one line.. so push it into the lineArray so we return something
+      // If we never reach the full max width, then there is only one line... so push it into the lineArray, so we return something
       if(n === words.length - 1) {
         lineArray.push([line, x, y]);
       }
