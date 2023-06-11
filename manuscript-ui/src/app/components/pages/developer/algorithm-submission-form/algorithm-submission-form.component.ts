@@ -29,7 +29,7 @@ export class AlgorithmSubmissionFormComponent implements OnInit {
       title: ['', Validators.required],
       modelType: ['', Validators.required],
       description: ['', Validators.required],
-      repository: ['', Validators.compose([Validators.required, Validators.pattern(/^(?:(?:https?|ftp):\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]+)+$/)])],
+      repository: ['', Validators.compose([Validators.required, Validators.pattern('^(http(s)?:\\/\\/)?[\\w.-]+(\\.[\\w.-]+)+(\\/\\w+)*(\\/)?(\\?.*)?$')])],
     });
 
     this.form.get('repository')!.valueChanges.subscribe(() => {
