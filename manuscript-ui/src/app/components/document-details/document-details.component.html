@@ -13,9 +13,7 @@
   </div>
 
   <mat-menu #algorithmMenu="matMenu">
-    <button mat-menu-item (click)="selectAlgorithm('Algorithm 1')">Algorithm 1</button>
-    <button mat-menu-item (click)="selectAlgorithm('Algorithm 2')">Algorithm 2</button>
-    <button mat-menu-item (click)="selectAlgorithm('Algorithm 3')">Algorithm 3</button>
+    <button mat-menu-item *ngFor="let algorithm of algorithms" (click)="selectAlgorithm(algorithm)">{{ algorithm }}</button>
   </mat-menu>
 </div>
 

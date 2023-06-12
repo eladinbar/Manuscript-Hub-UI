@@ -10,6 +10,8 @@ import {AnnotationService} from "../../services/annotation.service";
 import {DocumentInfoModel} from "../../models/DocumentInfoModel";
 import {DocumentInfoDialogComponent} from "../dialogs/document-info-dialog/document-info-dialog.component";
 import {Observable} from "rxjs";
+import {AlgorithmModel} from "../../models/AlgorithmModel";
+import {AlgorithmService} from "../../services/algorithm.service";
 
 @Component({
   selector: 'app-document-details',
@@ -19,6 +21,7 @@ import {Observable} from "rxjs";
 
 export class DocumentDetailsComponent implements OnInit {
   NIL: string = "00000000-0000-0000-0000-000000000000";
+  algorithms: Array<AlgorithmModel> = [];
 
   @Input() uid: string = '';
   @Input() documentId: string = '';
@@ -34,12 +37,14 @@ export class DocumentDetailsComponent implements OnInit {
   annIsHovered: boolean = false;
   infoIsHovered: boolean = false;
 
-  constructor(private documentService: DocumentService, private annotationService: AnnotationService,
+  constructor(private documentService: DocumentService, private annotationService: AnnotationService, private algorithmService: AlgorithmService,
               private route: ActivatedRoute, private sanitizer: DomSanitizer, private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
     this.getAllAnnotations();
+
+    // this.getAllAlgorithms();
 
     this.getDocumentById();
   }
@@ -50,6 +55,14 @@ export class DocumentDetailsComponent implements OnInit {
         this.annotations = annotationModels;
         this.drawAnnotations();
       },
+    });
+  }
+
+  getAllAlgorithms(): void {
+    this.algorithmService.getAllRunnableAlgorithms(this.uid).subscribe({
+      next: (algorithmModels: AlgorithmModel[]) => {
+        this.algorithms = algorithmModels;
+      }
     });
   }
 
@@ -209,7 +222,7 @@ export class DocumentDetailsComponent implements OnInit {
         endY: annotationCoordinates.endY
       };
 
-      this.annotationService.addAnnotation(annotation).subscribe({
+      this.algorithmService.addManualAnnotation(annotation).subscribe({
         next: (annotationModel: AnnotationModel): void => {
           annotation = annotationModel;
           this.coordinates.push(annotationCoordinates);
@@ -247,12 +260,12 @@ export class DocumentDetailsComponent implements OnInit {
 
   updateAnnotation(annotation: AnnotationModel, newContent: string): void {
     annotation.content = newContent;
-    this.annotationService.updateAnnotation(annotation).subscribe();
+    this.algorithmService.updateAnnotation(annotation).subscribe();
     this.drawAnnotations();
   }
 
   deleteAnnotation(annotation: AnnotationModel): void {
-    this.annotationService.deleteAnnotation(annotation.id!).subscribe({
+    this.algorithmService.deleteAnnotation(annotation.id!).subscribe({
       next: (res: boolean | Observable<boolean>): void => {
         if (res) {
           this.annotations = this.annotations.filter((a: AnnotationModel): boolean => a.id !== annotation.id);
@@ -291,7 +304,7 @@ export class DocumentDetailsComponent implements OnInit {
         // Modify according to font size (calibrated to 14px)
         let wrappedText = this.wrapText(this.ctx, text, textX, textY, Math.abs(width), 20);
         // If text has multiple lines, start filling text from top of box rather than center and recalculate wrapped text
-        if(wrappedText.length > 1) {
+        if (wrappedText.length > 1) {
           // Modify according to font size (calibrated to 14px)
           textY = Math.min(startY, endY) + 14;
         }
@@ -321,7 +334,7 @@ export class DocumentDetailsComponent implements OnInit {
     let lineArray = []; // This is an array of lines, which the function will return
 
     // Let's iterate over each word
-    for(let n = 0; n < words.length; n++) {
+    for (let n = 0; n < words.length; n++) {
       // Create a test line, and measure it..
       testLine += `${words[n]} `;
       let metrics: TextMetrics = ctx.measureText(testLine);
@@ -335,13 +348,12 @@ export class DocumentDetailsComponent implements OnInit {
         // Update line and test line to use this word as the first word on the next line
         line = `${words[n]} `;
         testLine = `${words[n]} `;
-      }
-      else {
+      } else {
         // If the test line is still less than the max width, then add the word to the current line
         line += `${words[n]} `;
       }
       // If we never reach the full max width, then there is only one line... so push it into the lineArray, so we return something
-      if(n === words.length - 1) {
+      if (n === words.length - 1) {
         lineArray.push([line, x, y]);
       }
     }
@@ -359,9 +371,8 @@ export class DocumentDetailsComponent implements OnInit {
     this.ctx?.drawImage(this.image, 0, 0, this.image.width, this.image.height, 0, 0, canvas!.width, canvas!.height);
   }
 
-  selectAlgorithm(algorithm: string): void {
-    // Perform any desired actions based on the selected algorithm
-    console.log(`Selected algorithm: ${algorithm}`);
+  selectAlgorithm(algorithm: AlgorithmModel): void {
+    this.algorithmService.runAlgorithm(algorithm).subscribe();
   }
 
   openDocumentInfoDialog(): void {

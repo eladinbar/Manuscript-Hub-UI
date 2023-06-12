@@ -76,6 +76,7 @@ export class LayoutDocumentsComponent implements OnInit {
     if (this.photosCounter < 4) {
       this.townCrier.info('Loading document...');
       this.addedDocIds.push(nextDoc.id!);
+      // Remove newly added image from search options
       this.filteredDocsData = this.filteredDocsData.filter(doc => doc.infoId !== nextDoc.infoId);
 
       this.documentService.getAllDocumentInfosByUid(this.uid).subscribe((documentInfoModels: Array<DocumentInfoModel>) => {
@@ -99,9 +100,8 @@ export class LayoutDocumentsComponent implements OnInit {
     }
   }
 
-
   checkIdMatch(infoId: string): boolean {
-    return this.addedDocsData.some((addedDoc) => addedDoc.infoId === infoId);
+    return this.addedDocsData.some((addedDoc: DocumentDataModel): boolean => addedDoc.infoId === infoId);
   }
 
   handleSearch(event: any) {

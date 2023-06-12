@@ -34,7 +34,6 @@
   </div>
 
   <div class="grid-item" *ngFor="let addedDocId of addedDocIds; let i = index" [ngClass]="'item' + (i+2)">
-    <app-document-details [documentId]="addedDocId!" [uid]="uid"
-                          [title]="this.addedDocTitles[i]"></app-document-details>
+    <app-document-details [documentId]="addedDocId!" [uid]="uid" [title]="this.addedDocTitles[i]"></app-document-details>
   </div>
 </div>

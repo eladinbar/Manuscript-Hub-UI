@@ -12,10 +12,11 @@ import {DateService} from "../../../../services/date.service";
 import {RouterEnum} from "../../../../enums/RouterEnum";
 import {PrivacyEnum} from "../../../../enums/PrivacyEnum";
 import {DocumentInfoModel} from "../../../../models/DocumentInfoModel";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {PrivacyDialogComponent} from "../../../dialogs/privacy-dialog/privacy-dialog.component";
 import {ConfirmationDialogComponent} from "../../../dialogs/confirmation-dialog/confirmation-dialog.component";
 import {DocumentInfoDialogComponent} from "../../../dialogs/document-info-dialog/document-info-dialog.component";
+import {ShareDocumentDialogComponent} from "../../../dialogs/share-document-dialog/share-document-dialog.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -54,17 +55,30 @@ export class DashboardComponent implements OnInit {
 
   fetchTableData(): void {
     this.documentService.getAllDocumentInfosByUid(this.uid!).subscribe((docs: Array<DocumentInfoModel>) => {
-      let privateDocuments: Array<DocumentInfoModel> = docs;
+      let privateDocuments: Array<DocumentInfoModel> = docs.map(doc => {
+        doc.createdTime = new Date(doc.createdTime!);
+        doc.updatedTime = new Date(doc.updatedTime!);
+        doc.publicationDate = doc.publicationDate ? new Date(doc.publicationDate) : undefined;
+        return doc;
+      });
+
       this.documentService.getAllPublicDocumentInfos().subscribe((docs: Array<DocumentInfoModel>) => {
         let publicDocuments: Array<DocumentInfoModel> = docs.filter(doc => doc.uid !== this.uid);
+
+        publicDocuments.forEach(doc => {
+          doc.createdTime = new Date(doc.createdTime!);
+          doc.updatedTime = new Date(doc.updatedTime!);
+          doc.publicationDate = doc.publicationDate ? new Date(doc.publicationDate) : undefined;
+        });
+
         this.setDataToTable(privateDocuments.concat(publicDocuments));
       });
     });
   }
 
-  private setDataToTable(res: any) {
-    if (res) {
-      this.documentInfoTableModels = res;
+  private setDataToTable(documentInfoModels: Array<DocumentInfoModel>): void {
+    if (documentInfoModels) {
+      this.documentInfoTableModels = documentInfoModels;
     }
     this.dataSource = new MatTableDataSource(this.documentInfoTableModels);
     if (this.paginator) {
@@ -86,7 +100,6 @@ export class DashboardComponent implements OnInit {
   onDocumentOpen(documentInfo: DocumentInfoModel) {
     if (documentInfo == null || documentInfo.id == undefined) return;
     this.documentService.getDocumentDatasByDocumentInfoId(documentInfo.id, this.uid!).subscribe((documents: DocumentDataModel[]) => {
-      console.log(documents[0]);
       this.router.navigate(['/' + RouterEnum.DocumentDetail, documents[0].id]);
     });
   }
@@ -116,7 +129,7 @@ export class DashboardComponent implements OnInit {
   }
 
   onDocumentChangePrivacy(documentInfo: DocumentInfoModel) {
-    const dialogRef = this.dialog.open(PrivacyDialogComponent, {
+    const dialogRef: MatDialogRef<PrivacyDialogComponent> = this.dialog.open(PrivacyDialogComponent, {
       data: {currentPrivacy: documentInfo.privacy},
       width: '350px',
     });
@@ -124,14 +137,42 @@ export class DashboardComponent implements OnInit {
     let updatedDocumentInfo: DocumentInfoModel = new DocumentInfoModel(documentInfo);
     updatedDocumentInfo.uid = this.uid!;
 
-    dialogRef.afterClosed().subscribe((newPrivacy: PrivacyEnum) => {
+    dialogRef.afterClosed().subscribe((newPrivacy: PrivacyEnum): void => {
       if (newPrivacy && Object.values(PrivacyEnum).includes(newPrivacy)) {
-        updatedDocumentInfo.privacy = newPrivacy;
-        this.documentService.updateDocumentInfo(updatedDocumentInfo).subscribe((updatedDocumentInfo: DocumentInfoModel) => {
-          if(updatedDocumentInfo.privacy)
-            documentInfo.privacy = updatedDocumentInfo.privacy;
+        if (newPrivacy === PrivacyEnum.Shared) {
+          this.shareDocument(documentInfo, updatedDocumentInfo);
+        } else {
+          this.updateDocumentPrivacy(documentInfo, updatedDocumentInfo, newPrivacy);
+        }
+      }
+    });
+  }
+
+  shareDocument(documentInfo: DocumentInfoModel, updatedDocumentInfo: DocumentInfoModel) {
+    const shareDialogRef: MatDialogRef<ShareDocumentDialogComponent> = this.dialog.open(ShareDocumentDialogComponent, {
+      width: '500px',
+    });
+
+    const sharedUserEmails: Array<String> = [];
+
+    shareDialogRef.afterClosed().subscribe((emailsToShare: string[]): void => {
+      if (updatedDocumentInfo.sharedUserIds && emailsToShare) {
+        updatedDocumentInfo.privacy = PrivacyEnum.Shared;
+        for (let email in emailsToShare)
+          sharedUserEmails.push(email);
+        this.documentService.shareDocument(updatedDocumentInfo, sharedUserEmails).subscribe((updatedDocumentInfo: DocumentInfoModel): void => {
+          documentInfo.privacy = updatedDocumentInfo.privacy;
+          documentInfo.sharedUserIds = updatedDocumentInfo.sharedUserIds;
         });
       }
+    });
+  }
+
+  updateDocumentPrivacy(documentInfo: DocumentInfoModel, updatedDocumentInfo: DocumentInfoModel, newPrivacy: PrivacyEnum): void {
+    updatedDocumentInfo.privacy = newPrivacy;
+    this.documentService.updateDocumentInfo(updatedDocumentInfo).subscribe((updatedDocumentInfo: DocumentInfoModel): void => {
+      if (updatedDocumentInfo.privacy)
+        documentInfo.privacy = updatedDocumentInfo.privacy;
     });
   }
 
@@ -159,16 +200,28 @@ export class DashboardComponent implements OnInit {
   applyFilter(event: any) {
     const searchTerm = event.target.value.toLowerCase().trim();
 
-    // Filter the data source based on the search term
-    this.dataSource.filter = searchTerm;
-
     // Show only the rows that match the filter criteria
     this.dataSource.filterPredicate = (data: DocumentInfoModel, filter: string) => {
-      const title = data.title.toLowerCase();
+      const title: string = data.title.toLowerCase();
+      const author: string = data.author ? data.author.toLowerCase() : "";
+      const description: string = data.description ? data.description.toLowerCase() : "";
+      const tags: string = data.tags ? data.tags.join(',').toLowerCase() : ""; // Convert tags array to a string
+      const privacy: string = data.privacy ? data.privacy.toLowerCase() : "";
+      const publicationDate: string = data.publicationDate ? data.publicationDate.toISOString().toLowerCase() : ""; // Convert Date to string representation
 
-      // Check if the title starts with or includes the search term
-      return title.startsWith(filter) || title.includes(filter);
-    };
+      // Check if any of the fields include or start with the search term
+      return (
+        title.includes(searchTerm) || title.startsWith(searchTerm) ||
+        author.includes(searchTerm) || author.startsWith(searchTerm) ||
+        description.includes(searchTerm) || description.startsWith(searchTerm) ||
+        tags.includes(searchTerm) || tags.startsWith(searchTerm) ||
+        privacy.includes(searchTerm) || privacy.startsWith(searchTerm) ||
+        publicationDate.includes(searchTerm) || publicationDate.startsWith(searchTerm)
+      );
+    }
+
+    // Filter the data source based on the search term
+    this.dataSource.filter = searchTerm;
   }
 
   private sortByTime(sortState: Sort) {

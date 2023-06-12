@@ -52,6 +52,7 @@ import {InvitationsComponent} from './components/pages/admin/invitations/invitat
 import {LayoutDocumentsComponent} from './components/pages/member/layout-documents/layout-documents.component';
 import {AlgorithmRequestsComponent} from './components/pages/developer/algorithm-requests/algorithm-requests.component';
 import {DocumentInfoDialogComponent} from "./components/dialogs/document-info-dialog/document-info-dialog.component";
+import { ShareDocumentDialogComponent } from './components/dialogs/share-document-dialog/share-document-dialog.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import {DocumentInfoDialogComponent} from "./components/dialogs/document-info-di
     InvitationsComponent,
     LayoutDocumentsComponent,
     AlgorithmRequestsComponent,
+    ShareDocumentDialogComponent,
   ],
   imports: [
     BrowserModule,

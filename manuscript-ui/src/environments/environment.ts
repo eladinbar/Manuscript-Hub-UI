@@ -26,25 +26,30 @@ export const environment = {
   // Document Info
   RESOURCE_UPLOAD_DOCUMENT_INFO: "/api/document/uploadDocumentInfo",
   RESOURCE_UPDATE_DOCUMENT_INFO: "/api/document/updateDocumentInfo",
+  RESOURCE_SHARE_DOCUMENT: "/api/document/updateDocumentInfo",
   RESOURCE_GET_DOCUMENT_INFO_BY_ID: "/api/document/getDocumentInfoById",
   RESOURCE_GET_ALL_DOCUMENT_INFOS_BY_UID: "/api/document/getAllDocumentInfosByUid",
   RESOURCE_GET_ALL_PUBLIC_DOCUMENT_INFOS: "/api/document/getAllPublicDocumentInfos",
   RESOURCE_GET_ALL_SHARED_DOCUMENT_INFOS_BY_UID: "/api/document/getAllSharedDocumentInfosByUid",
+  RESOURCE_GET_IMAGE_INFO_BY_TEXT_SEARCH: "/api/document/getImageInfoByTextSearch",
   RESOURCE_DELETE_DOCUMENT_INFO_BY_ID: "/api/document/deleteDocumentInfoById",
 
   // Annotation
   RESOURCE_ADD_ANNOTATION: "/api/annotation/addAnnotation",
-  RESOURCE_UPDATE_ANNOTATION: "/api/annotation/updateAnnotation",
   RESOURCE_GET_ALL_ANNOTATIONS_BY_DOCUMENT_DATA_ID: "/api/annotation/getAllAnnotationsByDocumentDataId",
-  RESOURCE_DELETE_ANNOTATION: "/api/annotation/deleteAnnotationById",
-  RESOURCE_DELETE_ALL_ANNOTATIONS_BY_DOCUMENT_DATA_ID: "/api/annotation/deleteAllAnnotationsByDocumentDataId",
 
   // Algorithm
+  RESOURCE_RUN_ALGORITHM: "/api/algorithm/runAlgorithm",
+  RESOURCE_ADD_MANUAL_ANNOTATION: "/api/algorithm/addManualAnnotation",
+  RESOURCE_UPDATE_ANNOTATION: "/api/algorithm/updateAnnotation",
+  RESOURCE_DELETE_ANNOTATION: "/api/algorithm/deleteAnnotationById",
+  RESOURCE_DELETE_ALL_ANNOTATIONS_BY_DOCUMENT_DATA_ID: "/api/algorithm/deleteAllAnnotationsByDocumentDataId",
   RESOURCE_SUBMIT_ALGORITHM: "/api/algorithm/uploadAlgorithm",
   RESOURCE_UPDATE_ALGORITHM: "/api/algorithm/updateAlgorithm",
   RESOURCE_GET_ALGORITHM_BY_ID: "/api/algorithm/getAlgorithmById",
   RESOURCE_GET_ALGORITHM_BY_URL: "/api/algorithm/getAlgorithmByUrl",
   RESOURCE_GET_ALL_ALGORITHMS_BY_UID: "/api/algorithm/getAllAlgorithmsByUid",
+  RESOURCE_GET_ALL_RUNNABLE_ALGORITHMS: "/api/algorithm/getAllRunnableAlgorithms",
   RESOURCE_GET_ALL_ALGORITHMS: "/api/algorithm/getAllAlgorithms",
   RESOURCE_DELETE_ALGORITHM_BY_ID: "/api/algorithm/deleteAlgorithmById",
   RESOURCE_DELETE_ALGORITHM_BY_URL: "/api/algorithm/deleteAlgorithmByUrl",

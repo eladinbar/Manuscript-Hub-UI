@@ -7,6 +7,7 @@ import {TownCrierService} from "./town-crier.service";
 import {environment} from "../../environments/environment";
 import {RouterEnum} from "../enums/RouterEnum";
 import {DocumentInfoModel} from "../models/DocumentInfoModel";
+import {DocumentDataModel} from "../models/DocumentDataModel";
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +60,21 @@ export class DocumentService {
       }));
   }
 
+  shareDocument(documentInfo: DocumentInfoModel, sharedUserEmails: Array<String>) {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+
+    this.townCrier.info("Please wait while document info is being updated...");
+    return from(this.http.patch<DocumentInfoModel>(`${environment.baseUrl}${environment.RESOURCE_UPDATE_DOCUMENT_INFO}/${sharedUserEmails}`, documentInfo, {headers: headers}))
+      .pipe(map((documentInfo: DocumentInfoModel) => {
+        this.townCrier.info("The document has been shared successfully.");
+        return documentInfo;
+      }), catchError(errorRes => {
+        this.townCrier.error(errorRes.error);
+        return this.restErrorsHandlerService.handleRequestError(errorRes);
+      }));
+  }
+
   getDocumentDataById(id: string, uid: string) {
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_DATA_BY_ID}/${id}/${uid}`, {responseType: 'blob'}))
       .pipe(map((res: any) => {
@@ -72,10 +88,10 @@ export class DocumentService {
   }
 
   getAllDocumentInfosByUid(uid: string) {
-    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_DOCUMENT_INFOS_BY_UID}/${uid}`))
-      .pipe(map((res: any) => {
+    return from(this.http.get<DocumentInfoModel>(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_DOCUMENT_INFOS_BY_UID}/${uid}`))
+      .pipe(map((documentInfoModel: DocumentInfoModel) => {
         this.townCrier.info("All documents retrieved successfully.");
-        return res;
+        return documentInfoModel;
       }), catchError(errorRes => {
         this.townCrier.error(errorRes.error);
         return this.restErrorsHandlerService.handleRequestError(errorRes);
@@ -83,10 +99,10 @@ export class DocumentService {
   }
 
   getAllPublicDocumentInfos() {
-    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_PUBLIC_DOCUMENT_INFOS}`))
-      .pipe(map((res: any) => {
+    return from(this.http.get<DocumentInfoModel[]>(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_PUBLIC_DOCUMENT_INFOS}`))
+      .pipe(map((documentInfoModels: DocumentInfoModel[]) => {
         this.townCrier.info("All documents retrieved successfully.");
-        return res;
+        return documentInfoModels;
       }), catchError(errorRes => {
         this.townCrier.error(errorRes.error);
         return this.restErrorsHandlerService.handleRequestError(errorRes);
@@ -94,9 +110,21 @@ export class DocumentService {
   }
 
   getDocumentDatasByDocumentInfoId(documentInfoId: string, uid: string) {
-    return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_DATAS_BY_DOCUMENT_INFO_ID}/${documentInfoId}/${uid}`))
-      .pipe(map((res: any) => {
-        return res;
+    return from(this.http.get<DocumentDataModel[]>(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_DATAS_BY_DOCUMENT_INFO_ID}/${documentInfoId}/${uid}`))
+      .pipe(map((documentDataModels: DocumentDataModel[]) => {
+        return documentDataModels;
+      }), catchError(errorRes => {
+        this.townCrier.error(errorRes.error);
+        return this.restErrorsHandlerService.handleRequestError(errorRes);
+      }));
+  }
+
+  getImageInfoByTextSearch(searchTerm: string, uid: string) {
+    return from(this.http.get<{ [key: string]: DocumentInfoModel[] }>(`${environment.baseUrl}${environment.RESOURCE_GET_IMAGE_INFO_BY_TEXT_SEARCH}/${searchTerm}/${uid}`))
+      .pipe(map((documentMapData: { [key: string]: DocumentInfoModel[] }) => {
+        const documentMap: Map<string, DocumentInfoModel[]> = new Map(Object.entries(documentMapData));
+        this.townCrier.info("Search results retrieved successfully.");
+        return documentMap;
       }), catchError(errorRes => {
         this.townCrier.error(errorRes.error);
         return this.restErrorsHandlerService.handleRequestError(errorRes);
