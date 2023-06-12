@@ -265,7 +265,7 @@ export class DocumentDetailsComponent implements OnInit {
   }
 
   deleteAnnotation(annotation: AnnotationModel): void {
-    this.algorithmService.deleteAnnotation(annotation.id!).subscribe({
+    this.algorithmService.deleteAnnotation(annotation.id!, this.uid, this.documentId).subscribe({
       next: (res: boolean | Observable<boolean>): void => {
         if (res) {
           this.annotations = this.annotations.filter((a: AnnotationModel): boolean => a.id !== annotation.id);
@@ -373,7 +373,9 @@ export class DocumentDetailsComponent implements OnInit {
 
   selectAlgorithm(algorithm: AlgorithmModel): void {
     algorithm.imageDataId = this.documentId;
-    this.algorithmService.runAlgorithm(algorithm).subscribe();
+    this.algorithmService.runAlgorithm(algorithm).subscribe(() => {
+      algorithm.imageDataId = undefined;
+    });
   }
 
   openDocumentInfoDialog(): void {

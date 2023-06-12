@@ -26,7 +26,7 @@ export const environment = {
   // Document Info
   RESOURCE_UPLOAD_DOCUMENT_INFO: "/api/document/uploadDocumentInfo",
   RESOURCE_UPDATE_DOCUMENT_INFO: "/api/document/updateDocumentInfo",
-  RESOURCE_SHARE_DOCUMENT: "/api/document/updateDocumentInfo",
+  RESOURCE_SHARE_DOCUMENT: "/api/document/shareDocument",
   RESOURCE_GET_DOCUMENT_INFO_BY_ID: "/api/document/getDocumentInfoById",
   RESOURCE_GET_ALL_DOCUMENT_INFOS_BY_UID: "/api/document/getAllDocumentInfosByUid",
   RESOURCE_GET_ALL_PUBLIC_DOCUMENT_INFOS: "/api/document/getAllPublicDocumentInfos",

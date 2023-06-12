@@ -50,21 +50,24 @@ export class LayoutDocumentsComponent implements OnInit {
     this.documentService.getAllDocumentInfosByUid(this.uid).subscribe({
       next: (documentInfoModels: DocumentInfoModel[]) => {
         let privateDocuments: Array<DocumentInfoModel> = documentInfoModels;
-        this.documentService.getAllPublicDocumentInfos().subscribe((docs: Array<DocumentInfoModel>) => {
-          let publicDocuments: Array<DocumentInfoModel> = docs.filter(doc => doc.uid !== this.uid);
-          let allDocuments: Array<DocumentInfoModel> = privateDocuments.concat(publicDocuments);
-          // building the lists without the opened image, so user cant open it twice
-          allDocuments.forEach((docInfo) => {
-            this.documentService.getDocumentDatasByDocumentInfoId(docInfo.id!, this.uid).subscribe((docData: DocumentDataModel[]) => {
-              if (docInfo.id == docData[0].infoId) {
-                if (this.documentId != docData[0].id) {
-                  this.addedDocsData.push(docData[0]);
-                  this.addedDocsInfo.push(docInfo);
-                } else {
-                  this.firstTitle = docInfo.title!;
+        this.documentService.getAllSharedImageInfosByUid(this.uid).subscribe((docs: Array<DocumentInfoModel>) => {
+          let sharedDocuments: Array<DocumentInfoModel> = docs.filter(doc => doc.uid !== this.uid);
+          this.documentService.getAllPublicDocumentInfos().subscribe((docs: Array<DocumentInfoModel>) => {
+            let publicDocuments: Array<DocumentInfoModel> = docs.filter(doc => doc.uid !== this.uid);
+            let allDocuments: Array<DocumentInfoModel> = privateDocuments.concat(publicDocuments).concat(sharedDocuments);
+            // building the lists without the opened image, so user cant open it twice
+            allDocuments.forEach((docInfo) => {
+              this.documentService.getDocumentDatasByDocumentInfoId(docInfo.id!, this.uid).subscribe((docData: DocumentDataModel[]) => {
+                if (docInfo.id == docData[0].infoId) {
+                  if (this.documentId != docData[0].id) {
+                    this.addedDocsData.push(docData[0]);
+                    this.addedDocsInfo.push(docInfo);
+                  } else {
+                    this.firstTitle = docInfo.title!;
+                  }
                 }
-              }
-              this.filteredDocsData = this.addedDocsData;
+                this.filteredDocsData = this.addedDocsData;
+              });
             });
           });
         });

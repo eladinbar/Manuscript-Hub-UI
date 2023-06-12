@@ -62,16 +62,26 @@ export class DashboardComponent implements OnInit {
         return doc;
       });
 
-      this.documentService.getAllPublicDocumentInfos().subscribe((docs: Array<DocumentInfoModel>) => {
-        let publicDocuments: Array<DocumentInfoModel> = docs.filter(doc => doc.uid !== this.uid);
+      this.documentService.getAllSharedImageInfosByUid(this.uid!).subscribe((docs: Array<DocumentInfoModel>) => {
+        let sharedDocuments: Array<DocumentInfoModel> = docs.filter(doc => doc.uid !== this.uid);
 
-        publicDocuments.forEach(doc => {
+        sharedDocuments.forEach(doc => {
           doc.createdTime = new Date(doc.createdTime!);
           doc.updatedTime = new Date(doc.updatedTime!);
           doc.publicationDate = doc.publicationDate ? new Date(doc.publicationDate) : undefined;
         });
 
-        this.setDataToTable(privateDocuments.concat(publicDocuments));
+        this.documentService.getAllPublicDocumentInfos().subscribe((docs: Array<DocumentInfoModel>) => {
+          let publicDocuments: Array<DocumentInfoModel> = docs.filter(doc => doc.uid !== this.uid);
+
+          publicDocuments.forEach(doc => {
+            doc.createdTime = new Date(doc.createdTime!);
+            doc.updatedTime = new Date(doc.updatedTime!);
+            doc.publicationDate = doc.publicationDate ? new Date(doc.publicationDate) : undefined;
+          });
+
+          this.setDataToTable(privateDocuments.concat(publicDocuments).concat(sharedDocuments));
+        });
       });
     });
   }
@@ -156,13 +166,13 @@ export class DashboardComponent implements OnInit {
     const sharedUserEmails: Array<String> = [];
 
     shareDialogRef.afterClosed().subscribe((emailsToShare: string[]): void => {
-      if (updatedDocumentInfo.sharedUserIds && emailsToShare) {
+      if (emailsToShare) {
         updatedDocumentInfo.privacy = PrivacyEnum.Shared;
-        for (let email in emailsToShare)
+        for (let email of emailsToShare)
           sharedUserEmails.push(email);
         this.documentService.shareDocument(updatedDocumentInfo, sharedUserEmails).subscribe((updatedDocumentInfo: DocumentInfoModel): void => {
-          documentInfo.privacy = updatedDocumentInfo.privacy;
-          documentInfo.sharedUserIds = updatedDocumentInfo.sharedUserIds;
+          if (updatedDocumentInfo.privacy)
+            documentInfo.privacy = updatedDocumentInfo.privacy;
         });
       }
     });

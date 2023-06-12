@@ -56,11 +56,11 @@ export class AlgorithmService {
       }));
   }
 
-  deleteAnnotation(annotationId: string) {
+  deleteAnnotation(annotationId: string, uid: string, documentId: string) {
     const headers: HttpHeaders = new HttpHeaders();
     headers.set('Content-Type', 'application/json');
 
-    return from(this.http.delete(`${environment.baseUrl}${environment.RESOURCE_DELETE_ANNOTATION}/${annotationId}`, {headers: headers, responseType:"text"}))
+    return from(this.http.delete(`${environment.baseUrl}${environment.RESOURCE_DELETE_ANNOTATION}/${annotationId}/${uid}/${documentId}`, {headers: headers, responseType:"text"}))
       .pipe(map((res: string) => {
         this.townCrier.info(res);
         return of(true);

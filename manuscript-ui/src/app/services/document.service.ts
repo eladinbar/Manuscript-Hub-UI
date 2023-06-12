@@ -65,7 +65,7 @@ export class DocumentService {
     headers.append('Content-Type', 'multipart/form-data');
 
     this.townCrier.info("Please wait while document info is being updated...");
-    return from(this.http.patch<DocumentInfoModel>(`${environment.baseUrl}${environment.RESOURCE_UPDATE_DOCUMENT_INFO}/${sharedUserEmails}`, documentInfo, {headers: headers}))
+    return from(this.http.patch<DocumentInfoModel>(`${environment.baseUrl}${environment.RESOURCE_SHARE_DOCUMENT}/${sharedUserEmails}`, documentInfo, {headers: headers}))
       .pipe(map((documentInfo: DocumentInfoModel) => {
         this.townCrier.info("The document has been shared successfully.");
         return documentInfo;
@@ -88,10 +88,21 @@ export class DocumentService {
   }
 
   getAllDocumentInfosByUid(uid: string) {
-    return from(this.http.get<DocumentInfoModel>(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_DOCUMENT_INFOS_BY_UID}/${uid}`))
-      .pipe(map((documentInfoModel: DocumentInfoModel) => {
+    return from(this.http.get<Array<DocumentInfoModel>>(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_DOCUMENT_INFOS_BY_UID}/${uid}`))
+      .pipe(map((documentInfoModels: Array<DocumentInfoModel>) => {
         this.townCrier.info("All documents retrieved successfully.");
-        return documentInfoModel;
+        return documentInfoModels;
+      }), catchError(errorRes => {
+        this.townCrier.error(errorRes.error);
+        return this.restErrorsHandlerService.handleRequestError(errorRes);
+      }));
+  }
+
+  getAllSharedImageInfosByUid(uid: string) {
+    return from(this.http.get<DocumentInfoModel[]>(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_SHARED_DOCUMENT_INFOS_BY_UID}/${uid}`))
+      .pipe(map((documentInfoModels: DocumentInfoModel[]) => {
+        this.townCrier.info("All shared documents retrieved successfully.");
+        return documentInfoModels;
       }), catchError(errorRes => {
         this.townCrier.error(errorRes.error);
         return this.restErrorsHandlerService.handleRequestError(errorRes);
