@@ -90,7 +90,7 @@ export class DocumentService {
   getAllDocumentInfosByUid(uid: string) {
     return from(this.http.get<Array<DocumentInfoModel>>(`${environment.baseUrl}${environment.RESOURCE_GET_ALL_DOCUMENT_INFOS_BY_UID}/${uid}`))
       .pipe(map((documentInfoModels: Array<DocumentInfoModel>) => {
-        this.townCrier.info("All documents retrieved successfully.");
+        this.townCrier.info("All public documents retrieved successfully.");
         return documentInfoModels;
       }), catchError(errorRes => {
         this.townCrier.error(errorRes.error);
