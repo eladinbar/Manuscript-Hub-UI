@@ -44,7 +44,7 @@ export class DocumentDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.getAllAnnotations();
 
-    // this.getAllAlgorithms();
+    this.getAllAlgorithms();
 
     this.getDocumentById();
   }
@@ -372,6 +372,7 @@ export class DocumentDetailsComponent implements OnInit {
   }
 
   selectAlgorithm(algorithm: AlgorithmModel): void {
+    algorithm.imageDataId = this.documentId;
     this.algorithmService.runAlgorithm(algorithm).subscribe();
   }
 
