@@ -75,6 +75,18 @@ export class DocumentService {
       }));
   }
 
+  getSharedEmailsByDocumentInfoId(imageInfoId: string, ownerUid: string) {
+    this.townCrier.info("Retrieving all shared emails for this document please wait...");
+    return from(this.http.get<Array<string>>(`${environment.baseUrl}${environment.RESOURCE_GET_SHARED_EMAILS_BY_DOCUMENT_INFO_ID}/${imageInfoId}/${ownerUid}`))
+      .pipe(map((emails: any) => {
+        this.townCrier.info("All shared emails for this document retrieved successfully.");
+        return emails;
+      }), catchError(errorRes => {
+        this.townCrier.error(errorRes.error);
+        return this.restErrorsHandlerService.handleRequestError(errorRes);
+      }));
+  }
+
   getDocumentDataById(id: string, uid: string) {
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_DATA_BY_ID}/${id}/${uid}`, {responseType: 'blob'}))
       .pipe(map((res: any) => {

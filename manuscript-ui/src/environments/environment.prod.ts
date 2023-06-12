@@ -27,6 +27,7 @@ export const environment = {
   RESOURCE_GET_ALL_DOCUMENT_INFOS_BY_UID: "/api/document/getAllDocumentInfosByUid",
   RESOURCE_GET_ALL_PUBLIC_DOCUMENT_INFOS: "/api/document/getAllPublicDocumentInfos",
   RESOURCE_GET_ALL_SHARED_DOCUMENT_INFOS_BY_UID: "/api/document/getAllSharedDocumentInfosByUid",
+  RESOURCE_GET_SHARED_EMAILS_BY_DOCUMENT_INFO_ID: "/api/document/getAllSharedEmailsByDocumentInfoId",
   RESOURCE_GET_IMAGE_INFO_BY_TEXT_SEARCH: "/api/document/getImageInfoByTextSearch",
   RESOURCE_DELETE_DOCUMENT_INFO_BY_ID: "/api/document/deleteDocumentInfoById",
 

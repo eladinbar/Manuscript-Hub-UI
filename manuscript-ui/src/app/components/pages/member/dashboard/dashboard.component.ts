@@ -159,22 +159,28 @@ export class DashboardComponent implements OnInit {
   }
 
   shareDocument(documentInfo: DocumentInfoModel, updatedDocumentInfo: DocumentInfoModel) {
-    const shareDialogRef: MatDialogRef<ShareDocumentDialogComponent> = this.dialog.open(ShareDocumentDialogComponent, {
-      width: '500px',
-    });
+    let sharedEmails: Array<string> = [];
+    this.documentService.getSharedEmailsByDocumentInfoId(documentInfo.id!, this.uid!).subscribe((emails: Array<string>) => {
+      sharedEmails = emails;
 
-    const sharedUserEmails: Array<String> = [];
+      const shareDialogRef: MatDialogRef<ShareDocumentDialogComponent> = this.dialog.open(ShareDocumentDialogComponent, {
+        width: '500px',
+        data: sharedEmails
+      });
 
-    shareDialogRef.afterClosed().subscribe((emailsToShare: string[]): void => {
-      if (emailsToShare) {
-        updatedDocumentInfo.privacy = PrivacyEnum.Shared;
-        for (let email of emailsToShare)
-          sharedUserEmails.push(email);
-        this.documentService.shareDocument(updatedDocumentInfo, sharedUserEmails).subscribe((updatedDocumentInfo: DocumentInfoModel): void => {
-          if (updatedDocumentInfo.privacy)
-            documentInfo.privacy = updatedDocumentInfo.privacy;
-        });
-      }
+      const sharedUserEmails: Array<string> = [];
+
+      shareDialogRef.afterClosed().subscribe((emailsToShare: string[]): void => {
+        if (emailsToShare) {
+          updatedDocumentInfo.privacy = PrivacyEnum.Shared;
+          for (let email of emailsToShare)
+            sharedUserEmails.push(email);
+          this.documentService.shareDocument(updatedDocumentInfo, sharedUserEmails).subscribe((updatedDocumentInfo: DocumentInfoModel): void => {
+            if (updatedDocumentInfo.privacy)
+              documentInfo.privacy = updatedDocumentInfo.privacy;
+          });
+        }
+      });
     });
   }
 

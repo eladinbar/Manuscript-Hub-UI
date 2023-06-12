@@ -13,6 +13,7 @@ export class ShareDocumentDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ShareDocumentDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.emailFormControl = new FormControl('', [Validators.required, Validators.email]);
+    this.userEmails = data;
   }
 
   ngOnInit(): void {}
