@@ -4,7 +4,6 @@ import {Injectable} from '@angular/core';
   providedIn: 'root'
 })
 export class DateService {
-
   toFormattedDate(timestamp: string): string {
     let date: Date = new Date(timestamp),
       month: string = this.validateDateDigits('' + (date.getMonth() + 1)),

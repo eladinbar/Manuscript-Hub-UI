@@ -10,6 +10,11 @@ export const environment = {
   // Account
   RESOURCE_LOGIN: "/api/account/login",
 
+  // User
+  RESOURCE_GET_USER_BY_ID: "/api/user/getUserById",
+  RESOURCE_GET_USER_BY_UID: "/api/user/getUserByUid",
+  RESOURCE_GET_ROLE: "/api/user/getRole/",
+
   // Invitation Request
   RESOURCE_CREATE_INVITATION_REQUEST: "/api/invitation/createInvitation/",
   RESOURCE_APPROVE_INVITATION_REQUEST: "/api/invitation/approveInvitationRequest/",

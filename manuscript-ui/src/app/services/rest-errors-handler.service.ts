@@ -5,9 +5,7 @@ import {Observable, of} from "rxjs";
   providedIn: 'root'
 })
 export class RestErrorsHandlerService {
-
-  constructor() {
-  }
+  constructor() {  }
 
   handleRequestError(errorRes: any): Observable<any> {
     if (errorRes.error !== undefined) {
@@ -18,7 +16,7 @@ export class RestErrorsHandlerService {
     return of(errorRes);
   }
 
-  showError(errorMessage: string) {
+  showError(errorMessage: string): void {
     console.log(errorMessage)
   }
 }

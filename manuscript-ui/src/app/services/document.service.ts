@@ -34,7 +34,7 @@ export class DocumentService {
     headers.append('Content-Type', 'multipart/form-data');
 
     return from(this.http.post(`${environment.baseUrl}${environment.RESOURCE_UPLOAD_DOCUMENT_DATA}/${id}/${uid}`, data, {headers: headers, responseType: "text"}))
-      .pipe(map((res: any) => {
+      .pipe(map((res: string) => {
         this.townCrier.info(res);
         this.router.navigate(['/' + RouterEnum.Dashboard]);
         return of(true);
@@ -89,9 +89,9 @@ export class DocumentService {
 
   getDocumentDataById(id: string, uid: string) {
     return from(this.http.get(`${environment.baseUrl}${environment.RESOURCE_GET_DOCUMENT_DATA_BY_ID}/${id}/${uid}`, {responseType: 'blob'}))
-      .pipe(map((res: any) => {
+      .pipe(map((document: any) => {
         this.townCrier.info("The document has been loaded successfully.");
-        return res;
+        return document;
       }), catchError(errorRes => {
         this.townCrier.error(errorRes.error);
         this.router.navigate(['/' + RouterEnum.Dashboard]);

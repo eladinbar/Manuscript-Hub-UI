@@ -2,19 +2,16 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
-import {map, shareReplay} from "rxjs/operators";
+import {map} from "rxjs/operators";
 import {RoleEnum} from "../../enums/RoleEnum";
 import {CryptoService} from "../crypto.service";
 import {UserModel} from "../../models/UserModel";
+import {InvitationRequestModel} from "../../models/InvitationRequestModel";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  invitationUrl = 'api/invitation';
-  userApiUrl = 'api/user';
-  private roleResult$: Observable<any> | undefined;
-
   constructor(private http: HttpClient, public cryptoService: CryptoService) { }
 
   registerNewUser(email: string, uid: string, name: string, phoneNumber: string, role: RoleEnum): Observable<any> {
@@ -26,8 +23,7 @@ export class AccountService {
       role: role
     };
 
-    // return this.http.post(`${environment.baseUrl}/${this.controller}/register`, data);
-    return this.http.post(`${environment.baseUrl}/${this.invitationUrl}/createInvitation`, user);
+    return this.http.post<InvitationRequestModel[]>(`${environment.baseUrl}${environment.RESOURCE_CREATE_INVITATION_REQUEST}`, user);
   }
 
   authenticateUser(uid: string, email: string, name: string, token: string): Observable<any> {
@@ -51,48 +47,10 @@ export class AccountService {
   }
 
   getUserById(id: string) {
-    return this.http.get<UserModel>(`${environment.baseUrl}/${this.userApiUrl}/getUserById/${id}`);
+    return this.http.get<UserModel>(`${environment.baseUrl}${environment.RESOURCE_GET_USER_BY_ID}/${id}`);
   }
 
   getUserByUid(uid: string) {
-    return this.http.get<UserModel>(`${environment.baseUrl}/${this.userApiUrl}/getUserByUid/${uid}`);
-  }
-
-  getUserAuthRole(): Observable<string> {
-    return this.http.get<string>(`${environment.baseUrl}/${this.invitationUrl}/getRole`);
-  }
-
-  public getSession(): Promise<boolean> {
-    const session = localStorage.getItem('token');
-    return new Promise((resolve, reject) => {
-      if (session) {
-        return resolve(true);
-      } else {
-        return reject(false);
-      }
-    });
-  }
-
-  public getUserRoles(): Observable<any> {
-    if (!this.roleResult$) {
-      this.roleResult$ = this.http
-        .get(`${environment.baseUrl}/api/user/getRole`)
-        .pipe(map((res: any) => {
-          // res.push(RoleEnum.Guest);
-          return res;
-        }), shareReplay(1));
-    }
-    return this.roleResult$;
-  }
-
-  public areUserRolesAllowed(userRoles: string[], allowedUserRoles: RoleEnum[]): boolean {
-    for (const role of userRoles) {
-      for (const allowedRole of allowedUserRoles) {
-        if (role.toLowerCase() === allowedRole.toLowerCase()) {
-          return true;
-        }
-      }
-    }
-    return false;
+    return this.http.get<UserModel>(`${environment.baseUrl}${environment.RESOURCE_GET_USER_BY_UID}/${uid}`);
   }
 }

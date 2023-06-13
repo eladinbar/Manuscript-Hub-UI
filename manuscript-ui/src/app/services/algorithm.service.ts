@@ -13,7 +13,6 @@ import {AnnotationModel} from "../models/AnnotationModel";
   providedIn: 'root'
 })
 export class AlgorithmService {
-
   constructor(private http: HttpClient, private router: Router,
               private restErrorsHandlerService: RestErrorsHandlerService, private townCrier: TownCrierService) {  }
 

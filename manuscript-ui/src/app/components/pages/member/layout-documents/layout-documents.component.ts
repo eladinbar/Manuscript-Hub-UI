@@ -48,15 +48,15 @@ export class LayoutDocumentsComponent implements OnInit {
 
   getAllDocIds() {
     this.documentService.getAllDocumentInfosByUid(this.uid).subscribe({
-      next: (documentInfoModels: DocumentInfoModel[]) => {
+      next: (documentInfoModels: DocumentInfoModel[]): void => {
         let privateDocuments: Array<DocumentInfoModel> = documentInfoModels;
-        this.documentService.getAllSharedImageInfosByUid(this.uid).subscribe((docs: Array<DocumentInfoModel>) => {
-          let sharedDocuments: Array<DocumentInfoModel> = docs.filter(doc => doc.uid !== this.uid);
-          this.documentService.getAllPublicDocumentInfos().subscribe((docs: Array<DocumentInfoModel>) => {
-            let publicDocuments: Array<DocumentInfoModel> = docs.filter(doc => doc.uid !== this.uid);
+        this.documentService.getAllSharedImageInfosByUid(this.uid).subscribe((docs: Array<DocumentInfoModel>): void => {
+          let sharedDocuments: Array<DocumentInfoModel> = docs.filter((doc: DocumentInfoModel): boolean => doc.uid !== this.uid);
+          this.documentService.getAllPublicDocumentInfos().subscribe((docs: Array<DocumentInfoModel>): void => {
+            let publicDocuments: Array<DocumentInfoModel> = docs.filter((doc: DocumentInfoModel): boolean => doc.uid !== this.uid);
             let allDocuments: Array<DocumentInfoModel> = privateDocuments.concat(publicDocuments).concat(sharedDocuments);
             // building the lists without the opened image, so user cant open it twice
-            allDocuments.forEach((docInfo) => {
+            allDocuments.forEach((docInfo: DocumentInfoModel): void => {
               this.documentService.getDocumentDatasByDocumentInfoId(docInfo.id!, this.uid).subscribe((docData: DocumentDataModel[]) => {
                 if (docInfo.id == docData[0].infoId) {
                   if (this.documentId != docData[0].id) {
@@ -80,14 +80,14 @@ export class LayoutDocumentsComponent implements OnInit {
       this.townCrier.info('Loading document...');
       this.addedDocIds.push(nextDoc.id!);
       // Remove newly added image from search options
-      this.filteredDocsData = this.filteredDocsData.filter(doc => doc.infoId !== nextDoc.infoId);
+      this.filteredDocsData = this.filteredDocsData.filter((doc: DocumentDataModel): boolean => doc.infoId !== nextDoc.infoId);
 
-      this.documentService.getAllDocumentInfosByUid(this.uid).subscribe((documentInfoModels: Array<DocumentInfoModel>) => {
+      this.documentService.getAllDocumentInfosByUid(this.uid).subscribe((documentInfoModels: Array<DocumentInfoModel>): void => {
         let privateDocuments: Array<DocumentInfoModel> = documentInfoModels;
-        this.documentService.getAllPublicDocumentInfos().subscribe((docs: Array<DocumentInfoModel>) => {
-          let publicDocuments: Array<DocumentInfoModel> = docs.filter(doc => doc.uid !== this.uid);
+        this.documentService.getAllPublicDocumentInfos().subscribe((docs: Array<DocumentInfoModel>): void => {
+          let publicDocuments: Array<DocumentInfoModel> = docs.filter((doc: DocumentInfoModel): boolean => doc.uid !== this.uid);
           let allDocuments: Array<DocumentInfoModel> = privateDocuments.concat(publicDocuments);
-          allDocuments.forEach((docInfo: DocumentInfoModel) => {
+          allDocuments.forEach((docInfo: DocumentInfoModel): void => {
             if (docInfo.id == nextDoc.infoId) {
               // Add the title to the list of added document titles
               this.addedDocTitles.push(docInfo.title);
@@ -107,16 +107,16 @@ export class LayoutDocumentsComponent implements OnInit {
     return this.addedDocsData.some((addedDoc: DocumentDataModel): boolean => addedDoc.infoId === infoId);
   }
 
-  handleSearch(event: any) {
-    const searchTerm = event.target.value.toLowerCase().trim();
+  handleSearch(event: any): void {
+    const searchTerm: string = event.target.value.toLowerCase().trim();
 
-    this.filteredDocsData = this.addedDocsData.filter((docData: DocumentDataModel) => {
-      const docInfo = this.addedDocsInfo.find(info => info.id === docData.infoId);
+    this.filteredDocsData = this.addedDocsData.filter((docData: DocumentDataModel): boolean => {
+      const docInfo: DocumentInfoModel | undefined = this.addedDocsInfo.find((info: DocumentInfoModel): boolean => info.id === docData.infoId);
       if (docInfo) {
-        const title = docInfo.title.toLowerCase();
-        const include = title.includes(searchTerm);
-        const starts = title.startsWith(searchTerm);
-        return include || starts;
+        const title: string = docInfo.title.toLowerCase();
+        const includes: boolean = title.includes(searchTerm);
+        const starts: boolean = title.startsWith(searchTerm);
+        return includes || starts;
       }
       return false;
     });
@@ -126,7 +126,7 @@ export class LayoutDocumentsComponent implements OnInit {
     const filteredTitles: string[] = [];
 
     for (const docData of this.filteredDocsData) {
-      const matchingInfo = this.addedDocsInfo.find(info => info.id === docData.infoId);
+      const matchingInfo: DocumentInfoModel | undefined = this.addedDocsInfo.find(info => info.id === docData.infoId);
       if (matchingInfo) {
         filteredTitles.push(matchingInfo.title);
       }

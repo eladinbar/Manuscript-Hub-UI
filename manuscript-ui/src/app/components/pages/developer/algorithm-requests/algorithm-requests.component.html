@@ -61,10 +61,10 @@
             <button mat-raised-button color="primary" *ngIf="algorithmRequest.status === 'Declined' || algorithmRequest.status === 'Pending' && role == 'Admin'"
                     (click)="approveRequest(algorithmRequest)">Approve
             </button>
-            <button mat-raised-button color="primary" *ngIf="algorithmRequest.status === 'Approved'  && role == 'Admin'"
+            <button mat-raised-button color="primary" *ngIf="algorithmRequest.status === 'Approved' && role == 'Admin'"
                     (click)="approveRequest(algorithmRequest)">Cloud Staging
             </button>
-            <button mat-raised-button color="primary" *ngIf="algorithmRequest.status === 'CloudStaging'  && role == 'Admin'"
+            <button mat-raised-button color="primary" *ngIf="algorithmRequest.status === 'CloudStaging' && role == 'Admin'"
                     (click)="approveRequest(algorithmRequest)">Trial
             </button>
             <button mat-raised-button color="primary" *ngIf="algorithmRequest.status === 'Trial' && role == 'Admin'"

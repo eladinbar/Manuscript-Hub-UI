@@ -118,8 +118,9 @@ export class AlgorithmRequestsComponent implements OnInit {
           url: algorithmRequest.repository,
           status: newStatus,
         };
-        this.algorithmService.updateAlgorithm(algorithm).subscribe(() => {
-          algorithmRequest.status = newStatus;
+        this.algorithmService.updateAlgorithm(algorithm).subscribe((algorithm: AlgorithmModel) => {
+          if(algorithm.status && Object.values(AlgorithmStatusEnum).includes(algorithm.status) && algorithm.status === newStatus)
+            algorithmRequest.status = newStatus;
         });
       }
     });
@@ -146,7 +147,8 @@ export class AlgorithmRequestsComponent implements OnInit {
           status: AlgorithmStatusEnum.Declined,
         }
         this.algorithmService.updateAlgorithm(algorithm).subscribe(() => {
-          algorithmRequest.status = AlgorithmStatusEnum.Declined;
+          if(algorithm.status && Object.values(AlgorithmStatusEnum).includes(algorithm.status) && algorithm.status === AlgorithmStatusEnum.Declined)
+            algorithmRequest.status = AlgorithmStatusEnum.Declined;
         });
       }
     });
@@ -172,7 +174,8 @@ export class AlgorithmRequestsComponent implements OnInit {
           status: AlgorithmStatusEnum.Inactive,
         }
         this.algorithmService.updateAlgorithm(algorithm).subscribe(() => {
-          algorithmRequest.status = AlgorithmStatusEnum.Inactive;
+          if(algorithm.status && Object.values(AlgorithmStatusEnum).includes(algorithm.status) && algorithm.status === AlgorithmStatusEnum.Inactive)
+            algorithmRequest.status = AlgorithmStatusEnum.Inactive;
         });
       }
     });
