@@ -21,10 +21,10 @@ export class AlgorithmService {
     headers.append('Content-Type', 'multipart/form-data');
 
     this.townCrier.info("Running algorithm, please wait while it is being initiated...");
-    return from(this.http.post<AlgorithmModel>(`${environment.baseUrl}${environment.RESOURCE_RUN_ALGORITHM}`, algorithmModel, {headers: headers}))
-      .pipe(map((algorithm: AlgorithmModel) => {
-          this.townCrier.info("Algorithm initiated successfully.");
-          return algorithm;
+    return from(this.http.post(`${environment.baseUrl}${environment.RESOURCE_RUN_ALGORITHM}`, algorithmModel, {headers: headers, responseType:"text"}))
+      .pipe(map((message: string) => {
+          this.townCrier.info(message);
+          return message;
         }),
         catchError((errorRes: HttpErrorResponse) => {
           this.townCrier.error(errorRes.error);
