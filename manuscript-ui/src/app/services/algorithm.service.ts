@@ -8,6 +8,7 @@ import {environment} from "../../environments/environment";
 import {RouterEnum} from "../enums/RouterEnum";
 import {AlgorithmModel} from "../models/AlgorithmModel";
 import {AnnotationModel} from "../models/AnnotationModel";
+import {AlgorithmStatusEnum} from "../enums/AlgorithmStatusEnum";
 
 @Injectable({
   providedIn: 'root'
@@ -87,8 +88,17 @@ export class AlgorithmService {
   }
 
   updateAlgorithm(algorithmModel: AlgorithmModel) {
+    if (algorithmModel.status === AlgorithmStatusEnum.Trial)
+      this.townCrier.info("Algorithm is being dockerized, please wait, this may take a while...");
+
     return from(this.http.patch<AlgorithmModel>(`${environment.baseUrl}${environment.RESOURCE_UPDATE_ALGORITHM}`, algorithmModel))
       .pipe(map((algorithm: AlgorithmModel) => {
+          if (algorithmModel.status === AlgorithmStatusEnum.Trial)
+            this.townCrier.info("Algorithm dockerized successfully.\nAlgorithm can now be run by admins and the owning developer.");
+          else if (algorithmModel.status === AlgorithmStatusEnum.Production)
+            this.townCrier.info("Algorithm updated successfully.\nAlgorithm can now be run by all users in the system.");
+          else
+            this.townCrier.info("Algorithm updated successfully.");
           return algorithm;
         }),
         catchError((errorRes: HttpErrorResponse) => {

@@ -76,25 +76,31 @@ export class AlgorithmRequestsComponent implements OnInit {
   approveRequest(algorithmRequest: AlgorithmRequestTable): void {
     let newStatus: AlgorithmStatusEnum;
     let newButtonText: string;
+    let newText: string;
+    const promptTextTemplate: string = "The algorithm request status will be set to ";
 
     switch (algorithmRequest.status) {
       case AlgorithmStatusEnum.Declined:
       case AlgorithmStatusEnum.Pending:
         newStatus = AlgorithmStatusEnum.Approved;
-        newButtonText = 'Approved';
+        newButtonText = 'Approve';
+        newText = promptTextTemplate + "Approved.";
         break;
       case AlgorithmStatusEnum.Approved:
         newStatus = AlgorithmStatusEnum.CloudStaging;
         newButtonText = 'Cloud Staging';
+        newText = promptTextTemplate + "Cloud Staging.";
         break;
       case AlgorithmStatusEnum.CloudStaging:
         newStatus = AlgorithmStatusEnum.Trial;
         newButtonText = 'Trial';
+        newText = promptTextTemplate + "Trial.\nAlgorithms in Trial will be dockerized and available for use to admins and the owning developer.";
         break;
       case AlgorithmStatusEnum.Trial:
       case AlgorithmStatusEnum.Inactive:
         newStatus = AlgorithmStatusEnum.Production;
         newButtonText = 'Production';
+        newText = promptTextTemplate + "Production.\nAlgorithms in Production will be available to all users using the system.";
         break;
       default:
         return;
@@ -102,7 +108,7 @@ export class AlgorithmRequestsComponent implements OnInit {
 
     Swal.fire({
       title: 'Accept Algorithm Request',
-      text: `The algorithm request status will be set to ${newButtonText}.`,
+      text: newText,
       icon: 'info',
       showCancelButton: true,
       confirmButtonText: newButtonText,
