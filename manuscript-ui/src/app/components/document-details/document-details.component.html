@@ -1,6 +1,10 @@
 <div class="centered-container">
   <h2 class="centered">{{ title }}</h2>
   <div class="button-container">
+    <!-- Loading spinner icon -->
+    <div *ngIf="isLoading">
+      <mat-spinner [diameter]="20"></mat-spinner>
+    </div>
 
     <!--  Annotate with algorithm  -->
     <button mat-icon-button [matMenuTriggerFor]="algorithmMenu" (mouseenter)="annIsHovered = true" (mouseleave)="annIsHovered = false">

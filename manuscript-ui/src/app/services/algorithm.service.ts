@@ -21,11 +21,11 @@ export class AlgorithmService {
     const headers: HttpHeaders = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
 
-    this.townCrier.info("Running algorithm, please wait while it is being initiated...");
-    return from(this.http.post(`${environment.baseUrl}${environment.RESOURCE_RUN_ALGORITHM}`, algorithmModel, {headers: headers, responseType:"text"}))
-      .pipe(map((message: string) => {
-          this.townCrier.info(message);
-          return message;
+    this.townCrier.info("Running algorithm, please wait while it is being executed...");
+    return from(this.http.post<AnnotationModel[]>(`${environment.baseUrl}${environment.RESOURCE_RUN_ALGORITHM}`, algorithmModel, {headers: headers}))
+      .pipe(map((annotations: AnnotationModel[]) => {
+          this.townCrier.info("Algorithm executed successfully.");
+          return annotations;
         }),
         catchError((errorRes: HttpErrorResponse) => {
           this.townCrier.error(errorRes.error);

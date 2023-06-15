@@ -22,6 +22,7 @@ import {AlgorithmService} from "../../services/algorithm.service";
 export class DocumentDetailsComponent implements OnInit {
   NIL: string = "00000000-0000-0000-0000-000000000000";
   algorithms: Array<AlgorithmModel> = [];
+  isLoading: boolean = false;
 
   @Input() uid: string = '';
   @Input() documentId: string = '';
@@ -30,7 +31,7 @@ export class DocumentDetailsComponent implements OnInit {
   coordinates: AnnotationCoordinatesModel[] = [];
   annotations: AnnotationModel[] = [];
 
-  image = new Image();
+  image: HTMLImageElement = new Image();
 
   @ViewChild('canvas', {static: true}) canvas?: ElementRef;
   ctx?: CanvasRenderingContext2D;
@@ -373,8 +374,11 @@ export class DocumentDetailsComponent implements OnInit {
 
   selectAlgorithm(algorithm: AlgorithmModel): void {
     algorithm.imageDataId = this.documentId;
-    this.algorithmService.runAlgorithm(algorithm).subscribe(() => {
+    this.isLoading = true;
+    this.algorithmService.runAlgorithm(algorithm).subscribe((annotationModels: AnnotationModel[]) => {
+      this.annotations.concat(annotationModels);
       algorithm.imageDataId = undefined;
+      this.isLoading = false;
     });
   }
 

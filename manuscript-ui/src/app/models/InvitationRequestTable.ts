@@ -6,6 +6,7 @@ export class InvitationRequestTable {
   public name?: string;
   public role?: RoleEnum;
   public invitationEnum!: InvitationEnum;
+  public isLoading?: boolean = false;
 
   constructor(requestModel: InvitationRequestTable) {
     Object.assign(this, requestModel, {});

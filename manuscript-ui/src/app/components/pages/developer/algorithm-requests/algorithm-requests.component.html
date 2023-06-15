@@ -6,6 +6,14 @@
   <div class="modal-content">
     <div class="modal-body">
       <table [dataSource]="dataSource" class="mat-elevation-z8 col-12" mat-table matSort>
+        <!-- Loading circle icon column -->
+        <ng-container matColumnDef="loading">
+          <th class="text-center" mat-header-cell *matHeaderCellDef style="width: 40px;"></th>
+          <td mat-cell *matCellDef="let algorithmRequest">
+            <div *ngIf="algorithmRequest.isLoading" class="loading-circle"></div>
+          </td>
+        </ng-container>
+
         <!--  Email column  -->
         <ng-container matColumnDef="email">
           <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header style="font-size: 18px; color: black;">
@@ -82,11 +90,13 @@
           </td>
         </ng-container>
 
-        <!--  Item display count row  -->
         <tr *matHeaderRowDef="tableCols; sticky: true" mat-header-row></tr>
         <tr *matRowDef="let row; columns: tableCols;" [ngClass]="{'highlight': row.status === 'Approved'}" mat-row></tr>
       </table>
+
+      <!--  Item display count row  -->
       <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+
     </div>
   </div>
 </div>

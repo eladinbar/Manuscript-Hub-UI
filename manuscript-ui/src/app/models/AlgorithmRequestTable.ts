@@ -8,6 +8,7 @@ export class AlgorithmRequestTable {
   public modelType!: ModelTypeEnum;
   public repository!: string;
   public status!: AlgorithmStatusEnum;
+  public isLoading?: boolean = false;
 
   constructor(requestModel: AlgorithmRequestTable) {
     Object.assign(this, requestModel);

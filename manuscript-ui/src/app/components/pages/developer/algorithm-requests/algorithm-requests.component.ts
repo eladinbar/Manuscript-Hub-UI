@@ -23,7 +23,7 @@ export class AlgorithmRequestsComponent implements OnInit {
   dataSource: MatTableDataSource<AlgorithmRequestTable> = new MatTableDataSource<AlgorithmRequestTable>();
   @ViewChild(MatSort, {static: false}) sort!: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
-  tableCols: string[] = ['email', 'title', 'description', 'modelType', 'repository', 'status', 'edit'];
+  tableCols: string[] = ['loading', 'email', 'title', 'description', 'modelType', 'repository', 'status', 'edit'];
   @ViewChild('assignAlgorithmModal') assignModal?: ElementRef;
   message: string = '';
   uid!: string;
@@ -124,9 +124,11 @@ export class AlgorithmRequestsComponent implements OnInit {
           url: algorithmRequest.repository,
           status: newStatus,
         };
+        algorithmRequest.isLoading = true;
         this.algorithmService.updateAlgorithm(algorithm).subscribe((algorithm: AlgorithmModel) => {
           if(algorithm.status && Object.values(AlgorithmStatusEnum).includes(algorithm.status) && algorithm.status === newStatus)
             algorithmRequest.status = newStatus;
+          algorithmRequest.isLoading = false;
         });
       }
     });
@@ -152,9 +154,11 @@ export class AlgorithmRequestsComponent implements OnInit {
           url: algorithmRequest.repository,
           status: AlgorithmStatusEnum.Declined,
         }
-        this.algorithmService.updateAlgorithm(algorithm).subscribe(() => {
+        algorithmRequest.isLoading = true;
+        this.algorithmService.updateAlgorithm(algorithm).subscribe((): void => {
           if(algorithm.status && Object.values(AlgorithmStatusEnum).includes(algorithm.status) && algorithm.status === AlgorithmStatusEnum.Declined)
             algorithmRequest.status = AlgorithmStatusEnum.Declined;
+          algorithmRequest.isLoading = false;
         });
       }
     });
@@ -179,9 +183,11 @@ export class AlgorithmRequestsComponent implements OnInit {
           url: algorithmRequest.repository,
           status: AlgorithmStatusEnum.Inactive,
         }
-        this.algorithmService.updateAlgorithm(algorithm).subscribe(() => {
+        algorithmRequest.isLoading = true;
+        this.algorithmService.updateAlgorithm(algorithm).subscribe((): void => {
           if(algorithm.status && Object.values(AlgorithmStatusEnum).includes(algorithm.status) && algorithm.status === AlgorithmStatusEnum.Inactive)
             algorithmRequest.status = AlgorithmStatusEnum.Inactive;
+          algorithmRequest.isLoading = false;
         });
       }
     });

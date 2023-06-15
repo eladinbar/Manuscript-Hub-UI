@@ -18,9 +18,9 @@ export class InvitationsComponent implements OnInit {
   dataSource: MatTableDataSource<InvitationRequestTable> = new MatTableDataSource<InvitationRequestTable>();
   @ViewChild(MatSort, {static: false}) sort!: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
-  tableCols = ['email', 'name', 'role', 'invitationEnum', 'edit'];
+  tableCols: string[] = ['loading', 'email', 'name', 'role', 'invitationEnum', 'edit'];
   @ViewChild('assignStationModal') assignModal?: ElementRef;
-  message = '';
+  message: string = '';
 
   constructor(private route: ActivatedRoute, private invitationService: InvitationsService) { }
 
@@ -29,13 +29,13 @@ export class InvitationsComponent implements OnInit {
   }
 
   fetchTableData(): void {
-    this.invitationService.getAllInvitations().subscribe(res => {
-        this.tableElements = res;
-        this.initDataSource(res);
-      });
+    this.invitationService.getAllInvitations().subscribe((invitationRequests: InvitationRequestTable[]): void => {
+      this.tableElements = invitationRequests;
+      this.initDataSource();
+    });
   }
 
-  private initDataSource(res: Array<InvitationRequestTable>): void {
+  private initDataSource(): void {
     this.dataSource = new MatTableDataSource<InvitationRequestTable>(this.tableElements);
     this.dataSource.sort = this.sort!;
     this.dataSource.paginator = this.paginator;
@@ -52,12 +52,14 @@ export class InvitationsComponent implements OnInit {
       confirmButtonColor: '#051390'
     }).then((result) => {
       if (result.value) {
-        this.invitationService.approveRequest(invitationRequest.email!).subscribe(res => {
-            if (res) {
-              this.tableElements = res;
-              this.dataSource.data = res;
-            }
-          });
+        invitationRequest.isLoading = true;
+        this.invitationService.approveRequest(invitationRequest.email!).subscribe((invitationRequests: InvitationRequestTable[]): void => {
+          if (invitationRequests) {
+            this.tableElements = invitationRequests;
+            this.dataSource.data = invitationRequests;
+          }
+          invitationRequest.isLoading = false;
+        });
       } else {
       }
     });
@@ -66,7 +68,7 @@ export class InvitationsComponent implements OnInit {
   denyRequest(invitationRequest: InvitationRequestTable): void {
     let newButtonText: string = 'Deny';
 
-    if(invitationRequest.invitationEnum === InvitationEnum.Approved)
+    if (invitationRequest.invitationEnum === InvitationEnum.Approved)
       newButtonText = "Ban";
 
     Swal.fire({
@@ -79,12 +81,14 @@ export class InvitationsComponent implements OnInit {
       confirmButtonColor: '#f44336'
     }).then((result) => {
       if (result.value) {
-        this.invitationService.denyRequest(invitationRequest.email!).subscribe(res => {
-            if (res) {
-              this.tableElements = res;
-              this.dataSource.data = res;
-            }
-          });
+        invitationRequest.isLoading = true;
+        this.invitationService.denyRequest(invitationRequest.email!).subscribe((invitationRequests: InvitationRequestTable[]): void => {
+          if (invitationRequests) {
+            this.tableElements = invitationRequests;
+            this.dataSource.data = invitationRequests;
+          }
+          invitationRequest.isLoading = false;
+        });
       } else {
       }
     });
