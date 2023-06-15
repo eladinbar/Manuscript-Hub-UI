@@ -23,7 +23,7 @@
     <div class="col-sm-10">
       <div class="tags-container">
         <input type="text" id="tags" name="tags" class="form-control" formControlName="tags"
-               (keydown.enter)="addTag()" (blur)="addTag()" placeholder="Add tags...">
+               (keydown.enter)="addTag($event)" (blur)="addTag($event)" placeholder="Add tags...">
         <div *ngIf="showTagExists" class="speech-bubble">
           The '{{ tagToAdd }}' tag already exists!
         </div>

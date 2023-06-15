@@ -37,7 +37,11 @@ export class DocumentUploadFormComponent implements OnInit {
     });
   }
 
-  addTag() {
+  addTag(event: any) {
+    if (event) {
+      event.preventDefault(); // Prevent form submission on Enter key press
+    }
+
     this.tagToAdd = this.form.controls['tags'].value.trim();
     if (this.tagToAdd !== '' && !this.tags.includes(this.tagToAdd)) {
       this.tags.push(this.tagToAdd);
