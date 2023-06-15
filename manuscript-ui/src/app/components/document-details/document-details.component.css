@@ -18,7 +18,7 @@ img {
 
 .button-container button span {
   position: absolute; /* Change position to absolute */
-  top: calc(100% + 5px); /* Adjust the top position to move the span below the button */
+  top: calc(-100% - 5px); /* Adjust the top position to move the span below the button */
   left: 50%;
   transform: translateX(-50%);
   background-color: #f5f5f5;
