@@ -89,12 +89,12 @@ export class AlgorithmRequestsComponent implements OnInit {
       case AlgorithmStatusEnum.Approved:
         newStatus = AlgorithmStatusEnum.CloudStaging;
         newButtonText = 'Cloud Staging';
-        newText = promptTextTemplate + "Cloud Staging.";
+        newText = promptTextTemplate + "Cloud Staging.\nAlgorithms in Cloud Staging will be dockerized in preparation for use within the system.";
         break;
       case AlgorithmStatusEnum.CloudStaging:
         newStatus = AlgorithmStatusEnum.Trial;
         newButtonText = 'Trial';
-        newText = promptTextTemplate + "Trial.\nAlgorithms in Trial will be dockerized and available for use to admins and the owning developer.";
+        newText = promptTextTemplate + "Trial.\nAlgorithms in Trial will be available for use to admins and the owning developer.";
         break;
       case AlgorithmStatusEnum.Trial:
       case AlgorithmStatusEnum.Inactive:

@@ -376,7 +376,8 @@ export class DocumentDetailsComponent implements OnInit {
     algorithm.imageDataId = this.documentId;
     this.isLoading = true;
     this.algorithmService.runAlgorithm(algorithm).subscribe((annotationModels: AnnotationModel[]) => {
-      this.annotations.concat(annotationModels);
+      this.annotations = this.annotations.concat(annotationModels);
+      this.drawAnnotations();
       algorithm.imageDataId = undefined;
       this.isLoading = false;
     });

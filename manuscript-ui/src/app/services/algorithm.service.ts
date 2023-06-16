@@ -88,13 +88,15 @@ export class AlgorithmService {
   }
 
   updateAlgorithm(algorithmModel: AlgorithmModel) {
-    if (algorithmModel.status === AlgorithmStatusEnum.Trial)
+    if (algorithmModel.status === AlgorithmStatusEnum.CloudStaging)
       this.townCrier.info("Algorithm is being dockerized, please wait, this may take a while...");
 
     return from(this.http.patch<AlgorithmModel>(`${environment.baseUrl}${environment.RESOURCE_UPDATE_ALGORITHM}`, algorithmModel))
       .pipe(map((algorithm: AlgorithmModel) => {
-          if (algorithmModel.status === AlgorithmStatusEnum.Trial)
-            this.townCrier.info("Algorithm dockerized successfully.\nAlgorithm can now be run by admins and the owning developer.");
+          if (algorithmModel.status === AlgorithmStatusEnum.CloudStaging)
+            this.townCrier.info("Algorithm dockerized successfully.");
+          else if (algorithmModel.status === AlgorithmStatusEnum.Trial)
+            this.townCrier.info("Algorithm updated successfully.\nAlgorithm can now be run by admins and the owning developer.");
           else if (algorithmModel.status === AlgorithmStatusEnum.Production)
             this.townCrier.info("Algorithm updated successfully.\nAlgorithm can now be run by all users in the system.");
           else
