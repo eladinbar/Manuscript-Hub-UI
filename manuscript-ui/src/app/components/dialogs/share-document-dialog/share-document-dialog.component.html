@@ -1,16 +1,18 @@
 <h2 mat-dialog-title>Share this document with other users.</h2>
 <p>Enter an email address.</p>
-<mat-dialog-content>
-  <mat-form-field class="custom-input">
-    <input matInput placeholder="Email" cdkFocusInitial [formControl]="emailFormControl" email>
-    <mat-error *ngIf="emailFormControl.hasError('duplicate')">Email already exists.</mat-error>
-    <mat-error *ngIf="emailFormControl.hasError('email') && emailFormControl.dirty">
-      Please enter a valid email address.
-    </mat-error>
-  </mat-form-field>
-  <button mat-icon-button color="primary" (click)="addEmail()" [disabled]="emailFormControl.invalid">
-    <mat-icon>add</mat-icon>
-  </button>
+<mat-dialog-content class="dialog-content">
+  <div class="input-container">
+    <mat-form-field class="custom-input">
+      <input matInput placeholder="Email" cdkFocusInitial [formControl]="emailFormControl" email>
+      <mat-error *ngIf="emailFormControl.hasError('duplicate')">Email already exists.</mat-error>
+      <mat-error *ngIf="emailFormControl.hasError('email') && emailFormControl.dirty">
+        Please enter a valid email address.
+      </mat-error>
+    </mat-form-field>
+    <button mat-icon-button color="primary" class="add-button" (click)="addEmail()" [disabled]="emailFormControl.invalid">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button [mat-dialog-close]="userEmails" [disabled]="!userEmails.length">

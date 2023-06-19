@@ -1,3 +1,42 @@
 .custom-input {
+  flex: 1;
+  margin-right: 8px;
   width: 300px; /* Adjust the width as desired */
+}
+
+.dialog-content {
+  display: flex;
+  align-items: center;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+}
+
+.add-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0747A6;
+  transition: background-color 0.3s;
+  padding: 0;
+  border: none;
+  outline: none;
+}
+
+.add-button:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+}
+
+.add-button:not(:disabled):hover {
+  background-color: #07367e;
+}
+
+.add-button mat-icon {
+  color: white;
 }
