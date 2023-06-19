@@ -243,7 +243,7 @@ export class DocumentDetailsComponent implements OnInit {
       if (content) {
         //TODO pass algorithmId?
         // OK
-        this.updateAnnotation(annotation, content);
+        this.updateAnnotation(annotation, content, oldStartX, oldStartY, oldEndX, oldEndY);
       } else if (content == 0) {
         // Delete
         this.deleteAnnotation(annotation);
@@ -259,10 +259,21 @@ export class DocumentDetailsComponent implements OnInit {
     });
   }
 
-  updateAnnotation(annotation: AnnotationModel, newContent: string): void {
-    annotation.content = newContent;
-    this.algorithmService.updateAnnotation(annotation).subscribe();
-    this.drawAnnotations();
+  updateAnnotation(annotation: AnnotationModel, newContent: string, oldStartX: number, oldStartY: number, oldEndX: number, oldEndY: number): void {
+    let annotationToUpdate: AnnotationModel = new AnnotationModel(annotation);
+    annotationToUpdate.content = newContent;
+    annotationToUpdate.uid = this.uid;
+    this.algorithmService.updateAnnotation(annotationToUpdate).subscribe((updatedAnnotation: AnnotationModel): void => {
+      if(updatedAnnotation.content === newContent)
+        annotation.content = updatedAnnotation.content;
+      else {
+        annotation.startX = oldStartX;
+        annotation.startY = oldStartY;
+        annotation.endX = oldEndX;
+        annotation.endY = oldEndY;
+      }
+      this.drawAnnotations();
+    });
   }
 
   deleteAnnotation(annotation: AnnotationModel): void {
