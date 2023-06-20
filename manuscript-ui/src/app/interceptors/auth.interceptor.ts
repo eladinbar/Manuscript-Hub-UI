@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
@@ -18,6 +18,7 @@ export class AuthInterceptor implements HttpInterceptor {
         flatMap(user => from(user!.getIdToken(true)))
       );
   }
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return this.token$.pipe(take(1), flatMap((token) => {
       let newReq = req;

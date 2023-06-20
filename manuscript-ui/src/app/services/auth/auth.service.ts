@@ -2,77 +2,36 @@ import {Injectable} from '@angular/core';
 import firebase from 'firebase/compat/app';
 import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {GoogleAuthProvider} from "firebase/auth";
-
 import {AngularFirestore, AngularFirestoreDocument} from "@angular/fire/compat/firestore";
+import {Router} from "@angular/router";
+import {CryptoService} from "../crypto.service";
 import UserCredential = firebase.auth.UserCredential;
 import User = firebase.User;
-import {Router} from "@angular/router";
+import {RouterEnum} from "../../enums/RouterEnum";
+import IdTokenResult = firebase.auth.IdTokenResult;
+import {TownCrierService} from "../town-crier.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  user?: User;
-  private lang = 'heb';
-  userData: any; // Save logged in user data
+  private lang: string = 'en';
+  firebaseUser?: firebase.User; // Save logged in user data
 
-  constructor(public afAuth: AngularFireAuth, public afs: AngularFirestore, private router: Router) {
-    (async () => {
-      this.afAuth.authState.subscribe(user => {
-        if (user) {
-          this.userData = user;
-          localStorage.setItem('user', JSON.stringify(this.userData));
-          user.getIdTokenResult().then(res => {
-            this.updateLocalStorage(res, user);
-          })
-        } else {
-          localStorage.setItem('user', 'null');
-        }
-      });
-    })()
-    let tokenIntervalId = setInterval(this.refreshToken, 20000);
+  constructor(public afAuth: AngularFireAuth, public afs: AngularFirestore, private router: Router,
+              public cryptoService: CryptoService, private townCrier: TownCrierService) { }
 
-  }
-  refreshToken(){
-
-    if(this.userData) {
-      this.userData.getIdToken().then((token: any) => {
-        localStorage.setItem('token', token);
-      });
-    }
+  async googleLogin(): Promise<UserCredential> {
+    const provider: GoogleAuthProvider = new GoogleAuthProvider();
+    this.townCrier.info("Logging in...");
+    return await this.afAuth.signInWithPopup(provider);
   }
 
-
-  logout() {
-    this.afAuth.signOut();
-    localStorage.clear();
-    this.router.navigate(['/login']);
-  }
-
-  get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user')!);
-    console.log(user)
-    return true //&& user.emailVerified !== false;
-  }
-
-  checkLogin(): boolean {
-    const user = JSON.parse(localStorage.getItem('user')!);
-    if (user) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  signIn(email: string, password: string): Promise<any> {
-    return this.afAuth
-      .signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        console.log(result)
-        this.SetUserData(result.user).then();
-        this.updateLocalStorage(result, result.user);
-        return result;
-
+  signIn(email: string, password: string): Promise<UserCredential | null> {
+    this.townCrier.info("Logging in...");
+    return this.afAuth.signInWithEmailAndPassword(email, password)
+      .then((credential: UserCredential) => {
+        return credential;
       })
       .catch((error) => {
         window.alert(error.message);
@@ -80,10 +39,16 @@ export class AuthService {
       });
   }
 
-  SetUserData(user: any) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-      `users/${user.uid}`
-    );
+  signOut() {
+    this.townCrier.info("Logging out...");
+    this.afAuth.signOut();
+    localStorage.clear();
+    this.router.navigate(['/' + RouterEnum.Login]);
+    this.townCrier.info("Logged out successfully.");
+  }
+
+  setUserData(user: firebase.User): Promise<void> {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
     const userData: { uid: any; photoURL: any; emailVerified: any; displayName: any; email: any } = {
       uid: user.uid,
       email: user.email,
@@ -91,32 +56,51 @@ export class AuthService {
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
     };
+
+    user.getIdTokenResult().then((idTokenResult: IdTokenResult): void => {
+      this.updateLocalStorage(idTokenResult, user);
+    });
+
     return userRef.set(userData, {
       merge: true,
     });
   }
 
-
-  updateLocalStorage(result: any, user: any): void {
+  updateLocalStorage(idTokenResult: IdTokenResult, user: firebase.User): void {
     const u = {
       displayName: user.displayName,
       photoUrl: user.photoURL
     };
     localStorage.setItem('user', JSON.stringify(u));
+    localStorage.setItem('displayName', user.displayName!);
     localStorage.setItem('uid', user.uid);
-    localStorage.setItem('token', result.token);
+    localStorage.setItem('email', user.email!);
+    localStorage.setItem('token', idTokenResult.token);
     localStorage.setItem('lang', this.lang);
-    localStorage.setItem('direction', this.lang == 'en' ? 'ltr' : 'rtl');
-
-
+    localStorage.setItem('direction', this.lang == 'en' ? 'ltr' : 'rtl'); //TODO requires generalization
   }
 
-  async googleLogin(): Promise<UserCredential> {
+  refreshToken(): void {
+    if (this.firebaseUser) {
+      this.firebaseUser.getIdToken().then((token: any) => {
+        localStorage.setItem('token', token);
+      });
+    }
+  }
 
+  get isLoggedIn(): boolean {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return !!user;
+  }
 
-    const provider = new GoogleAuthProvider();
+  get isDeveloper(): boolean {
+    const role = localStorage.getItem('role')!;
+    return this.cryptoService.decrypt(role) === 'Developer' || this.cryptoService.decrypt(role) === 'Admin';
+  }
 
-    return await this.afAuth.signInWithPopup(provider);
+  get isAdmin(): boolean {
+    const role = localStorage.getItem('role')!;
+    return this.cryptoService.decrypt(role) === 'Admin';
   }
 
   deleteUser(): Promise<any> {

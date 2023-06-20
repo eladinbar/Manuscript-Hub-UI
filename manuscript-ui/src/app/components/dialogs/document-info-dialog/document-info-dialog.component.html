@@ -1,0 +1,11 @@
+<h1>Document Information</h1>
+<p><strong>Title:</strong> {{ data.title }}</p>
+<p><strong>Description:</strong> {{ data.description }}</p>
+<p><strong>Author:</strong> {{ data.author }}</p>
+<p><strong>Privacy:</strong> {{ data.privacy }}</p>
+<p><strong>Publication Date:</strong> {{ data.publicationDate | date: 'dd/MM/yyyy' }}</p>
+<p><strong>Tags:</strong></p>
+<ul *ngIf="data.tags && data.tags.length > 0">
+  <li *ngFor="let tag of data.tags">{{ tag }}</li>
+</ul>
+

@@ -5,20 +5,18 @@ import {Observable, of} from "rxjs";
   providedIn: 'root'
 })
 export class RestErrorsHandlerService {
-
-  constructor() {
-  }
+  constructor() {  }
 
   handleRequestError(errorRes: any): Observable<any> {
     if (errorRes.error !== undefined) {
       this.showError(errorRes.error);
     } else {
-      this.showError("Something went wrong, Connection lost with the server");
+      this.showError("Something went wrong, the connection with the server was lost.");
     }
     return of(errorRes);
   }
 
-  showError(errorMessage: string) {
+  showError(errorMessage: string): void {
     console.log(errorMessage)
   }
 }

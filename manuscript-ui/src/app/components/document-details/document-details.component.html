@@ -1,0 +1,39 @@
+<div class="centered-container">
+  <h2 class="centered">{{ title }}</h2>
+  <div class="button-container">
+    <!-- Loading spinner icon -->
+    <div *ngIf="isLoading">
+      <mat-spinner [diameter]="20"></mat-spinner>
+    </div>
+
+    <!--  Annotate with algorithm  -->
+    <button mat-icon-button [matMenuTriggerFor]="algorithmMenu" (mouseenter)="annIsHovered = true" (mouseleave)="annIsHovered = false">
+      <mat-icon>create</mat-icon>
+      <span [ngClass]="{'show-text': annIsHovered}">Auto annotate</span>
+    </button>
+
+    <!--  Image Info  -->
+    <button mat-icon-button (click)="openDocumentInfoDialog()" (mouseenter)="infoIsHovered = true" (mouseleave)="infoIsHovered = false">
+      <mat-icon>information</mat-icon>
+      <span [ngClass]="{'show-text': infoIsHovered}">Image info</span>
+    </button>
+
+  </div>
+
+  <mat-menu #algorithmMenu="matMenu">
+    <button mat-menu-item *ngFor="let algorithm of algorithms" (click)="selectAlgorithm(algorithm)">{{ algorithm.title }}</button>
+  </mat-menu>
+</div>
+
+
+<canvas #canvas>
+  <style>canvas {
+    float: left;
+    margin: 10px;
+  }</style>
+</canvas>
+
+<app-document-item *ngFor="let annotation of annotations" [annotation]="annotation"
+  (onSelectAnnotation)="selectAnnotation(annotation, annotation.startX, annotation.startY, annotation.endX, annotation.endY)"
+  (onDeleteAnnotation)="deleteAnnotation(annotation)">
+</app-document-item>

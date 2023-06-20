@@ -1,0 +1,87 @@
+<div class="title-element" fxLayoutAlign="center start">
+  <mat-card-title>Document Dashboard</mat-card-title>
+</div>
+
+<div class="action-container">
+  <!-- Search -->
+  <div class="search-container">
+    <mat-form-field appearance="outline">
+      <div class="search-wrapper">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput placeholder="Search..." (input)="applyFilter($event)" class="white-search-box" />
+      </div>
+    </mat-form-field>
+  </div>
+
+  <!--  Upload New Document  -->
+  <div class="upload-button-container">
+    <form [formGroup]="formGroup" class="form">
+      <mat-button-toggle class="fileUpload" (click)="uploadFileService()">Upload New Document</mat-button-toggle>
+    </form>
+  </div>
+</div>
+
+
+<div *ngIf="dataSource; else emptyTable" class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort matTableResponsive (matSortChange)="announceSortChange($event)">
+    <!--  Privacy column  -->
+    <ng-container matColumnDef="Privacy">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Privacy" class="column-header">
+        Privacy
+      </th>
+      <td *matCellDef="let documentMetadata" mat-cell> {{textService.toTitleCase(documentMetadata.privacy)}} </td>
+    </ng-container>
+
+    <!-- Title column -->
+    <ng-container matColumnDef="{{title}}">
+      <th *matHeaderCellDef mat-sort-header sortActionDescription="Sort by title" class="column-header">
+        Title
+      </th>
+      <td *matCellDef="let documentMetadata" mat-cell> {{documentMetadata.title}} </td>
+    </ng-container>
+
+    <!-- Created Time column -->
+    <ng-container [matColumnDef]="time">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time" class="column-header">
+        Created Time
+      </th>
+      <td *matCellDef="let document" mat-cell> {{dateService.toFormattedDate(document.createdTime)}} </td>
+    </ng-container>
+
+    <!-- Updated Time column -->
+    <ng-container matColumnDef="Updated Time">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Updated Time" class="column-header">
+        Updated Time
+      </th>
+      <td *matCellDef="let document" mat-cell> {{dateService.toFormattedDate(document.updatedTime)}} </td>
+    </ng-container>
+
+    <!-- Actions column -->
+    <ng-container matColumnDef="Actions">
+      <th *matHeaderCellDef mat-header-cell class="column-header">
+        Actions
+      </th>
+      <td *matCellDef="let document" class="action-link" mat-cell>
+        <button (click)="onDocumentOpen(document)" color="primary" mat-raised-button>Open</button>
+
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <!--  Actions options  -->
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="onDocumentDelete(document)">Delete</button>
+          <button mat-menu-item (click)="onDocumentChangePrivacy(document)">Change Privacy</button>
+          <button mat-menu-item (click)="openDocumentInfoDialog(document)">Image info</button>
+        </mat-menu>
+      </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
+    <tr *matRowDef="let document; columns: displayedColumns;" [ngClass]="{'highlight': document.privacy === 'Shared'}" mat-row></tr>
+  </table>
+
+  <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+</div>
+
+<ng-template #emptyTable>No Documents found</ng-template>
+

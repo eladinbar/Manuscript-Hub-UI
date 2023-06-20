@@ -4,6 +4,10 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AccountService} from "../../../../services/auth/account.service";
 import {Router} from "@angular/router";
 import {TownCrierService} from "../../../../services/town-crier.service";
+import {RouterEnum} from "../../../../enums/RouterEnum";
+import firebase from "firebase/compat";
+import {RoleEnum} from "../../../../enums/RoleEnum";
+import UserCredential = firebase.auth.UserCredential;
 
 @Component({
   selector: 'app-register',
@@ -13,11 +17,10 @@ import {TownCrierService} from "../../../../services/town-crier.service";
 export class RegisterComponent {
   public formGroup: FormGroup;
   public inputType: string = "password";
-  hide = true;
-  roles = ['Developer', 'User', 'Guest'];
+  hidePassword: boolean = true;
+  roles: string[] = ['Developer', 'User'];
 
-
-  constructor(private auth: AngularFireAuth, private formBuilder: FormBuilder, private accountService: AccountService, public router: Router, public townCrier: TownCrierService) {
+  constructor(private afAuth: AngularFireAuth, private formBuilder: FormBuilder, private accountService: AccountService, public router: Router, public townCrier: TownCrierService) {
     this.formGroup = this.formBuilder.group({
       email: [null, [Validators.required]],
       password: [null, [Validators.required]],
@@ -27,58 +30,60 @@ export class RegisterComponent {
     });
   }
 
-  register(value: any) {
+  register() {
     const email = this.formGroup.controls['email'].value;
     const password = this.formGroup.controls['password'].value;
     const name = this.formGroup.controls['name'].value;
     const phoneNumber = this.formGroup.controls['phoneNumber'].value;
-    const role = this.formGroup.controls['role'].value;
-    debugger;
-    if (email != null && password != null) {
-      this.auth.createUserWithEmailAndPassword(email, password)
-        .then(user => {
-          this.sendEmail();
+    const role: keyof typeof RoleEnum = this.formGroup.controls['role'].value;
+    const roleEnum: RoleEnum = RoleEnum[role];
 
-          this.accountService.registerNewUser(user.user?.email!, user.user?.uid!, name, phoneNumber, role).subscribe(result => {
-            console.log("result: ", result);
-            if (result) {
-              this.townCrier.info('Registration successful!');
-              setInterval(() => {
-                this.router.navigate(['/login']);
-              }, 5000);
-            } else {
-              //TODO: need to delete it from firebase
-              this.townCrier.error('Registration failed!');
-
-            }
-          })
-        })
-        .catch(error => {
-          this.townCrier.error('Registration failed ! ' +  error);
+    if (email && password && role && name) {
+      this.afAuth.createUserWithEmailAndPassword(email, password).then((userCredential: UserCredential) => {
+          const user: firebase.User | null = userCredential.user;
+          user?.updateProfile({
+            displayName: name
+          }).then(() => {
+            this.sendEmail();
+            this.accountService.registerNewUser(user?.email!, user?.uid!, name, phoneNumber, roleEnum).subscribe(result => {
+              if (result) {
+                if(user) {
+                  this.afAuth.signOut();
+                  localStorage.clear();
+                }
+                this.townCrier.info('Registration successful!');
+                this.router.navigate(['/' + RouterEnum.Login]);
+              } else {
+                //TODO: need to delete it from firebase
+                this.townCrier.error('Registration failed!');
+              }
+            });
+          });
+        }).catch(error => {
+          this.townCrier.error('Registration failed! ' + error);
         });
     } else {
-      this.townCrier.error("Make sure that fill all fields");
+      this.townCrier.error("Make sure that all fields are filled before submitting.");
     }
   }
 
   showPassword() {
+    this.hidePassword = !this.hidePassword;
     if (this.inputType === 'password') {
       this.inputType = 'text';
-      this.hide = true;
     } else {
       this.inputType = 'password'
-      this.hide = false;
-
     }
   }
+
   sendEmail() {
-    this.auth.currentUser.then((u) => {
+    this.afAuth.currentUser.then((u) => {
       //If a user is successfully created with an appropriate email
-      if (u != null){
+      if (u != null) {
         u?.sendEmailVerification();
       }
     }).catch(error => {
-      this.townCrier.error('could not send email verification ' +  error);
+      this.townCrier.error('Could not send email verification ' + error);
     });
   }
 }

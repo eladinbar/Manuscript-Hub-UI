@@ -1,0 +1,124 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  /*grid-template-rows: repeat(2, 1fr);*/
+  grid-gap: 10px;
+  height: 100%;
+  overflow-x: visible !important;
+}
+
+.grid-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 20px;
+}
+
+.item1 {
+  grid-row: 1 / span 1;
+  grid-column: 1 / span 1;
+}
+
+.add-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 48px;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.item1 img {
+  max-width: 100%;
+  height: auto;
+}
+
+.item2 img {
+  max-width: 100%;
+  height: auto;
+}
+
+.no-bullet {
+  list-style-type: none;
+}
+
+.doc-list-item {
+  padding: -50px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.doc-list-item:last-child {
+  border-bottom: none;
+}
+
+.doc-list-item:hover {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.mat-menu-panel .menu li {
+  cursor: pointer;
+}
+
+.plus-icon {
+  font-size: 30px; /* Adjust the size as desired */
+}
+
+.add-button-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.menu li:hover {
+  background-color: lightblue;
+  cursor: pointer;
+}
+
+.menu li:hover .title {
+  background-color: transparent;
+  color: #000;
+}
+
+.menu {
+  font-size: 16px;
+  width: 100%;
+  padding-left: 0; /* Remove the left padding */
+}
+
+.menu li {
+  padding-left: 0; /* Remove the left padding for each menu item */
+}
+
+.mat-menu-panel {
+  right: 100px; /* Reset the right property */
+  left: -100px; /* Adjust this value to move the menu more to the left */
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 14px;
+  padding-left: 20px; /* Adjust this value to control the padding from the left */
+}
+
+.search-container input[type="text"] {
+  padding-right: 30px; /* Adjust this value to control the width of the input */
+  text-align: left; /* Add this line to align the text to the right */
+  width: calc(100% - 80px); /* Add this line to calculate the width */
+}
+
+.search-container button {
+  position: absolute;
+  right: 5px;
+}
+
+.fa-asterisk {
+  color: red;
+  font-weight: bold;
+}
+
+.tip {
+  font-weight: bold;
+}

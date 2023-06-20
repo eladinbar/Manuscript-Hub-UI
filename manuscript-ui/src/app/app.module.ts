@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {MainComponent} from './components/main/main.component';
+import {MainComponent} from './components/pages/member/main/main.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatSidenavModule} from "@angular/material/sidenav";
@@ -29,20 +29,30 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {MatDialogModule} from "@angular/material/dialog";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MaterialModule} from "./shared/material/material.module";
-import {DashboardComponent} from './components/pages/dashboard/dashboard.component';
+import {DashboardComponent} from './components/pages/member/dashboard/dashboard.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatSortModule} from "@angular/material/sort";
-import {DocumentDetailsComponent} from './components/pages/document-details/document-details.component';
+import {DocumentDetailsComponent} from './components/document-details/document-details.component';
 import {LoginComponent} from './components/pages/account/login/login.component';
 import {AngularFireModule} from "@angular/fire/compat";
 import {environment} from "../environments/environment";
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import {HttpErrorInterceptorService} from "./interceptors/http-error-interceptor.interceptor";
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
-import { RegisterComponent } from './components/pages/account/register/register.component';
-import { DialogComponent } from './components/dialog/dialog.component';
-import { DocumentItemComponent } from './components/document-item/document-item.component';
-import { InvitationsComponent } from './components/invitations/invitations.component';
+import {RegisterComponent} from './components/pages/account/register/register.component';
+import {AnnotationDialogComponent} from './components/dialogs/annotation-dialog/annotation-dialog.component';
+import {DocumentItemComponent} from './components/document-item/document-item.component';
+import {DocumentUploadFormComponent} from './components/pages/member/document-upload-form/document-upload-form.component';
+import {PrivacyDialogComponent} from './components/dialogs/privacy-dialog/privacy-dialog.component';
+import {ConfirmationDialogComponent} from './components/dialogs/confirmation-dialog/confirmation-dialog.component'
+import {AlgorithmSubmissionFormComponent} from './components/pages/developer/algorithm-submission-form/algorithm-submission-form.component';
+import {FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome'
+import {faQuestionCircle, faTimes} from "@fortawesome/free-solid-svg-icons";
+import {InvitationsComponent} from './components/pages/admin/invitations/invitations.component';
+import {LayoutDocumentsComponent} from './components/pages/member/layout-documents/layout-documents.component';
+import {AlgorithmRequestsComponent} from './components/pages/developer/algorithm-requests/algorithm-requests.component';
+import {DocumentInfoDialogComponent} from "./components/dialogs/document-info-dialog/document-info-dialog.component";
+import { ShareDocumentDialogComponent } from './components/dialogs/share-document-dialog/share-document-dialog.component';
 
 @NgModule({
   declarations: [
@@ -50,48 +60,56 @@ import { InvitationsComponent } from './components/invitations/invitations.compo
     MainComponent,
     DashboardComponent,
     DocumentDetailsComponent,
+    DocumentInfoDialogComponent,
     LoginComponent,
     RegisterComponent,
-    DialogComponent,
+    AnnotationDialogComponent,
     DocumentItemComponent,
+    DocumentUploadFormComponent,
+    PrivacyDialogComponent,
+    ConfirmationDialogComponent,
+    AlgorithmSubmissionFormComponent,
     InvitationsComponent,
+    LayoutDocumentsComponent,
+    AlgorithmRequestsComponent,
+    ShareDocumentDialogComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        MatSliderModule,
-        BrowserAnimationsModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatMenuModule,
-        MatSidenavModule,
-        MatListModule,
-        MatCardModule,
-        MatBadgeModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatCheckboxModule,
-        MatInputModule,
-        MatRadioModule,
-        MatSelectModule,
-        FlexLayoutModule,
-        MatTableModule,
-        MatButtonModule,
-        MatBottomSheetModule,
-        MatTreeModule,
-        MaterialModule,
-        MatButtonToggleModule,
-        MatGridListModule,
-        MatDialogModule,
-        MatProgressBarModule,
-        MatSortModule,
-        AngularFireModule.initializeApp(environment.firebase),
-        AngularFireAuthModule,
-        FormsModule,
-
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    MatSliderModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatSidenavModule,
+    MatListModule,
+    MatCardModule,
+    MatBadgeModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatInputModule,
+    MatRadioModule,
+    MatSelectModule,
+    FlexLayoutModule,
+    MatTableModule,
+    MatButtonModule,
+    MatBottomSheetModule,
+    MatTreeModule,
+    MaterialModule,
+    MatButtonToggleModule,
+    MatGridListModule,
+    MatDialogModule,
+    MatProgressBarModule,
+    MatSortModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    FormsModule,
+    FontAwesomeModule
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
@@ -107,4 +125,7 @@ import { InvitationsComponent } from './components/invitations/invitations.compo
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  constructor(library: FaIconLibrary) {
+    library.addIcons(faTimes, faQuestionCircle);
+  }
 }

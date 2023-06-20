@@ -1,0 +1,39 @@
+<p class="tip"> <span class="fa-asterisk"></span> You can manually annotate a document in this page by clicking and dragging to the desired location. </p>
+
+<mat-toolbar>
+  <div class="add-button-container">
+    <button mat-icon-button [matMenuTriggerFor]="showMenu" aria-label="Example icon-button with a menu">
+      <mat-icon class="plus-icon">add</mat-icon>
+    </button>
+    <mat-menu #showMenu="matMenu">
+      <div *ngIf="showMenu" class="menu" (click)="$event.stopPropagation()">
+        <div class="search-container">
+          <input type="text" placeholder="Search..." (input)="handleSearch($event)" (click)="$event.stopPropagation()">
+          <button mat-icon-button (click)="openSearch(); $event.stopPropagation()">
+            <mat-icon>search</mat-icon>
+          </button>
+        </div>
+        <ul>
+          <li *ngFor="let doc of filteredDocsData; let i = index" (click)="addImage(i, doc); showMenuTrigger.closeMenu()" class="no-bullet">
+            <ng-container *ngIf="checkIdMatch(doc.infoId)">
+              <span class="title" [class.bold]="isHovered[i]" (mouseover)="isHovered[i] = true" (mouseout)="isHovered[i] = false">
+                {{ getFilteredDocTitles()[i] }}
+              </span>
+            </ng-container>
+          </li>
+        </ul>
+      </div>
+    </mat-menu>
+  </div>
+</mat-toolbar>
+
+
+<div class="grid-container">
+  <div class="grid-item item1">
+    <app-document-details [documentId]="documentId" [uid]="uid" [title]="firstTitle"></app-document-details>
+  </div>
+
+  <div class="grid-item" *ngFor="let addedDocId of addedDocIds; let i = index" [ngClass]="'item' + (i+2)">
+    <app-document-details [documentId]="addedDocId!" [uid]="uid" [title]="this.addedDocTitles[i]"></app-document-details>
+  </div>
+</div>

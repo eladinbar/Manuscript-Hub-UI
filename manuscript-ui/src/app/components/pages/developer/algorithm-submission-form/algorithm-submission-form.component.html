@@ -1,0 +1,82 @@
+<h1>Submit a new algorithm to the system</h1>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- Title input -->
+  <div class="form-group">
+    <label for="title" i18n>Title
+      <span class="tooltip-container">
+        <i class="fa fa-question-circle tooltip-icon" aria-hidden="true">
+          <span class="tooltip-text">Enter a title for your algorithm</span>
+        </i>
+      </span>
+    </label>
+    <input type="text" class="form-control" id="title" formControlName="title" name="title">
+  </div>
+
+  <!-- Model Type input -->
+  <div i18n>Note: Only Python algorithms are currently supported. All algorithms must support reading input from files and writing output to files. If your algorithm requires image input, please ensure that it can handle .png files.
+    <br>Input file name will be input.png in case of an image input and input.txt otherwise.
+    <br>Output file name should be output.txt.</div>
+  <label for="modelType" i18n>Model Type
+    <span class="tooltip-container">
+    <i class="fa fa-question-circle tooltip-icon" aria-hidden="true">
+      <span class="tooltip-text">Select the type of model you are submitting</span>
+    </i>
+  </span>
+  </label>
+  <div class="form-group">
+    <select class="form-control" id="modelType" formControlName="modelType" name="modelType" (change)="showExpectedLines()">
+      <option value="OCR" data-expected-input="Image by byte representation" data-expected-output="A dictionary consisting of string content and number coordinates: startX, startY, endX, endY" i18n>OCR</option>
+      <option value="LineExtraction" data-expected-input="Expected Input for Line Extraction" data-expected-output="Expected Output for Line Extraction" i18n>Line Extraction</option>
+      <option value="Other" data-expected-input="" data-expected-output="" i18n>Other</option>
+    </select>
+  </div>
+  <div *ngIf="expectedLinesVisible" class="expected-lines">
+    <!--  Input/Output inputs for non-existing model types  -->
+    <div *ngIf="form.controls['modelType'].value === 'Other'">
+      <div class="form-group">
+        <label for="customExpectedInput" i18n>Expected Input:</label>
+        <input type="text" class="form-control" id="customExpectedInput" formControlName="customExpectedInput" name="customExpectedInput">
+      </div>
+      <div class="form-group">
+        <label for="customExpectedOutput" i18n>Expected Output:</label>
+        <input type="text" class="form-control" id="customExpectedOutput" formControlName="customExpectedOutput" name="customExpectedOutput">
+      </div>
+    </div>
+    <!--  Input/Output labels for existing model types  -->
+    <div *ngIf="form.controls['modelType'].value !== 'Other'" class="expected-input" i18n>
+      Expected Input: {{ expectedInput }}<br>
+      Expected Output: {{ expectedOutput }}</div>
+    <div class="expected-output" i18n></div>
+  </div>
+
+  <!-- Description input -->
+  <div class="form-group">
+    <label for="description" i18n>Description
+      <span class="tooltip-container">
+        <i class="fa fa-question-circle tooltip-icon" aria-hidden="true">
+          <span class="tooltip-text">Enter a description of your algorithm</span>
+        </i>
+      </span>
+    </label>
+    <textarea class="form-control" id="description" formControlName="description" name="description"></textarea>
+  </div>
+
+  <!-- Repository input -->
+  <div class="form-group">
+    <label for="repository" i18n>Repository
+      <span class="tooltip-container">
+        <i class="fa fa-question-circle tooltip-icon" aria-hidden="true">
+          <span class="tooltip-text">Enter the link to the repository of your algorithm</span>
+        </i>
+      </span>
+    </label>
+    <input type="text" class="form-control invalid-field" id="repository" formControlName="repository" name="repository"
+           [ngClass]="{'is-invalid': invalidLink}">
+  </div>
+  <p i18n>Note: The more detailed your repository is, the more likely your algorithm is to be accepted by a system admin.<br>
+    A link to a video clip demonstrating your algorithm's performance in the README file will help us in properly assessing your work.</p>
+
+  <!-- Submit button -->
+  <button type="submit" [disabled]="form.invalid">Submit</button>
+</form>

@@ -1,0 +1,76 @@
+<div class="title-element" fxLayoutAlign="center start">
+  <mat-card-title>Invitation Requests</mat-card-title>
+</div>
+
+<div>
+  <div class="modal-content">
+    <div class="modal-body">
+      <table [dataSource]="dataSource" class="mat-elevation-z8 col-12" mat-table matSort>
+        <!-- Loading circle icon column -->
+        <ng-container matColumnDef="loading">
+          <th class="text-center" mat-header-cell *matHeaderCellDef style="width: 40px;"></th>
+          <td mat-cell *matCellDef="let invitationRequest">
+            <div *ngIf="invitationRequest.isLoading" class="loading-circle"></div>
+          </td>
+        </ng-container>
+
+        <!--  Email column  -->
+        <ng-container matColumnDef="email">
+          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header style="font-size: 18px; color: black;">
+            Email
+          </th>
+          <td mat-cell *matCellDef="let invitationRequest"> {{invitationRequest.email}} </td>
+        </ng-container>
+
+        <!--  Name column  -->
+        <ng-container matColumnDef="name">
+          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header style="font-size: 18px; color: black;">
+            Name
+          </th>
+          <td mat-cell *matCellDef="let invitationRequest"> {{invitationRequest.name}}</td>
+        </ng-container>
+
+        <!--  Role column  -->
+        <ng-container matColumnDef="role">
+          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header style="font-size: 18px; color: black;">
+            Role
+          </th>
+          <td mat-cell *matCellDef="let invitationRequest"> {{invitationRequest.role}} </td>
+        </ng-container>
+
+        <!--  Invitation Enum column  -->
+        <ng-container matColumnDef="invitationEnum">
+          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header style="font-size: 18px; color: black;">
+            Status
+          </th>
+          <td mat-cell *matCellDef="let invitationRequest"> {{invitationRequest.invitationEnum}} </td>
+        </ng-container>
+
+        <!--  Button column  -->
+        <ng-container matColumnDef="edit">
+          <th class="font-weight-bold text-dark normal-text" mat-header-cell *matHeaderCellDef mat-sort-header></th>
+          <td mat-cell *matCellDef="let invitationRequest">
+            <button mat-raised-button color="primary" *ngIf="invitationRequest.invitationEnum != 'Approved' "
+                    (click)="approveRequest(invitationRequest)">Approve
+            </button>
+            <button mat-raised-button color="warn" *ngIf="invitationRequest.invitationEnum == 'Pending' "
+                    (click)="denyRequest(invitationRequest)">Deny
+            </button>
+            <button mat-raised-button color="warn" *ngIf="invitationRequest.invitationEnum == 'Approved' "
+                    (click)="denyRequest(invitationRequest)">Ban
+            </button>
+          </td>
+        </ng-container>
+
+        <tr *matHeaderRowDef="tableCols; sticky: true" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: tableCols;" [ngClass]="{'highlight':  row.invitationEnum === 'Approved' }"
+            mat-row
+        ></tr>
+      </table>
+
+      <!--  Item display count row  -->
+      <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+
+    </div>
+  </div>
+</div>
